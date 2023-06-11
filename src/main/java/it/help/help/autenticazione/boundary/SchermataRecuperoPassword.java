@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataSignin extends Application {
+public class SchermataRecuperoPassword extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataIniziale.class.getResource("/it/help/help/schermataSignin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataIniziale.class.getResource("/it/help/help/schermataRecuperoPassword.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Sign-In");
+        stage.setTitle("Schermata Recupero Password");
         stage.setScene(scene);
         stage.show();
     }

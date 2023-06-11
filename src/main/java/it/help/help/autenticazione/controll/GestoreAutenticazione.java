@@ -21,13 +21,14 @@ public class GestoreAutenticazione {
     public Label labelBenvenuto;
     public PasswordField fieldPassword;
     public TextField fieldEmail;
-    public Button buttonRecuperaPassword;
+    public Button buttonRecuperaPassword; //schermata login
     public Button buttonAccedi;
     public Button buttonIndietro;
     public RadioButton radioButtonDiocesi;
     public RadioButton radioButtonAziendaPartner;
     public PasswordField fieldRipetiPassword;
     public Button buttonRegistrati;
+    public Button buttonRecupera; //schermata recupero password
 
     @FXML
     private AnchorPane contentPane;
@@ -92,8 +93,12 @@ public class GestoreAutenticazione {
         }
     }
 
+    public void clickRecuperaPassword(ActionEvent actionEvent) throws Exception {
 
-    public void clickRecuperaPassword(ActionEvent actionEvent) {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRecuperoPassword.fxml"));
+        Stage window = (Stage) buttonRecuperaPassword.getScene().getWindow();
+        window.setScene(new Scene(root));
+
     }
 
 
@@ -181,6 +186,12 @@ public class GestoreAutenticazione {
         }
     }
 
+
+
+    //per la SCHERMATA RECUPERO PASSWORD
+    public void clickRecupera(ActionEvent actionEvent) {
+
+    }
 
     //connessione con il DBMS
    /* @FXML
