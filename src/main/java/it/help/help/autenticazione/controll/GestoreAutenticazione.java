@@ -33,6 +33,14 @@ public class GestoreAutenticazione {
     private AnchorPane contentPane;
 
 
+
+    public void clickIndietro(ActionEvent actionEvent) {
+
+    }
+
+
+
+    //per la SCHERMATA INIZIALE
     public void clickSignIn(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSignin.fxml"));
         Stage window = (Stage) buttonSignIn.getScene().getWindow();
@@ -45,9 +53,8 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
     }
 
-    public void clickIndietro(ActionEvent actionEvent) {
 
-    }
+
 
     @FXML
     private Label welcomeText;
@@ -57,9 +64,10 @@ public class GestoreAutenticazione {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
 
-    public void clickRecuperaPassword(ActionEvent actionEvent) {
-    }
 
+
+
+    //per la SCHERMATA LOGIN
     public void clickAccedi(ActionEvent actionEvent) {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
@@ -83,6 +91,14 @@ public class GestoreAutenticazione {
             }
         }
     }
+
+
+    public void clickRecuperaPassword(ActionEvent actionEvent) {
+    }
+
+
+
+    //per la SCHERMATA SIGN-IN
 
     public boolean isValidEmail(String email) {
         // Definisci la regex per il formato dell'email
