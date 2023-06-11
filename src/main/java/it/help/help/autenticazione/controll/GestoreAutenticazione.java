@@ -3,18 +3,15 @@ package it.help.help.autenticazione.controll;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import it.help.help.autenticazione.boundary.HelloApplication;
 import javafx.scene.Parent;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
-import javafx.scene.control.Alert;
+
 import javafx.scene.control.Alert.AlertType;
 
 public class GestoreAutenticazione {
@@ -27,20 +24,21 @@ public class GestoreAutenticazione {
     public Button buttonRecuperaPassword;
     public Button buttonAccedi;
     public Button buttonIndietro;
-
-    public void clickSignIn(ActionEvent actionEvent){
-        // Apri la schermata iniziale al click del pulsante "Sign In"
-        HelloApplication seconda = new HelloApplication();
-        Stage stage = new Stage();
-        try {
-            seconda.start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public RadioButton radioButtonDiocesi;
+    public RadioButton radioButtonAziendaPartner;
+    public PasswordField fieldRipetiPassword;
+    public Button buttonRegistrati;
 
     @FXML
     private AnchorPane contentPane;
+
+
+    public void clickSignIn(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSignin.fxml"));
+        Stage window = (Stage) buttonSignIn.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
     public void clickLogin(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
         Stage window = (Stage) buttonLogin.getScene().getWindow();
@@ -57,12 +55,6 @@ public class GestoreAutenticazione {
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-    public void fillInPassword(ActionEvent actionEvent) {
-    }
-
-    public void fillInEmail(ActionEvent actionEvent) {
     }
 
     public void clickRecuperaPassword(ActionEvent actionEvent) {
@@ -90,6 +82,14 @@ public class GestoreAutenticazione {
                 alert.showAndWait();
             }
         }
+    }
+
+    public boolean isValidEmail(String email) {
+        // Definisci la regex per il formato dell'email
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+        // Verifica se la stringa email corrisponde alla regex
+        return email.matches(emailRegex);
     }
 
     public static boolean validatePassword(String password) {
@@ -124,8 +124,45 @@ public class GestoreAutenticazione {
         return false;
     }
 
+    public void clickRegistrati(ActionEvent actionEvent) {
+        Boolean radioDiocesi = radioButtonDiocesi.isSelected();
+        Boolean radioAzienda = radioButtonAziendaPartner.isSelected();
+        String email = fieldEmail.getText();
+        String password = fieldPassword.getText();
+        String repeatPassword = fieldRipetiPassword.getText();
 
+        if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
+            if(password.equals(repeatPassword)) {
+                if(isValidEmail(email) && validatePassword(password)) {
+                    // verifico che l'email non sia già presente nel DBMS
+                    if(false) {
+                        // registro l'utente nel DBMS
 
+                    } else {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Pop-Up Errore");
+                        alert.setHeaderText("Email già esistente");
+                        alert.showAndWait();
+                    }
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Pop-Up Errore");
+                    alert.setHeaderText("I dati inseriti non sono corretti");
+                    alert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Pop-Up Errore");
+                alert.setHeaderText("Le password inserite non coincidono");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Compila tutti i campi");
+            alert.showAndWait();
+        }
+    }
 
 
     //connessione con il DBMS

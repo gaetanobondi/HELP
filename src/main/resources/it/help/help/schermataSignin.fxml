@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToggleGroup?>
+
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Button fx:id="buttonIndietro" onAction="#clickIndietro" layoutX="522.0" layoutY="27.0">
+            <graphic>
+                <ImageView fitHeight="39.0" fitWidth="37.0">
+                    <Image url="@freccia.jpg" />
+                </ImageView>
+            </graphic>
+        </Button>
+        <fx:define>
+            <ToggleGroup fx:id="group" />
+        </fx:define>
+        <RadioButton fx:id="radioButtonDiocesi" layoutX="97.0" layoutY="75.0" mnemonicParsing="false" text="DIOCESI" toggleGroup="$group">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </RadioButton>
+        <RadioButton fx:id="radioButtonAziendaPartner" layoutX="97.0" layoutY="107.0" mnemonicParsing="false" text="AZIENDA PARTNER" toggleGroup="$group">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </RadioButton>
+        <Label layoutX="97.0" layoutY="32.0" text="RUOLO">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="109.0" layoutY="215.0" text="EMAIL">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="109.0" layoutY="252.0" text="PASSWORD">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="109.0" layoutY="289.0" text="RIPETI PASSWORD">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <TextField fx:id="fieldEmail" layoutX="254.0" layoutY="204.0" />
+        <PasswordField fx:id="fieldPassword" layoutX="253.0" layoutY="247.0" />
+        <PasswordField fx:id="fieldRipetiPassword" layoutX="255.0" layoutY="287.0" prefHeight="24.0" prefWidth="159.0" />
+        <Button fx:id="buttonRegistrati" layoutX="490.0" layoutY="319.0" mnemonicParsing="false" onAction="#clickRegistrati" style="-fx-background-color: FFFFFF;" text="Registrati" />
+    </children>
+</Pane>
