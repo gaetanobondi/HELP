@@ -130,6 +130,8 @@ public class GestoreAutenticazione {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
         String repeatPassword = fieldRipetiPassword.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
 
         if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
             if(password.equals(repeatPassword)) {
@@ -139,27 +141,26 @@ public class GestoreAutenticazione {
                         // registro l'utente nel DBMS
 
                     } else {
-                        Alert alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Pop-Up Errore");
-                        alert.setHeaderText("Email già esistente");
-                        alert.showAndWait();
+                        showErrorAlert = true;
+                        error = "Email già esistente";
                     }
                 } else {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
-                    alert.setHeaderText("I dati inseriti non sono corretti");
-                    alert.showAndWait();
+                    showErrorAlert = true;
+                    error = "I dati inseriti non sono corretti";
                 }
             } else {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Pop-Up Errore");
-                alert.setHeaderText("Le password inserite non coincidono");
-                alert.showAndWait();
+                showErrorAlert = true;
+                error = "Le password inserite non coincidono";
             }
         } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi";
+        }
+
+        if(showErrorAlert) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Pop-Up Errore");
-            alert.setHeaderText("Compila tutti i campi");
+            alert.setHeaderText(error);
             alert.showAndWait();
         }
     }
