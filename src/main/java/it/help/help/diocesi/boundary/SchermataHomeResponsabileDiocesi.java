@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.diocesi.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
