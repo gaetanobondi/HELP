@@ -65,13 +65,6 @@ public class GestoreAutenticazione {
     public Button buttonVisualizzaReport;
     public Button buttonDonazioneAziendaPartner;
 
-    //schermata profilo personale azienda partner
-    public Button buttonSalvaModificheAziendaPartner;
-    public TextField fieldCellulare;
-    public TextField fieldIndirizzo;
-    public PasswordField fieldVecchiaPasswordAziendaPartner;
-    public PasswordField fieldNuovaPasswordAziendaPartner;
-    public TextField filedNomeAziendaPartner;
 
     //Schermata home responsabile polo
     public Button buttonVisualizzaProfiloPolo;
@@ -82,6 +75,7 @@ public class GestoreAutenticazione {
     public Button buttonSegnalazioneErrori;
     public Button buttonReport;
     public Button buttonSospendiPolo;
+    public Button buttonAggiungiViveriMagazzino;
 
 
     @FXML
@@ -204,12 +198,6 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
     }
 
-    //per la SCHERMATA MODIFICA PROFILO AZIENDA PARTNER
-    public void clickSalvaModificheAziendaPartner(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataModificaProfiloAziendaPartner.fxml"));
-        Stage window = (Stage) buttonSalvaModificheAziendaPartner.getScene().getWindow();
-        window.setScene(new Scene(root));
-    }
 
     //PER LA SCHERMATA HOME RESPONSABILE POLO
     public void clickVisualizzaProfiloPolo(ActionEvent actionEvent) throws Exception {
@@ -241,7 +229,7 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
     }
     public void clickSegnalazioneErrori(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSegnalazioneErrore.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSegnalazioneErrori.fxml"));
         Stage window = (Stage) buttonSegnalazioneErrori.getScene().getWindow();
         window.setScene(new Scene(root));
     }
@@ -256,6 +244,12 @@ public class GestoreAutenticazione {
         Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
         window.setScene(new Scene(root));
     }
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCaricamentoViveri.fxml"));
+        Stage window = (Stage) buttonAggiungiViveriMagazzino.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
 
     //per la SCHERMATA INIZIALE
     public void clickSignIn(ActionEvent actionEvent) throws Exception {

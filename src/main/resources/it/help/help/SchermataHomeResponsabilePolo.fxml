@@ -8,7 +8,6 @@
    <children>
 
       <Button fx:id="buttonVisualizzaProfiloPolo" layoutX="166.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloPolo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
-
       <Button fx:id="buttonVisualizzaNucleoFamiliare" layoutX="166.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaNucleoFamiliare" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA NUCLEO FAMILIARE" />
       <Button fx:id="buttonInserimentoNucleo" layoutX="166.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickInserimentoNucleo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="INSERIMENTO NUCLEO" />
       <Button fx:id="buttonVisualizzaSchemaDiDistribuzionePolo" layoutX="166.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaSchemaDiDistribuzionePolo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA SCHEMA DI DISTRIBUZIONE POLO" />
@@ -17,5 +16,6 @@
       <Button fx:id="buttonReport" layoutX="166.0" layoutY="234.0" mnemonicParsing="false" onAction="#clickReport" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text=" REPORT" />
       <Button fx:id="buttonLogout" layoutX="17.0" layoutY="366.0" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />
       <Button fx:id="buttonSospendiPolo" layoutX="166.0" layoutY="270.0" mnemonicParsing="false" onAction="#clickSospendiPolo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="SOSPENDI POLO" />
+      <Button fx:id="buttonAggiungiViveriMagazzino" layoutX="166.0" layoutY="304.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickAggiungiViveriMagazzino" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="AGGIUNGI VIVERI NEL MAGAZZINO" />
    </children>
 </Pane>

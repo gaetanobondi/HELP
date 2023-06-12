@@ -11,7 +11,7 @@
 
 <Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="buttonIndietro" contentDisplay="BOTTOM" onAction="#clickIndietro" mnemonicParsing="false" layoutX="530.0" layoutY="20.0" style="-fx-background-color: A5D9FD;">
+      <Button fx:id="buttonIndietro" contentDisplay="BOTTOM" onAction="#clickIndietro" mnemonicParsing="false" layoutX="522.0" layoutY="27.0" style="-fx-background-color: A5D9FD;">
          <graphic>
             <ImageView fitHeight="39.0" fitWidth="37.0">
                <Image url="@freccia.png" />
@@ -23,15 +23,15 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="buttonSalvaModificheAziendaPartner" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModificheAziendaPartner" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
+      <Button fx:id="buttonSalvaModifiche" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModifiche" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
       <Label layoutX="146.0" layoutY="100.0" text="CELLULARE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="home" accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0">
+      <ImageView fx:id="home" accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0" style="-fx-background-color: a5d9fd;">
          <image>
-            <Image url="home.png" />
+            <Image url="@home.png" />
          </image>
       </ImageView>
       <Label layoutX="146.0" layoutY="140.0" text="INDIRIZZO">
@@ -40,20 +40,20 @@
          </font>
       </Label>
       <TextField fx:id="fieldEmail" layoutX="278.0" layoutY="56.0"  />
-      <TextField fx:id="fieldCellulare" layoutX="278.0" layoutY="99.0"  />
-      <TextField fx:id="fieldIndirizzo" layoutX="278.0" layoutY="135.0"  />
+      <TextField fx:id="fieldCellulare" layoutX="278.0" layoutY="99.0" />
+      <TextField fx:id="fieldIndirizzo" layoutX="278.0" layoutY="135.0" />
       <Label layoutX="48.0" layoutY="300.0" prefHeight="20.0" prefWidth="159.0" text="VECCHIA PASSWORD">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="fieldVecchiaPasswordAziendaPartner" layoutX="220.0" layoutY="297.0" />
+      <PasswordField fx:id="fieldVecchiaPassword" layoutX="220.0" layoutY="297.0"  />
       <Label layoutX="48.0" layoutY="341.0" prefHeight="20.0" prefWidth="159.0" text="NUOVA PASSWORD">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="fieldNuovaPasswordAziendaPartner" layoutX="220.0" layoutY="338.0"  />
+      <PasswordField fx:id="fieldNuovaPassword" layoutX="220.0" layoutY="338.0"  />
       <Label layoutX="145.0" layoutY="183.0" text="NOME AZIENDA">
          <font>
             <Font size="16.0" />
