@@ -82,8 +82,11 @@ public class GestoreRegistrazione {
                             String nomeSchermata = "";
                             switch (responsabileCompleto.getResponsabile().getType()) {
                                 case 0:
+                                    // HELP
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
+                                    break;
                                 case 1:
+                                    // DIOCESI
                                     if(responsabileCompleto.getDiocesi().getStato_account()) {
                                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                                     } else {
@@ -91,10 +94,21 @@ public class GestoreRegistrazione {
                                         showErrorAlert = true;
                                         error = "Il tuo account non è ancora attivo.";
                                     }
+                                    break;
                                 case 2:
+                                    // POLO
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
+                                    break;
                                 case 3:
-                                    nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
+                                    // AZIENDA PARTNER
+                                    if(responsabileCompleto.getAziendaPartner().getStatoAccount()) {
+                                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
+                                    } else {
+                                        // account non ancora attivo
+                                        showErrorAlert = true;
+                                        error = "Il tuo account non è ancora attivo.";
+                                    }
+                                    break;
                             }
                             if(!showErrorAlert) {
                                 Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));

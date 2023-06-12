@@ -37,7 +37,7 @@ public class DBMS {
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
 
-        String query = "INSERT INTO Responsabile (email, password, type, date) VALUES (?,?,?,?)";
+        String query = "INSERT INTO responsabile (email, password, type, date) VALUES (?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, email);
             stmt.setString(2, password);
@@ -50,22 +50,26 @@ public class DBMS {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
+                    int lastID;
+                    ResponsabileCompleto responsabileCompleto;
                     Responsabile responsabile = queryControllaCredenzialiResponsabile(email, password);
                     switch (type) {
                         case 0:
                             break;
                         case 1:
                             // DIOCESI
-                            int lastID = queryRegistraDiocesi(id);
+                            lastID = queryRegistraDiocesi(id);
                             Diocesi diocesi = getDiocesi(lastID);
-                            ResponsabileCompleto responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
+                            responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
                             return responsabileCompleto;
                         case 2:
                             break;
                         case 3:
-                            break;
-                        default:
-                            break;
+                            // AZIENDA PARTNER
+                            lastID = queryRegistraAziendaPartner(id);
+                            AziendaPartner aziendaPartner = getAziendaPartner(lastID);
+                            responsabileCompleto = new ResponsabileCompleto(responsabile, aziendaPartner);
+                            return responsabileCompleto;
                     }
                 }
             } else {
@@ -83,7 +87,7 @@ public class DBMS {
         LocalDate today = LocalDate.now();
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO Diocesi (id_responsabile, stato_account, date) VALUES (?,?,?)";
+        String query = "INSERT INTO diocesi (id_responsabile, stato_account, date) VALUES (?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, id_responsabile);
             stmt.setBoolean(2, false);
@@ -101,9 +105,57 @@ public class DBMS {
         return 0;
     }
 
+    private static int queryRegistraAziendaPartner(int id_responsabile) throws Exception {
+        connect();
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+        String query = "INSERT INTO azienda_partner (id_responsabile, stato_account, date) VALUES (?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            stmt.setBoolean(2, false);
+            stmt.setDate(3, date);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static int queryRegistraPolo(int id_responsabile, int id_diocesi) throws Exception {
+        connect();
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+        String query = "INSERT INTO polo (id_responsabile, id_diocesi, date) VALUES (?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            stmt.setInt(2, id_diocesi);
+            stmt.setDate(3, date);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static boolean queryControllaEsistenzaEmail(String email) throws Exception {
         connect();
-        var query = "SELECT * FROM Responsabile WHERE email = ?";
+        var query = "SELECT * FROM responsabile WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, email);
             var r = stmt.executeQuery();
@@ -119,7 +171,7 @@ public class DBMS {
 
     public static Responsabile queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
         connect();
-        var query = "SELECT * FROM Responsabile WHERE email = ? and password = ?";
+        var query = "SELECT * FROM responsabile WHERE email = ? and password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, email);
             stmt.setString(2, password);
@@ -133,14 +185,59 @@ public class DBMS {
         return null;
     }
 
-    public static Diocesi getDiocesi(int id) throws Exception {
+    public static Diocesi getDiocesi(int id_responsabile) throws Exception {
         connect();
-        var query = "SELECT * FROM Diocesi WHERE id = ?";
+        var query = "SELECT * FROM diocesi WHERE id_responsabile = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
                 return Diocesi.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Help getHelp(int id_responsabile) throws Exception {
+        connect();
+        var query = "SELECT * FROM help WHERE id_responsabile = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return Help.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static AziendaPartner getAziendaPartner(int id_responsabile) throws Exception {
+        connect();
+        var query = "SELECT * FROM azienda_partner WHERE id_responsabile = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return AziendaPartner.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Polo getPolo(int id_responsabile) throws Exception {
+        connect();
+        var query = "SELECT * FROM polo WHERE id_responsabile = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return Polo.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();

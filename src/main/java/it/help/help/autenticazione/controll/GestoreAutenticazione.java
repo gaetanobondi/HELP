@@ -1,6 +1,6 @@
 package it.help.help.autenticazione.controll;
 
-import it.help.help.entity.Responsabile;
+import it.help.help.entity.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -117,9 +117,56 @@ public class GestoreAutenticazione {
 
         if(!email.isEmpty() && !password.isEmpty()) {
             Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, password);
+            System.out.println(responsabile.getEmail());
+            System.out.println(responsabile.getType());
             if(responsabile != null) {
-                System.out.println("LOGGATO:");
-                System.out.println(responsabile.getEmail());
+                String nomeSchermata = "";
+                switch (responsabile.getType()) {
+                    case 0:
+                        // HELP
+                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
+                        GestoreProfilo gestoreProfilo = new GestoreProfilo();
+                        break;
+                    case 1:
+                        // DIOCESI
+                        Diocesi diocesi = DBMS.getDiocesi(responsabile.getId());
+                        if(diocesi.getStato_account()) {
+                            nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
+                        } else {
+                            // account non ancora attivo
+                            showErrorAlert = true;
+                            error = "Il tuo account non è ancora attivo.";
+                        }
+                        break;
+                    case 2:
+                        // POLO
+                        System.out.println("OK1");
+                        Polo polo = DBMS.getPolo(responsabile.getId());
+                        if(polo.getStato_sospensione()) {
+                            // POLO SOSPESO
+                            nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
+                        } else {
+                            nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
+                        }
+                        break;
+                    case 3:
+                        // AZIENDA PARTNER
+                        System.out.println("OK2");
+                        AziendaPartner aziendaPartner = DBMS.getAziendaPartner(responsabile.getId());
+                        if(aziendaPartner.getStatoAccount()) {
+                            nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
+                        } else {
+                            // account non ancora attivo
+                            showErrorAlert = true;
+                            error = "Il tuo account non è ancora attivo.";
+                        }
+                        break;
+                }
+                if(!showErrorAlert) {
+                    Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
+                    Stage window = (Stage) buttonAccedi.getScene().getWindow();
+                    window.setScene(new Scene(root));
+                }
             } else {
                 showErrorAlert = true;
                 error = "Le credenziali non sono corrette";
@@ -183,62 +230,6 @@ public class GestoreAutenticazione {
         // La password soddisfa tutti i requisiti
         return true;
     }
-
-    private boolean esistenzaEmail(String email) {
-        if(email.equals("mia@email.com")) {
-            return true;
-        }
-        return false;
-    }
-
-    public void clickRegistrati(ActionEvent actionEvent) throws Exception {
-        Boolean radioDiocesi = radioButtonDiocesi.isSelected();
-        Boolean radioAzienda = radioButtonAziendaPartner.isSelected();
-        String email = fieldEmail.getText();
-        String password = fieldPassword.getText();
-        String repeatPassword = fieldRipetiPassword.getText();
-        Boolean showErrorAlert = false;
-        String error = "";
-        int type = 0;
-
-        if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
-            if(password.equals(repeatPassword)) {
-                if(isValidEmail(email) && validatePassword(password)) {
-                    // verifico che l'email non sia già presente nel DBMS
-                    if(!DBMS.queryControllaEsistenzaEmail(email)) {
-                        // registro l'utente nel DBMS
-                        if(radioAzienda) {
-                            type = 3;
-                        } else if(radioDiocesi) {
-                            type = 1;
-                        }
-                        DBMS.queryRegistraResponsabile(email, password, type);
-                    } else {
-                        showErrorAlert = true;
-                        error = "Email già esistente";
-                    }
-                } else {
-                    showErrorAlert = true;
-                    error = "I dati inseriti non sono corretti";
-                }
-            } else {
-                showErrorAlert = true;
-                error = "Le password inserite non coincidono";
-            }
-        } else {
-            showErrorAlert = true;
-            error = "Compila tutti i campi";
-        }
-
-        if(showErrorAlert) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Pop-Up Errore");
-            alert.setHeaderText(error);
-            alert.showAndWait();
-        }
-    }
-
-
 
 
 
