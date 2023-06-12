@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -204,10 +205,46 @@ public class GestoreAutenticazione {
 
     //per la SCHERMATA RECUPERO PASSWORD
     public void clickRecupera(ActionEvent actionEvent) {
+        String email = fieldEmail.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
+        Random random = new Random();
+
+        if (isValidEmail(email) && !email.isEmpty()) { // se l'email risulta nel database
+
+            int n1 = random.nextInt(10);
+            int n2 = random.nextInt(10);
+            int n3 = random.nextInt(10);
+            int n4 = random.nextInt(10);
+
+            String codice = n1 + "" + n2 + "" + n3 + "" + n4;
+            System.out.println(codice);
+
+            if(true){   //se il codice inserito coincide
+
+            }
+            else {  // Pop-Up errore codice
+                showErrorAlert = true;
+                error = "Codice errato";
+            }
+        }
+        else {
+                // Pop-Up errore email
+                showErrorAlert = true;
+                error = "Email non esistente";
+
+
+            }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
+        }
 
     }
 
-    //connessione con il DBMS
    /* @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
