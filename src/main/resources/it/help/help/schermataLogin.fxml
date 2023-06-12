@@ -11,10 +11,12 @@
 
 <Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button fx:id="buttonIndietro" onAction="#clickIndietro" layoutX="522.0" layoutY="27.0">
+        <Button fx:id="buttonIndietro" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickIndietro" layoutX="522.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
             <graphic>
-                <ImageView fitHeight="39.0" fitWidth="37.0">
-                    <Image url="@freccia.jpg" />
+                <ImageView fx:id="frecciaIndietro" accessibleRole="BUTTON" fitHeight="39.0" fitWidth="37.0" layoutX="530.0" layoutY="20.0" >
+                    <image>
+                        <Image url="@freccia.png" />
+                    </image>
                 </ImageView>
             </graphic>
         </Button>

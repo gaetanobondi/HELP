@@ -27,7 +27,7 @@
         </Label>
         <ImageView fx:id="logo" fitHeight="100.0" fitWidth="165.0" layoutX="218.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@logo.jpg" />
+                <Image url="@logo.png" />
             </image>
         </ImageView>
     </children>

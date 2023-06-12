@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -30,15 +31,28 @@ public class GestoreAutenticazione {
     public Button buttonRegistrati;
     public Button buttonRecupera; //schermata recupero password
 
+    public Button buttonConferma; //schermata Cambio Password
+
+    public Button buttonSalvaModifiche; // schermata Modifica profilo azienda
+
+
+
     @FXML
     private AnchorPane contentPane;
 
 
 
     public void clickIndietro(ActionEvent actionEvent) {
+        System.out.println("ciao");
 
     }
 
+    //per la SCHERMATA CAMBIO PASSWORD
+    public void clickConferma(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCambioPassword.fxml"));
+        Stage window = (Stage) buttonConferma.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
 
 
     //per la SCHERMATA INIZIALE
