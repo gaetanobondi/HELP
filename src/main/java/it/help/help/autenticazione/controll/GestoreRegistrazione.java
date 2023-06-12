@@ -1,6 +1,6 @@
 package it.help.help.autenticazione.controll;
 
-import it.help.help.entity.Responsabile;
+import it.help.help.entity.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -77,22 +77,30 @@ public class GestoreRegistrazione {
                         } else if(radioDiocesi) {
                             type = 1;
                         }
-                        Responsabile responsabile = DBMS.queryRegistraResponsabile(email, password, type);
-                        if(responsabile != null) {
+                        ResponsabileCompleto responsabileCompleto = DBMS.queryRegistraResponsabile(email, password, type);
+                        if(responsabileCompleto != null) {
                             String nomeSchermata = "";
-                            switch (responsabile.getType()) {
+                            switch (responsabileCompleto.getResponsabile().getType()) {
                                 case 0:
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
                                 case 1:
-                                    nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
+                                    if(responsabileCompleto.getDiocesi().getStato_account()) {
+                                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
+                                    } else {
+                                       // account non ancora attivo
+                                        showErrorAlert = true;
+                                        error = "Il tuo account non è ancora attivo.";
+                                    }
                                 case 2:
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
                                 case 3:
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                             }
-                            Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
-                            Stage window = (Stage) buttonRegistrati.getScene().getWindow();
-                            window.setScene(new Scene(root));
+                            if(!showErrorAlert) {
+                                Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
+                                Stage window = (Stage) buttonRegistrati.getScene().getWindow();
+                                window.setScene(new Scene(root));
+                            }
                         }
                     } else {
                         showErrorAlert = true;

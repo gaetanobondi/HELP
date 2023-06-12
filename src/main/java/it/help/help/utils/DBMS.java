@@ -30,7 +30,7 @@ public class DBMS {
     2 => POLO
     3 => AZIENDA PARTNER
      */
-    public static Responsabile queryRegistraResponsabile(String email, String password, int type) throws Exception {
+    public static ResponsabileCompleto queryRegistraResponsabile(String email, String password, int type) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
@@ -51,13 +51,15 @@ public class DBMS {
                 if (generatedKeys.next()) {
                     int id = generatedKeys.getInt(1);
                     Responsabile responsabile = queryControllaCredenzialiResponsabile(email, password);
-                    System.out.println("Inserimento effettuato con successo. ID generato: " + id);
                     switch (type) {
                         case 0:
                             break;
                         case 1:
                             // DIOCESI
-                            return responsabile;
+                            int lastID = queryRegistraDiocesi(id);
+                            Diocesi diocesi = getDiocesi(lastID);
+                            ResponsabileCompleto responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
+                            return responsabileCompleto;
                         case 2:
                             break;
                         case 3:
@@ -75,22 +77,28 @@ public class DBMS {
         return null;
     }
 
-    private static boolean queryRegistraDiocesi(int id_responsabile) throws Exception {
+    private static int queryRegistraDiocesi(int id_responsabile) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO Diocesi (id_responsabile, attivato, date) VALUES (?,?,?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        String query = "INSERT INTO Diocesi (id_responsabile, stato_account, date) VALUES (?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, id_responsabile);
-            stmt.setInt(2, 0);
+            stmt.setBoolean(2, false);
             stmt.setDate(3, date);
-            return stmt.executeUpdate() > 0;
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
     public static boolean queryControllaEsistenzaEmail(String email) throws Exception {
@@ -112,12 +120,27 @@ public class DBMS {
     public static Responsabile queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
         connect();
         var query = "SELECT * FROM Responsabile WHERE email = ? and password = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, email);
             stmt.setString(2, password);
             var r = stmt.executeQuery();
             if (r.next()) {
                 return Responsabile.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Diocesi getDiocesi(int id) throws Exception {
+        connect();
+        var query = "SELECT * FROM Diocesi WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return Diocesi.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();

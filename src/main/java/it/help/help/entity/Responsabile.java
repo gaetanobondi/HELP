@@ -42,7 +42,7 @@ public class Responsabile {
 
     @Override
     public String toString() {
-        return "Utente[" +
+        return "Responsabile[" +
                 "email=" + email + ", " +
                 "password=" + password + ", " +
                 "password=" + password;
