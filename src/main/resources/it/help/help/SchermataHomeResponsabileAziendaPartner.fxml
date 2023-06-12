@@ -4,7 +4,7 @@
 
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:controller="it.help.help.azienda_partner.controll.GestoreAziendaPartner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="buttonVisualizzaProfiloAziendaPartner" layoutX="166.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloAziendaPartner" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
       <Button fx:id="buttonVisualizzaDonazioniEffettuate" layoutX="166.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaDonazioniEffettuate" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA DONAZIONI EFFETTUATE" />
