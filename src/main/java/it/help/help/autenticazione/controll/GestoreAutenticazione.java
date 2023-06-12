@@ -49,11 +49,33 @@ public class GestoreAutenticazione {
 
 
     //Scherma Home Responsabile Diocesi
-    public Button buttonVisualizzaSchemaDiDistribuzione;
+    public Button buttonVisualizzaSchemaDiDistribuzioneDiocesi;
     public Button buttonVisualizzaListaPoli;
     public Button buttonRegistrazionePolo;
     public Button buttonVisualizzaCarichiInviati;
     public Button buttonVisualizzaProfiloDiocesi;
+
+    //Schermata Home responsabile Help
+    public Button buttonVisualizzaProfiloHelp;
+    public Button buttonVisualizzaPrevisioneDistribuzione;
+    public Button buttonRichiesteDiocesi;
+    public Button buttonRichiesteAziendePartner;
+    public Button buttonListaDonazioniRicevute;
+    public Button buttonGestione;
+    public Button buttonVisualizzaReport;
+    public Button buttonDonazioneAziendaPartner;
+
+
+    //Schermata home responsabile polo
+    public Button buttonVisualizzaProfiloPolo;
+    public Button buttonVisualizzaNucleoFamiliare;
+    public Button buttonInserimentoNucleo;
+    public Button buttonVisualizzaSchemaDiDistribuzionePolo;
+    public Button buttonVisualizzaSchemaDiDistribuzioneFamiglie;
+    public Button buttonSegnalazioneErrori;
+    public Button buttonReport;
+    public Button buttonSospendiPolo;
+    public Button buttonAggiungiViveriMagazzino;
 
 
     @FXML
@@ -129,11 +151,105 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
     }
 
-    public void clickVisualizzaSchemaDiDistribuzione(ActionEvent actionEvent) throws Exception {
+    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDellaDiocesi.fxml"));
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzione.getScene().getWindow();
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneDiocesi.getScene().getWindow();
         window.setScene(new Scene(root));
     }
+
+    //per la SCHERMATA HOME RESPONSABILE HELP
+    public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleHelp.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazionePrevisioneDiDistribuzione.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickRichiesteDiocesi(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaRichiesteDiocesi.fxml"));
+        Stage window = (Stage) buttonRichiesteDiocesi.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickRichiesteAziendePartner(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaRichiesteAziendePartner.fxml"));
+        Stage window = (Stage) buttonRichiesteAziendePartner.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataListaDonaizoni.fxml"));
+        Stage window = (Stage) buttonListaDonazioniRicevute.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickGestione(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataGestione.fxml"));
+        Stage window = (Stage) buttonGestione.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickDonazioneAziendaPartner(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataDonazioneAzienda.fxml"));
+        Stage window = (Stage) buttonDonazioneAziendaPartner.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+
+    //PER LA SCHERMATA HOME RESPONSABILE POLO
+    public void clickVisualizzaProfiloPolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonalePolo.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloPolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaVisualizzaListaNuclei.fxml"));
+        Stage window = (Stage) buttonVisualizzaNucleoFamiliare.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazioneNucleoFamiliare.fxml"));
+        Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaSchemaDiDistribuzionePolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelPolo.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzionePolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickVisualizzaSchemaDiDistribuzioneFamiglie(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelNucleo.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneFamiglie.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickSegnalazioneErrori(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSegnalazioneErrori.fxml"));
+        Stage window = (Stage) buttonSegnalazioneErrori.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickReport(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataScaricamentoReport.fxml"));
+        Stage window = (Stage) buttonReport.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSospensionePolo.fxml"));
+        Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCaricamentoViveri.fxml"));
+        Stage window = (Stage) buttonAggiungiViveriMagazzino.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
 
     //per la SCHERMATA INIZIALE
     public void clickSignIn(ActionEvent actionEvent) throws Exception {
@@ -298,32 +414,39 @@ public class GestoreAutenticazione {
         Boolean showErrorAlert = false;
         String error = "";
         Random random = new Random();
+        if(!email.isEmpty()) {
+            if (isValidEmail(email)) { // se l'email risulta valida
+                if(true){ //se l'email risulta nel DBMS
 
-        if (isValidEmail(email) && !email.isEmpty()) { // se l'email risulta nel database
+                    int n1 = random.nextInt(10);
+                    int n2 = random.nextInt(10);
+                    int n3 = random.nextInt(10);
+                    int n4 = random.nextInt(10);
 
-            int n1 = random.nextInt(10);
-            int n2 = random.nextInt(10);
-            int n3 = random.nextInt(10);
-            int n4 = random.nextInt(10);
+                    String codice = n1 + "" + n2 + "" + n3 + "" + n4;
+                    System.out.println(codice);
 
-            String codice = n1 + "" + n2 + "" + n3 + "" + n4;
-            System.out.println(codice);
+                    if (true) {   //se il codice inserito coincide
 
-            if(true){   //se il codice inserito coincide
+                    } else {  // Pop-Up errore codice
+                        showErrorAlert = true;
+                        error = "Codice errato";
+                    }
 
+                } else { // Pop-Up errore email
+                    showErrorAlert = true;
+                    error = "Email non esistente";
+                }
             }
-            else {  // Pop-Up errore codice
+            else{
                 showErrorAlert = true;
-                error = "Codice errato";
+                error = "Email non è nel giusto formato";
             }
         }
         else {
-                // Pop-Up errore email
-                showErrorAlert = true;
-                error = "Email non esistente";
-
-
-            }
+            showErrorAlert = true;
+            error = "Inserisci l'email";
+        }
 
         if(showErrorAlert) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -331,7 +454,6 @@ public class GestoreAutenticazione {
             alert.setHeaderText(error);
             alert.showAndWait();
         }
-
     }
 
    /* @FXML
