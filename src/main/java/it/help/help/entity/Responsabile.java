@@ -6,10 +6,12 @@ import java.sql.*;
 public class Responsabile {
     private final String email;
     private final String password;
+    private final int type;
 
-    public Responsabile(String email, String password) {
+    public Responsabile(String email, String password, int type) {
         this.email = email;
         this.password = password;
+        this.type = type;
     }
 
     public String getEmail() {
@@ -18,6 +20,10 @@ public class Responsabile {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getType() {
+        return type;
     }
 
 
@@ -31,20 +37,22 @@ public class Responsabile {
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(email, password, type);
     }
 
     @Override
     public String toString() {
         return "Utente[" +
                 "email=" + email + ", " +
-                "password=" + password + ", ";
+                "password=" + password + ", " +
+                "password=" + password;
     }
 
     public static Responsabile createFromDB(ResultSet row) throws SQLException {
         return new Responsabile(
                 row.getString(2),
-                row.getString(3));
+                row.getString(3),
+                row.getInt(4));
     }
 
 }

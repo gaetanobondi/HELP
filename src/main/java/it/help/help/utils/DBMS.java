@@ -30,7 +30,7 @@ public class DBMS {
     2 => POLO
     3 => AZIENDA PARTNER
      */
-    public static boolean queryRegistraResponsabile(String email, String password, int type) throws Exception {
+    public static Responsabile queryRegistraResponsabile(String email, String password, int type) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
@@ -49,14 +49,15 @@ public class DBMS {
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    int id = generatedKeys.getInt(1);  // Accesso all'ID generato
+                    int id = generatedKeys.getInt(1);
+                    Responsabile responsabile = queryControllaCredenzialiResponsabile(email, password);
                     System.out.println("Inserimento effettuato con successo. ID generato: " + id);
                     switch (type) {
                         case 0:
                             break;
                         case 1:
                             // DIOCESI
-                            return queryRegistraDiocesi(id);
+                            return responsabile;
                         case 2:
                             break;
                         case 3:
@@ -71,7 +72,7 @@ public class DBMS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     private static boolean queryRegistraDiocesi(int id_responsabile) throws Exception {
