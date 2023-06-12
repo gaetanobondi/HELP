@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SchermataHomeResponsabileAziendaPartner extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileAziendaPartner.class.getResource("/it/help/help/schermataHomeResponsabileAziendaPartner.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileAziendaPartner.class.getResource("/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Schermata Home Responsabile Azienda Partner");
         stage.setScene(scene);
