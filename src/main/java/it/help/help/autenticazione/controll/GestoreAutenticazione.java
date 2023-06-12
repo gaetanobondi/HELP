@@ -209,32 +209,39 @@ public class GestoreAutenticazione {
         Boolean showErrorAlert = false;
         String error = "";
         Random random = new Random();
+        if(!email.isEmpty()) {
+            if (isValidEmail(email)) { // se l'email risulta valida
+                if(true){ //se l'email risulta nel DBMS
 
-        if (isValidEmail(email) && !email.isEmpty()) { // se l'email risulta nel database
+                    int n1 = random.nextInt(10);
+                    int n2 = random.nextInt(10);
+                    int n3 = random.nextInt(10);
+                    int n4 = random.nextInt(10);
 
-            int n1 = random.nextInt(10);
-            int n2 = random.nextInt(10);
-            int n3 = random.nextInt(10);
-            int n4 = random.nextInt(10);
+                    String codice = n1 + "" + n2 + "" + n3 + "" + n4;
+                    System.out.println(codice);
 
-            String codice = n1 + "" + n2 + "" + n3 + "" + n4;
-            System.out.println(codice);
+                    if (true) {   //se il codice inserito coincide
 
-            if(true){   //se il codice inserito coincide
+                    } else {  // Pop-Up errore codice
+                        showErrorAlert = true;
+                        error = "Codice errato";
+                    }
 
+                } else { // Pop-Up errore email
+                    showErrorAlert = true;
+                    error = "Email non esistente";
+                }
             }
-            else {  // Pop-Up errore codice
+            else{
                 showErrorAlert = true;
-                error = "Codice errato";
+                error = "Email non è nel giusto formato";
             }
         }
         else {
-                // Pop-Up errore email
-                showErrorAlert = true;
-                error = "Email non esistente";
-
-
-            }
+            showErrorAlert = true;
+            error = "Inserisci l'email";
+        }
 
         if(showErrorAlert) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -242,7 +249,6 @@ public class GestoreAutenticazione {
             alert.setHeaderText(error);
             alert.showAndWait();
         }
-
     }
 
    /* @FXML
