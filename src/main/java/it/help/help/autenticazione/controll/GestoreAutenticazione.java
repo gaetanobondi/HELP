@@ -62,6 +62,24 @@ public class GestoreAutenticazione {
     public Button buttonVisualizzaReport;
     public Button buttonDonazioneAziendaPartner;
 
+    //schermata profilo personale azienda partner
+    public Button buttonSalvaModificheAziendaPartner;
+    public TextField fieldCellulare;
+    public TextField fieldIndirizzo;
+    public PasswordField fieldVecchiaPasswordAziendaPartner;
+    public PasswordField fieldNuovaPasswordAziendaPartner;
+    public TextField filedNomeAziendaPartner;
+
+    //Schermata home responsabile polo
+    public Button buttonVisualizzaProfiloPolo;
+    public Button buttonVisualizzaNucleoFamiliare;
+    public Button buttonInserimentoNucleo;
+    public Button buttonVisualizzaSchemaDiDistribuzionePolo;
+    public Button buttonVisualizzaSchemaDiDistribuzioneFamiglie;
+    public Button buttonSegnalazioneErrori;
+    public Button buttonReport;
+    public Button buttonSospendiPolo;
+
 
     @FXML
     private AnchorPane contentPane;
@@ -180,6 +198,59 @@ public class GestoreAutenticazione {
     public void clickDonazioneAziendaPartner(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataDonazioneAzienda.fxml"));
         Stage window = (Stage) buttonDonazioneAziendaPartner.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    //per la SCHERMATA MODIFICA PROFILO AZIENDA PARTNER
+    public void clickSalvaModificheAziendaPartner(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataModificaProfiloAziendaPartner.fxml"));
+        Stage window = (Stage) buttonSalvaModificheAziendaPartner.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    //PER LA SCHERMATA HOME RESPONSABILE POLO
+    public void clickVisualizzaProfiloPolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonalePolo.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloPolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaVisualizzaListaNuclei.fxml"));
+        Stage window = (Stage) buttonVisualizzaNucleoFamiliare.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazioneNucleoFamiliare.fxml"));
+        Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaSchemaDiDistribuzionePolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelPolo.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzionePolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickVisualizzaSchemaDiDistribuzioneFamiglie(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelNucleo.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneFamiglie.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickSegnalazioneErrori(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSegnalazioneErrore.fxml"));
+        Stage window = (Stage) buttonSegnalazioneErrori.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickReport(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataScaricamentoReport.fxml"));
+        Stage window = (Stage) buttonReport.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+    public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSospensionePolo.fxml"));
+        Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
         window.setScene(new Scene(root));
     }
 
