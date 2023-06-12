@@ -5,17 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import it.help.help.autenticazione.boundary.HelloApplication;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
-import java.util.Objects;
+
 import java.util.Random;
 import it.help.help.utils.DBMS;
-import it.help.help.entity.*;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -33,9 +29,6 @@ public class GestoreAutenticazione {
     public RadioButton radioButtonAziendaPartner;
     public PasswordField fieldRipetiPassword;
     public Button buttonRegistrati;
-    public Button buttonRecupera; //schermata recupero password
-
-    public Button buttonConferma; //schermata Cambio Password
 
     public PasswordField fieldNuovaPassword;
 
@@ -84,16 +77,10 @@ public class GestoreAutenticazione {
 
 
     public void clickIndietro(ActionEvent actionEvent) {
-        System.out.println("ciao");
+        System.out.println("ciao autenticazione");
 
     }
 
-    //per la SCHERMATA CAMBIO PASSWORD
-    public void clickConferma(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
-        Stage window = (Stage) buttonConferma.getScene().getWindow();
-        window.setScene(new Scene(root));
-    }
 
     //per la SCHERMATA HOME RESPONSABILE AZIENDA PARTNER
     public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
@@ -126,7 +113,7 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
     }
 
-    //per la SCHERMATA HOME RESPONBILE DIOCESI
+    //per la SCHERMATA HOME RESPONSABILE DIOCESI
     public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleDiocesi.fxml"));
         Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
@@ -266,18 +253,6 @@ public class GestoreAutenticazione {
 
 
 
-
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-
-
-
     //per la SCHERMATA LOGIN
     public void clickAccedi(ActionEvent actionEvent) throws Exception {
         String email = fieldEmail.getText();
@@ -408,53 +383,6 @@ public class GestoreAutenticazione {
 
 
 
-    //per la SCHERMATA RECUPERO PASSWORD
-    public void clickRecupera(ActionEvent actionEvent) {
-        String email = fieldEmail.getText();
-        Boolean showErrorAlert = false;
-        String error = "";
-        Random random = new Random();
-        if(!email.isEmpty()) {
-            if (isValidEmail(email)) { // se l'email risulta valida
-                if(true){ //se l'email risulta nel DBMS
-
-                    int n1 = random.nextInt(10);
-                    int n2 = random.nextInt(10);
-                    int n3 = random.nextInt(10);
-                    int n4 = random.nextInt(10);
-
-                    String codice = n1 + "" + n2 + "" + n3 + "" + n4;
-                    System.out.println(codice);
-
-                    if (true) {   //se il codice inserito coincide
-
-                    } else {  // Pop-Up errore codice
-                        showErrorAlert = true;
-                        error = "Codice errato";
-                    }
-
-                } else { // Pop-Up errore email
-                    showErrorAlert = true;
-                    error = "Email non esistente";
-                }
-            }
-            else{
-                showErrorAlert = true;
-                error = "Email non è nel giusto formato";
-            }
-        }
-        else {
-            showErrorAlert = true;
-            error = "Inserisci l'email";
-        }
-
-        if(showErrorAlert) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Pop-Up Errore");
-            alert.setHeaderText(error);
-            alert.showAndWait();
-        }
-    }
 
    /* @FXML
     protected void onHelloButtonClick() {
