@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="buttonVisualizzaProfiloAziendaPartener" layoutX="166.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloAziendaPartner" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
+      <Button fx:id="buttonVisualizzaDonazioniEffettuate" layoutX="166.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaDonazioniEffettuate" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA DONAZIONI EFFETTUATE" />
+      <Button fx:id="buttonEffettuaDonazioneSpontanea" layoutX="166.0" layoutY="200.0" mnemonicParsing="false" onAction="#clickEffettuaDonazioneSpontanea" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="EFFETTUA DONAZIONE SPONTANEA" />
+      <Button fx:id="buttonEffettuaDonazioneAdHoc" layoutX="166.0" layoutY="234.0" mnemonicParsing="false" onAction="#clickEffettuaDonazioneAdHoc" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="EFFETTUA DONAZIONE AD-HOC" />
+      <Button fx:id="buttonLogout" layoutX="17.0" layoutY="366.0" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />
+   </children>
+</Pane>

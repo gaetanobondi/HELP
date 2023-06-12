@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.entity.Responsabile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
+import it.help.help.utils.DBMS;
+import it.help.help.entity.*;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -34,8 +37,23 @@ public class GestoreAutenticazione {
 
     public Button buttonConferma; //schermata Cambio Password
 
-    public Button buttonSalvaModifiche; // schermata Modifica profilo azienda
+    public PasswordField fieldNuovaPassword;
 
+    //Schermata home responsabile azienda partner
+    public Button buttonVisualizzaProfiloAziendaPartner;
+    public Button buttonVisualizzaDonazioniEffettuate;
+
+    public Button buttonEffettuaDonazioneAdHoc;
+    public Button buttonLogout;
+    public Button buttonEffettuaDonazioneSpontanea;
+
+
+    //Scherma Home Responsabile Diocesi
+    public Button buttonVisualizzaSchemaDiDistribuzione;
+    public Button buttonVisualizzaListaPoli;
+    public Button buttonRegistrazionePolo;
+    public Button buttonVisualizzaCarichiInviati;
+    public Button buttonVisualizzaProfiloDiocesi;
 
 
     @FXML
@@ -50,11 +68,72 @@ public class GestoreAutenticazione {
 
     //per la SCHERMATA CAMBIO PASSWORD
     public void clickConferma(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCambioPassword.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
         Stage window = (Stage) buttonConferma.getScene().getWindow();
         window.setScene(new Scene(root));
     }
 
+    //per la SCHERMATA HOME RESPONSABILE AZIENDA PARTNER
+    public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleAziendaPartner.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloAziendaPartner.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaDonazioniEffettuate.fxml"));
+        Stage window = (Stage) buttonVisualizzaDonazioniEffettuate.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickEffettuaDonazioneAdHoc(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataEffettuaDonazioneAdHoc.fxml"));
+        Stage window = (Stage) buttonEffettuaDonazioneAdHoc.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickLogout(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        Stage window = (Stage) buttonLogout.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataEffettuaDonazione.fxml"));
+        Stage window = (Stage) buttonEffettuaDonazioneSpontanea.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    //per la SCHERMATA HOME RESPONBILE DIOCESI
+    public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleDiocesi.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaListaPoli(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneListaPoli.fxml"));
+        Stage window = (Stage) buttonVisualizzaListaPoli.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickRegistrazionePolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazionePolo.fxml"));
+        Stage window = (Stage) buttonRegistrazionePolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaCarichiInviati(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneCarichi.fxml"));
+        Stage window = (Stage) buttonVisualizzaCarichiInviati.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
+
+    public void clickVisualizzaSchemaDiDistribuzione(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDellaDiocesi.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzione.getScene().getWindow();
+        window.setScene(new Scene(root));
+    }
 
     //per la SCHERMATA INIZIALE
     public void clickSignIn(ActionEvent actionEvent) throws Exception {
@@ -84,27 +163,31 @@ public class GestoreAutenticazione {
 
 
     //per la SCHERMATA LOGIN
-    public void clickAccedi(ActionEvent actionEvent) {
+    public void clickAccedi(ActionEvent actionEvent) throws Exception {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
 
-        if(esistenzaEmail(email)) {
-            System.out.println("Email già esistente");
-        } else {
-            // controllo la password
-            if(validatePassword(password)) {
-                System.out.println("PROCEDO");
+        if(!email.isEmpty() && !password.isEmpty()) {
+            Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, password);
+            if(responsabile != null) {
+                System.out.println("LOGGATO:");
+                System.out.println(responsabile.getEmail());
             } else {
-                System.out.println("Password troppo debole");
-                // Creazione di un oggetto Alert di tipo Avviso
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Errore");
-                alert.setHeaderText("Password troppo debole");
-                // alert.setContentText("Messaggio di avviso da visualizzare.");
-
-                // Mostra il popup e attende la chiusura
-                alert.showAndWait();
+                showErrorAlert = true;
+                error = "Le credenziali non sono corrette";
             }
+        } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi";
+        }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
         }
     }
 
@@ -160,7 +243,7 @@ public class GestoreAutenticazione {
         return false;
     }
 
-    public void clickRegistrati(ActionEvent actionEvent) {
+    public void clickRegistrati(ActionEvent actionEvent) throws Exception {
         Boolean radioDiocesi = radioButtonDiocesi.isSelected();
         Boolean radioAzienda = radioButtonAziendaPartner.isSelected();
         String email = fieldEmail.getText();
@@ -168,14 +251,20 @@ public class GestoreAutenticazione {
         String repeatPassword = fieldRipetiPassword.getText();
         Boolean showErrorAlert = false;
         String error = "";
+        int type = 0;
 
         if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
             if(password.equals(repeatPassword)) {
                 if(isValidEmail(email) && validatePassword(password)) {
                     // verifico che l'email non sia già presente nel DBMS
-                    if(false) {
+                    if(!DBMS.queryControllaEsistenzaEmail(email)) {
                         // registro l'utente nel DBMS
-
+                        if(radioAzienda) {
+                            type = 3;
+                        } else if(radioDiocesi) {
+                            type = 1;
+                        }
+                        DBMS.queryRegistraResponsabile(email, password, type);
                     } else {
                         showErrorAlert = true;
                         error = "Email già esistente";
