@@ -243,12 +243,14 @@ public class GestoreAutenticazione {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSignin.fxml"));
         Stage window = (Stage) buttonSignIn.getScene().getWindow();
         window.setScene(new Scene(root));
+        window.setTitle("Schermata Sign-In");
     }
 
     public void clickLogin(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
         Stage window = (Stage) buttonLogin.getScene().getWindow();
         window.setScene(new Scene(root));
+        window.setTitle("Schermata Login");
     }
 
 
@@ -287,7 +289,7 @@ public class GestoreAutenticazione {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRecuperoPassword.fxml"));
         Stage window = (Stage) buttonRecuperaPassword.getScene().getWindow();
         window.setScene(new Scene(root));
-
+        window.setTitle("Schermata Recupero Password");
     }
 
 

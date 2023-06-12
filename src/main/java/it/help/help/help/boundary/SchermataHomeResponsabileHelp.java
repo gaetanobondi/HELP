@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.help.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabilePolo extends Application {
+public class SchermataHomeResponsabileHelp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabilePolo.class.getResource("/it/help/help/schermataHomeResponsabilePolo.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileHelp.class.getResource("/it/help/help/schermataHomeResponsabileHelp.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Polo");
+        stage.setTitle("Schermata Home Responsabile Help");
         stage.setScene(scene);
         stage.show();
     }
