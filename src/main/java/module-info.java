@@ -1,8 +1,9 @@
 module it.help.help {
     requires javafx.controls;
     requires javafx.fxml;
-            
-                            
+    requires java.sql;
+
+
     opens it.help.help to javafx.fxml;
     exports it.help.help.autenticazione.boundary;
     exports it.help.help.autenticazione.controll;

@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.entity.Responsabile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
+import it.help.help.utils.DBMS;
+import it.help.help.entity.*;
 
 import javafx.scene.control.Alert.AlertType;
 
@@ -282,27 +285,31 @@ public class GestoreAutenticazione {
 
 
     //per la SCHERMATA LOGIN
-    public void clickAccedi(ActionEvent actionEvent) {
+    public void clickAccedi(ActionEvent actionEvent) throws Exception {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
 
-        if(esistenzaEmail(email)) {
-            System.out.println("Email già esistente");
-        } else {
-            // controllo la password
-            if(validatePassword(password)) {
-                System.out.println("PROCEDO");
+        if(!email.isEmpty() && !password.isEmpty()) {
+            Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, password);
+            if(responsabile != null) {
+                System.out.println("LOGGATO:");
+                System.out.println(responsabile.getEmail());
             } else {
-                System.out.println("Password troppo debole");
-                // Creazione di un oggetto Alert di tipo Avviso
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Errore");
-                alert.setHeaderText("Password troppo debole");
-                // alert.setContentText("Messaggio di avviso da visualizzare.");
-
-                // Mostra il popup e attende la chiusura
-                alert.showAndWait();
+                showErrorAlert = true;
+                error = "Le credenziali non sono corrette";
             }
+        } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi";
+        }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
         }
     }
 
@@ -358,7 +365,7 @@ public class GestoreAutenticazione {
         return false;
     }
 
-    public void clickRegistrati(ActionEvent actionEvent) {
+    public void clickRegistrati(ActionEvent actionEvent) throws Exception {
         Boolean radioDiocesi = radioButtonDiocesi.isSelected();
         Boolean radioAzienda = radioButtonAziendaPartner.isSelected();
         String email = fieldEmail.getText();
@@ -366,14 +373,20 @@ public class GestoreAutenticazione {
         String repeatPassword = fieldRipetiPassword.getText();
         Boolean showErrorAlert = false;
         String error = "";
+        int type = 0;
 
         if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
             if(password.equals(repeatPassword)) {
                 if(isValidEmail(email) && validatePassword(password)) {
                     // verifico che l'email non sia già presente nel DBMS
-                    if(false) {
+                    if(!DBMS.queryControllaEsistenzaEmail(email)) {
                         // registro l'utente nel DBMS
-
+                        if(radioAzienda) {
+                            type = 3;
+                        } else if(radioDiocesi) {
+                            type = 1;
+                        }
+                        DBMS.queryRegistraResponsabile(email, password, type);
                     } else {
                         showErrorAlert = true;
                         error = "Email già esistente";
@@ -407,32 +420,39 @@ public class GestoreAutenticazione {
         Boolean showErrorAlert = false;
         String error = "";
         Random random = new Random();
+        if(!email.isEmpty()) {
+            if (isValidEmail(email)) { // se l'email risulta valida
+                if(true){ //se l'email risulta nel DBMS
 
-        if (isValidEmail(email) && !email.isEmpty()) { // se l'email risulta nel database
+                    int n1 = random.nextInt(10);
+                    int n2 = random.nextInt(10);
+                    int n3 = random.nextInt(10);
+                    int n4 = random.nextInt(10);
 
-            int n1 = random.nextInt(10);
-            int n2 = random.nextInt(10);
-            int n3 = random.nextInt(10);
-            int n4 = random.nextInt(10);
+                    String codice = n1 + "" + n2 + "" + n3 + "" + n4;
+                    System.out.println(codice);
 
-            String codice = n1 + "" + n2 + "" + n3 + "" + n4;
-            System.out.println(codice);
+                    if (true) {   //se il codice inserito coincide
 
-            if(true){   //se il codice inserito coincide
+                    } else {  // Pop-Up errore codice
+                        showErrorAlert = true;
+                        error = "Codice errato";
+                    }
 
+                } else { // Pop-Up errore email
+                    showErrorAlert = true;
+                    error = "Email non esistente";
+                }
             }
-            else {  // Pop-Up errore codice
+            else{
                 showErrorAlert = true;
-                error = "Codice errato";
+                error = "Email non è nel giusto formato";
             }
         }
         else {
-                // Pop-Up errore email
-                showErrorAlert = true;
-                error = "Email non esistente";
-
-
-            }
+            showErrorAlert = true;
+            error = "Inserisci l'email";
+        }
 
         if(showErrorAlert) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -440,7 +460,6 @@ public class GestoreAutenticazione {
             alert.setHeaderText(error);
             alert.showAndWait();
         }
-
     }
 
    /* @FXML
