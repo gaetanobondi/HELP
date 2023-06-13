@@ -114,6 +114,7 @@ public class GestoreRegistrazione {
                                 Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
                                 Stage window = (Stage) buttonRegistrati.getScene().getWindow();
                                 window.setScene(new Scene(root));
+                                window.setTitle("Schermata Home del Responsabile");
                             }
                         }
                     } else {
