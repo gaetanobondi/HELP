@@ -2,9 +2,12 @@ package it.help.help.utils;
 
 import it.help.help.entity.Responsabile;
 
+import java.util.*;
+
 import java.sql.*;
 import it.help.help.entity.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class DBMS {
     private static String url = "jdbc:mysql://localhost:3306/help";
@@ -243,6 +246,40 @@ public class DBMS {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void queryModificaDati(int id_responsabile, String tabella, HashMap<String, Object> dati) throws Exception {
+        connect();
+        StringBuilder queryBuilder = new StringBuilder("UPDATE " + tabella + " SET ");
+        List<Object> values = new ArrayList<>();
+
+        // Costruisci la clausola SET della query e raccogli i valori da aggiornare
+        for (Map.Entry<String, Object> entry : dati.entrySet()) {
+            String campo = entry.getKey();
+            Object valore = entry.getValue();
+            queryBuilder.append(campo).append(" = ?, ");
+            values.add(valore);
+        }
+        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Rimuovi l'ultima virgola
+
+        // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
+        queryBuilder.append(" WHERE id_responsabile = ?");
+        values.add(id_responsabile);
+
+        String query = queryBuilder.toString();
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            // Imposta i valori nella query
+            int i = 1;
+            for (Object valore : values) {
+                stmt.setObject(i, valore);
+                i++;
+            }
+
+            // Esegui la query di aggiornamento
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

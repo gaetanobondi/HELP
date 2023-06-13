@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.entity.*;
+import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -312,7 +313,10 @@ public class GestoreAutenticazione {
     public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleHelp.fxml"));
         Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
+        // salvo la scena corrente in modo da poter tornare indietro
+        MainUtils.previousScene = window.getScene();
         window.setScene(new Scene(root));
+
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) root.lookup("#labelEmail");
         Label labelPassword = (Label) root.lookup("#labelPassword");
