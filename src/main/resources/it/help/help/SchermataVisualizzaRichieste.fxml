@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAccettazioneEsiti" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fx:id="frecciaIndietro" accessibleRole="BUTTON" fitHeight="39.0" fitWidth="37.0" layoutX="530.0" layoutY="20.0">
+            <image>
+                <Image url="@freccia.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="home" accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0">
+            <image>
+                <Image url="@home.png" />
+            </image>
+        </ImageView>
+    </children>
+</Pane>

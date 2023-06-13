@@ -13,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import it.help.help.utils.DBMS;
 import java.util.*;
 
-// import javax.swing.text.html.ImageView;
 import java.io.IOException;
 
 public class GestoreProfilo {
@@ -61,7 +60,6 @@ public class GestoreProfilo {
     public Button buttonIndietro;
     public Button buttonSalvaModifiche;
 
-    // public ImageView home;
     public TextField fieldEmail;
     public TextField fieldCellulare;
     public TextField fieldIndirizzo;
@@ -115,27 +113,6 @@ public class GestoreProfilo {
     public TextField filedNomeDiocesi;
     public TextField fieldNomePrete;
 
-    public void fillInEmail(ActionEvent actionEvent) {
-    }
-
-    public void fillInCellulare(ActionEvent actionEvent) {
-    }
-
-    public void fillInIndirizzo(ActionEvent actionEvent) {
-    }
-
-    public void fillInVecchiaPassword(ActionEvent actionEvent) {
-    }
-
-    public void filInNuovaPassword(ActionEvent actionEvent) {
-    }
-
-    public void fillInNomeDiocesi(ActionEvent actionEvent) {
-    }
-
-    public void fillInNomePrete(ActionEvent actionEvent) {
-
-    }
 
 
 }

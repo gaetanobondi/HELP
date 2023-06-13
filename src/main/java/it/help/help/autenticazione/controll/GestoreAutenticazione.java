@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.autenticazione.boundary.SchermataLogin;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -7,11 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ScrollPane;
+import javafx.geometry.Insets;
 
-import java.util.Random;
 import it.help.help.utils.DBMS;
 
 import javafx.scene.control.Alert.AlertType;
@@ -116,10 +119,13 @@ public class GestoreAutenticazione {
     }
 
     public void clickLogin(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        SchermataLogin l = new SchermataLogin();
         Stage window = (Stage) buttonLogin.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Login");
+        l.start(window);
+        // Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        // Stage window = (Stage) buttonLogin.getScene().getWindow();
+        // window.setScene(new Scene(root));
+        // window.setTitle("Schermata Login");
     }
 
 
@@ -353,17 +359,101 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Visualizzazione Previsione Di Distribuzione");
     }
     public void clickRichiesteDiocesi(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaRichiesteDiocesi.fxml"));
+        Diocesi[] listaRichieste = DBMS.getRichiesteDiocesi();
+
+        // Pane root = new Pane();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataVisualizzaRichieste.fxml"));
         Stage window = (Stage) buttonRichiesteDiocesi.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Visualizza Richieste Diocesi");
+
+        double layoutY = 0;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+
+        for (Diocesi diocesi : listaRichieste) {
+            Responsabile responsabile = DBMS.getResponsabile(diocesi.getId_responsabile());
+            Button buttonAccettaRichiesta = new Button();
+            buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
+            buttonAccettaRichiesta.setLayoutX(300.0);
+            buttonAccettaRichiesta.setLayoutY(layoutY);
+            buttonAccettaRichiesta.setMnemonicParsing(false);
+            buttonAccettaRichiesta.setOnAction(event -> {
+                try {
+                    GestoreAccettazioneEsiti.clickAccettaDiocesi(diocesi);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }); // Passa la diocesi al metodo clickAccetta()
+            buttonAccettaRichiesta.setStyle("-fx-background-color: #ffffff;");
+            buttonAccettaRichiesta.setText("ACCETTA");
+
+            Label labelDiocesiRichiesta = new Label();
+            labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
+            labelDiocesiRichiesta.setLayoutX(180.0);
+            labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
+            labelDiocesiRichiesta.setText(Responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
+
+            ScrollPane scrollPane = new ScrollPane();
+            Pane paneRoot = (Pane) root;
+            // Imposta il margine per la ScrollPane
+            Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
+            scrollPane.setPadding(margin);
+
+            scrollPane.setFitToWidth(true);
+            paneRoot.getChildren().addAll(buttonAccettaRichiesta, labelDiocesiRichiesta);
+            scrollPane.setContent(paneRoot);
+            layoutY += buttonAccettaRichiesta.getHeight() + spacing;
+        }
     }
 
     public void clickRichiesteAziendePartner(ActionEvent actionEvent) throws Exception {
+        AziendaPartner[] listaRichieste = DBMS.getRichiesteAziendePartner();
+
+        // Pane root = new Pane();
+
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaRichiesteAziendePartner.fxml"));
         Stage window = (Stage) buttonRichiesteAziendePartner.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Visualizza Richieste Aziende Partner");
+
+        double layoutY = 0;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+
+        for (AziendaPartner azienda : listaRichieste) {
+            Responsabile responsabile = DBMS.getResponsabile(azienda.getIdResponsabile());
+            Button buttonAccettaRichiesta = new Button();
+            buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
+            buttonAccettaRichiesta.setLayoutX(300.0);
+            buttonAccettaRichiesta.setLayoutY(layoutY);
+            buttonAccettaRichiesta.setMnemonicParsing(false);
+            buttonAccettaRichiesta.setOnAction(event -> {
+                try {
+                    GestoreAccettazioneEsiti.clickAccettaAziendaPartner(azienda);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }); // Passa la diocesi al metodo clickAccetta()
+            buttonAccettaRichiesta.setStyle("-fx-background-color: #ffffff;");
+            buttonAccettaRichiesta.setText("ACCETTA");
+
+            Label labelDiocesiRichiesta = new Label();
+            labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
+            labelDiocesiRichiesta.setLayoutX(180.0);
+            labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
+            labelDiocesiRichiesta.setText(Responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
+
+            ScrollPane scrollPane = new ScrollPane();
+            Pane paneRoot = (Pane) root;
+            // Imposta il margine per la ScrollPane
+            Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
+            scrollPane.setPadding(margin);
+
+            scrollPane.setFitToWidth(true);
+            paneRoot.getChildren().addAll(buttonAccettaRichiesta, labelDiocesiRichiesta);
+            scrollPane.setContent(paneRoot);
+            layoutY += buttonAccettaRichiesta.getHeight() + spacing;
+        }
     }
 
     public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {

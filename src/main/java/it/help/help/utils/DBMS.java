@@ -248,6 +248,71 @@ public class DBMS {
         return null;
     }
 
+    public static void accettaRichiesta(int id_responsabile, String tabella) throws Exception {
+        connect();
+        var query = "UPDATE "+tabella+" SET stato_account = ? WHERE id_responsabile = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, 1);
+            stmt.setInt(2, id_responsabile);
+            var r = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Responsabile getResponsabile(int id_responsabile) throws Exception {
+        connect();
+        var query = "SELECT * FROM responsabile WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return Responsabile.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Diocesi[] getRichiesteDiocesi() throws Exception {
+        connect();
+        String query = "SELECT * FROM diocesi WHERE stato_account = ? ORDER BY date ASC";
+        List<Diocesi> richiesteDiocesi = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, 0);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Diocesi diocesi = Diocesi.createFromDB(rs);
+                richiesteDiocesi.add(diocesi);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return richiesteDiocesi.toArray(new Diocesi[0]);
+    }
+
+    public static AziendaPartner[] getRichiesteAziendePartner() throws Exception {
+        connect();
+        String query = "SELECT * FROM azienda_partener WHERE stato_account = ? ORDER BY date ASC";
+        List<AziendaPartner> richiesteAziende = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, 0);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                AziendaPartner aziendaPartner = AziendaPartner.createFromDB(rs);
+                richiesteAziende.add(aziendaPartner);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return richiesteAziende.toArray(new AziendaPartner[0]);
+    }
+
     public static void queryModificaDati(int id_responsabile, String tabella, HashMap<String, Object> dati) throws Exception {
         connect();
         StringBuilder queryBuilder = new StringBuilder("UPDATE " + tabella + " SET ");
