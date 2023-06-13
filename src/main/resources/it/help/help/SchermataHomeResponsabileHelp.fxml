@@ -4,7 +4,7 @@
 
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
 
       <Button fx:id="buttonVisualizzaProfiloHelp" layoutX="184.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloHelp" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
