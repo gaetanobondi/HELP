@@ -19,7 +19,7 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Button fx:id="buttonModificaDati" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDati" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
+        <Button fx:id="buttonModificaDatiHelp" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiHelp" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
         <Label layoutX="182.0" layoutY="170.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />
@@ -42,7 +42,7 @@
         </Label>
         <Label fx:id="labelEmail" layoutX="349.0" layoutY="129.0" />
         <Label fx:id="labelPassword" layoutX="349.0" layoutY="173.0" />
-        <Label fx:id="labelNome" layoutX="349.0" layoutY="219.0" />
-        <Label fx:id="labelCognome" layoutX="349.0" layoutY="269.0" prefWidth="200.0" />
+        <Label fx:id="labelNomeResponsabile" layoutX="349.0" layoutY="219.0" />
+        <Label fx:id="labelCognomeResponsabile" layoutX="349.0" layoutY="269.0" prefWidth="200.0" />
     </children>
 </Pane>

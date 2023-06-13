@@ -4,16 +4,16 @@ import java.util.Objects;
 import java.sql.*;
 
 public class Diocesi {
-    private final int id;
-    private final int id_responsabile;
-    private final String nome;
-    private final String nome_responsabile;
-    private final String cognome_responsabile;
-    private final String prete;
-    private final String indirizzo;
-    private final int cellulare;
-    private final boolean stato_account;
-    private final Date date;
+    private static int id;
+    private static int id_responsabile;
+    private static String nome;
+    private static String nome_responsabile;
+    private static String cognome_responsabile;
+    private static String prete;
+    private static String indirizzo;
+    private static int cellulare;
+    private static boolean stato_account;
+    private static Date date;
 
     public Diocesi(int id, int id_responsabile, String nome, String nome_responsabile, String cognome_responsabile, String prete, String indirizzo, int cellulare, boolean stato_account, Date date) {
         this.id = id;
@@ -28,35 +28,35 @@ public class Diocesi {
         this.date = date;
     }
 
-    public int getId() {
+    public static int getId() {
         return id;
     }
-    public int getId_responsabile() {
+    public static int getId_responsabile() {
         return id_responsabile;
     }
 
-    public String getNome() {
+    public static String getNome() {
         return nome;
     }
-    public String getNome_responsabile() {
+    public static String getNome_responsabile() {
         return nome_responsabile;
     }
-    public String getCognome_responsabile_responsabile() {
+    public static String getCognome_responsabile() {
         return cognome_responsabile;
     }
-    public String getPrete() {
+    public static String getPrete() {
         return prete;
     }
-    public String getIndirizzo() {
+    public static String getIndirizzo() {
         return indirizzo;
     }
-    public int getCellulare() {
+    public static int getCellulare() {
         return cellulare;
     }
-    public boolean getStato_account() {
+    public static boolean getStato_account() {
         return stato_account;
     }
-    public Date getDate() {
+    public static Date getDate() {
         return date;
     }
 

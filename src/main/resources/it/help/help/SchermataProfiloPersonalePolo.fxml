@@ -7,19 +7,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fx:id="frecciaIndietro" accessibleRole="BUTTON" fitHeight="39.0" fitWidth="37.0" layoutX="530.0" layoutY="20.0">
-            <image>
-                <Image url="@freccia.png" />
-            </image>
-        </ImageView>
+        <Button fx:id="buttonIndietro" contentDisplay="BOTTOM" onAction="#clickIndietro" mnemonicParsing="false" layoutX="530.0" layoutY="20.0" style="-fx-background-color: A5D9FD;">
+            <graphic>
+                <ImageView fitHeight="39.0" fitWidth="37.0">
+                    <Image url="@freccia.png" />
+                </ImageView>
+            </graphic>
+        </Button>
         <Label layoutX="176.0" layoutY="51.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Button fx:id="buttonModificaDati" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDati" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
+        <Button fx:id="buttonModificaDatiPolo" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiPolo" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
         <Label layoutX="176.0" layoutY="92.0" lineSpacing="2.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />
@@ -40,6 +42,8 @@
                 <Font size="17.0" />
             </font>
         </Label>
+        <Label fx:id="labelNomeResponsabile" layoutX="349.0" layoutY="53.0" text="Label" />
+        <Label fx:id="labelCognomeResponsabile" layoutX="349.0" layoutY="93.0" text="Label" />
         <Label fx:id="labelEmail" layoutX="349.0" layoutY="53.0" text="Label" />
         <Label fx:id="labelPassword" layoutX="349.0" layoutY="93.0" text="Label" />
         <Label fx:id="labelCellulare" layoutX="349.0" layoutY="126.0" text="Label" />
@@ -49,6 +53,6 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelNomePolo" layoutX="349.0" layoutY="221.0" text="Label" />
+        <Label fx:id="labelNome" layoutX="349.0" layoutY="221.0" text="Label" />
     </children>
 </Pane>

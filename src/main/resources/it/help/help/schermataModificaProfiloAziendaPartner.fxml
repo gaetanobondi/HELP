@@ -23,7 +23,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="buttonSalvaModifiche" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModifiche" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
+      <Button fx:id="buttonSalvaModificheAzienda" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModificheAzienda" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
       <Label layoutX="146.0" layoutY="100.0" text="CELLULARE">
          <font>
             <Font size="16.0" />
@@ -39,6 +39,8 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <TextField fx:id="fieldNomeResponsabile" layoutX="269.0" layoutY="122.0" />
+      <TextField fx:id="fieldCognomeResponsabile" layoutX="269.0" layoutY="177.0" />
       <TextField fx:id="fieldEmail" layoutX="278.0" layoutY="56.0"  />
       <TextField fx:id="fieldCellulare" layoutX="278.0" layoutY="99.0" />
       <TextField fx:id="fieldIndirizzo" layoutX="278.0" layoutY="135.0" />
@@ -59,6 +61,6 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="filedNomeAziendaPartner" layoutX="278.0" layoutY="180.0"  />
+      <TextField fx:id="fieldNome" layoutX="278.0" layoutY="180.0"  />
    </children>
 </Pane>

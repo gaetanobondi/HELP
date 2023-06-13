@@ -14,69 +14,71 @@ import it.help.help.utils.DBMS;
 import java.util.*;
 
 // import javax.swing.text.html.ImageView;
-import java.io.IOException;
+
 
 public class GestoreProfilo {
 
-    public Button buttonModificaDati;
+
+    public Label labelNomeResponsabile;
+    public Label labelCognomeResponsabile;
     public Label labelEmail;
     public Label labelPassword;
     public Label labelNome;
-    public Label labelCognome;
-    public Button buttonVisualizzaProfiloHelp;
-    public Button buttonVisualizzaPrevisioneDistribuzione;
-    public Button buttonRichiesteDiocesi;
-    public Button buttonRichiesteAziendePartner;
-    public Button buttonListaDonazioniRicevute;
-    public Button buttonGestione;
-    public Button buttonDonazioneAziendaPartner;
-    public TextField fieldNome;
-    public TextField fieldCognome;
-
-    @FXML
-    private AnchorPane contentPane;
+    public Label labelCellulare;
+    public Label labelIndirizzo;
+    public Label labelNomePrete;
 
 
-    public void clickModificaDati(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataModificaProfiloHelp.fxml"));
-        Stage window = (Stage) buttonModificaDati.getScene().getWindow();
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Modifica Profilo");
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
-        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        fieldNome.setText(Help.getNome());
-        fieldCognome.setText(Help.getCognome());
-        fieldEmail.setText(Responsabile.getEmail());
-    }
-
-
-    //per la schermata MODIFICA PROFILO PERSONALE AZIENDA PARTNER
-    public Button buttonIndietro;
-    public Button buttonSalvaModifiche;
-
-    // public ImageView home;
     public TextField fieldEmail;
     public TextField fieldCellulare;
     public TextField fieldIndirizzo;
     public PasswordField fieldVecchiaPassword;
     public PasswordField fieldNuovaPassword;
-    public TextField filedNomeAziendaPartner;
+    public TextField fieldNome;
+    public TextField fieldNomeResponsabile;
+    public TextField fieldCognomeResponsabile;
 
 
+
+    @FXML
+    private AnchorPane contentPane;
+
+
+    public Button buttonIndietro;
     public void clickIndietro(ActionEvent actionEvent) {
 
     }
 
-    public void clickSalvaModifiche(ActionEvent actionEvent) throws Exception {
-        String nome = fieldNome.getText();
-        String cognome = fieldCognome.getText();
+
+
+
+
+    //per la schermata MODIFICA PROFILO HELP
+    public Button buttonModificaDatiHelp;
+
+    public void clickModificaDatiHelp(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataModificaProfiloHelp.fxml"));
+        Stage window = (Stage) buttonModificaDatiHelp.getScene().getWindow();
+        MainUtils.previousScene = window.getScene();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Modifica Profilo Help");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNome");
+        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognome");
+        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        fieldNomeResponsabile.setText(Help.getNome());
+        fieldCognomeResponsabile.setText(Help.getCognome());
+        fieldEmail.setText(Responsabile.getEmail());
+    }
+
+    public Button buttonSalvaModificheHelp;
+    public void clickSalvaModificheHelp(ActionEvent actionEvent) throws Exception {
+        String nome = fieldNomeResponsabile.getText();
+        String cognome = fieldCognomeResponsabile.getText();
         String email = fieldEmail.getText();
         String password = fieldVecchiaPassword.getText();
         String new_password = fieldNuovaPassword.getText();
@@ -92,7 +94,7 @@ public class GestoreProfilo {
             DBMS.getHelp(Responsabile.getId());
 
             // torno alla schermata precedente
-            Stage window = (Stage) buttonSalvaModifiche.getScene().getWindow();
+            Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
             window.setScene(MainUtils.previousScene);
             window.setTitle("Schermata Profilo Personale");
         } else {
@@ -111,31 +113,110 @@ public class GestoreProfilo {
 
 
 
+
+    //per la schermata MODIFICA PROFILO PERSONALE AZIENDA PARTNER
+    public Button buttonModificaDatiAzienda;
+
+    public void clickModificaDatiAzienda(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfiloAziendaPartner.fxml"));
+        Stage window = (Stage) buttonModificaDatiAzienda.getScene().getWindow();
+        MainUtils.previousScene = window.getScene();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Modifica Profilo Azienda Partner");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        TextField fieldNome = (TextField) root.lookup("#fieldNome");
+        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
+        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        fieldNome.setText(AziendaPartner.getNome());
+        fieldNomeResponsabile.setText(AziendaPartner.getNomeResponsabile());
+        fieldCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
+        fieldEmail.setText(Responsabile.getEmail());
+        fieldIndirizzo.setText(AziendaPartner.getIndirizzo());
+        fieldCellulare.setText("" + AziendaPartner.getCellulare());
+    }
+    public Button buttonSalvaModificheAzienda;
+    public void clickSalvaModificheAzienda(ActionEvent actionEvent) {
+    }
+
+
+
+
+
+
+    //per la schermata MODIFICA PROFILO PERSONALE POLO
+    public Button buttonModificaDatiPolo;
+    public void clickModificaDatiPolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfiloPolo.fxml"));
+        Stage window = (Stage) buttonModificaDatiPolo.getScene().getWindow();
+        MainUtils.previousScene = window.getScene();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Modifica Profilo Polo");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        TextField fieldNome = (TextField) root.lookup("#fieldNome");
+        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
+        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        fieldNome.setText(Polo.getNome());
+        fieldNomeResponsabile.setText(Polo.getNome_responsabile());
+        fieldCognomeResponsabile.setText(Polo.getCognome_responsabile());
+        fieldEmail.setText(Responsabile.getEmail());
+        fieldIndirizzo.setText(Polo.getIndirizzo());
+        fieldCellulare.setText("" + Polo.getCellulare());
+    }
+    public Button buttonSalvaModifichePolo;
+
+    public void clickSalvaModifichePolo(ActionEvent actionEvent) {
+    }
+
+
+
+
+
     //per la schermata MODIFICA PROFILO PERSONALE DIOCESI
-    public TextField filedNomeDiocesi;
     public TextField fieldNomePrete;
+    public Button buttonSalvaModificheDiocesi;
 
-    public void fillInEmail(ActionEvent actionEvent) {
+    public Button buttonModificaDatiDiocesi;
+    public void clickModificaDatiDiocesi(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfiloDiocesi.fxml"));
+        Stage window = (Stage) buttonModificaDatiDiocesi.getScene().getWindow();
+        MainUtils.previousScene = window.getScene();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Modifica Profilo Diocesi");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        TextField fieldNome = (TextField) root.lookup("#fieldNome");
+        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
+        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+        TextField fieldNomePrete = (TextField) root.lookup("#fieldNomePrete");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        fieldNome.setText(Diocesi.getNome());
+        fieldNomeResponsabile.setText(Diocesi.getNome_responsabile());
+        fieldCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
+        fieldEmail.setText(Responsabile.getEmail());
+        fieldIndirizzo.setText(Diocesi.getIndirizzo());
+        fieldCellulare.setText("" + Diocesi.getCellulare());
+        fieldNomePrete.setText(Diocesi.getPrete());
     }
 
-    public void fillInCellulare(ActionEvent actionEvent) {
+    public void clickSalvaModificheDiocesi(ActionEvent actionEvent) {
     }
 
-    public void fillInIndirizzo(ActionEvent actionEvent) {
-    }
-
-    public void fillInVecchiaPassword(ActionEvent actionEvent) {
-    }
-
-    public void filInNuovaPassword(ActionEvent actionEvent) {
-    }
-
-    public void fillInNomeDiocesi(ActionEvent actionEvent) {
-    }
-
-    public void fillInNomePrete(ActionEvent actionEvent) {
-
-    }
 
 
 }

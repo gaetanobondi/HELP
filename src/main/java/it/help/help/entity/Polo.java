@@ -4,16 +4,16 @@ import java.util.Objects;
 import java.sql.*;
 
 public class Polo {
-    private final int id;
-    private final int id_responsabile;
-    private final int id_diocesi;
-    private final String nome;
-    private final String nome_responsabile;
-    private final String cognome_responsabile;
-    private final String indirizzo;
-    private final int cellulare;
-    private final boolean stato_sospensione;
-    private final Date date;
+    private static int id;
+    private static int id_responsabile;
+    private static int id_diocesi;
+    private static String nome;
+    private static String nome_responsabile;
+    private static String cognome_responsabile;
+    private static String indirizzo;
+    private static int cellulare;
+    private static boolean stato_sospensione;
+    private static Date date;
 
     public Polo(int id, int id_responsabile, int id_diocesi, String nome, String nome_responsabile, String cognome_responsabile, String indirizzo, int cellulare, boolean stato_sospensione, Date date) {
         this.id = id;
@@ -28,34 +28,34 @@ public class Polo {
         this.date = date;
     }
 
-    public int getId() {
+    public static int getId() {
         return id;
     }
-    public int getId_responsabile() {
+    public static int getId_responsabile() {
         return id_responsabile;
     }
-    public int getId_diocesi() {
+    public static int getId_diocesi() {
         return id_diocesi;
     }
-    public String getNome() {
+    public static String getNome() {
         return nome;
     }
-    public String getNome_responsabile() {
+    public static String getNome_responsabile() {
         return nome_responsabile;
     }
-    public String getCognome_responsabile_responsabile() {
+    public static String getCognome_responsabile() {
         return cognome_responsabile;
     }
-    public String getIndirizzo() {
+    public static String getIndirizzo() {
         return indirizzo;
     }
-    public int getCellulare() {
+    public static int getCellulare() {
         return cellulare;
     }
-    public boolean getStato_sospensione() {
+    public static boolean getStato_sospensione() {
         return stato_sospensione;
     }
-    public Date getDate() {
+    public static Date getDate() {
         return date;
     }
 
