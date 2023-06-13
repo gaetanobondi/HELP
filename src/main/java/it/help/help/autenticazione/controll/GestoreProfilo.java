@@ -40,4 +40,5 @@ public class GestoreProfilo {
 
     public void clickListaDonazioniRicevute(ActionEvent actionEvent) {
     }
+    //g
 }
