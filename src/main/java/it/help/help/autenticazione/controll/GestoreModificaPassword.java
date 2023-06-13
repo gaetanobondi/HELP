@@ -16,6 +16,7 @@ public class GestoreModificaPassword {
     public Button buttonConferma;
     public PasswordField fieldNuovaPassword;
     public PasswordField filedRipetiPassword;
+    public Button buttonHome;
 
     public void clickIndietro(ActionEvent actionEvent) {
         System.out.println("ciao cambio Password");
@@ -27,7 +28,15 @@ public class GestoreModificaPassword {
         window.setScene(new Scene(root));
         window.setTitle("Login");
     }
+    public void clickHome(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        Stage window = (Stage) buttonHome.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Login");
 
+            System.out.println("ciao sono la casa di cambio Password");
+
+    }
 
     //CREAZIONE DEI POP-UP DI ERRORE
 
