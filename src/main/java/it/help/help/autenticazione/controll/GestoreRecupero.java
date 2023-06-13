@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
+import javax.swing.*;
 import java.util.Random;
 
 public class GestoreRecupero {
@@ -41,8 +41,8 @@ public class GestoreRecupero {
                         int n3 = random.nextInt(10);
                         int n4 = random.nextInt(10);
 
-                        String codice = n1 + "" + n2 + "" + n3 + "" + n4;
-                        System.out.println(codice);
+                        String code = n1 + "" + n2 + "" + n3 + "" + n4;
+                        System.out.println(code);
 
                         if (true) {   //se il codice inserito coincide
 
@@ -73,5 +73,4 @@ public class GestoreRecupero {
                 alert.showAndWait();
             }
     }
-
 }

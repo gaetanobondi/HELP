@@ -2,6 +2,7 @@ module it.help.help {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.desktop;
 
 
     opens it.help.help to javafx.fxml;
