@@ -42,6 +42,7 @@ public class GestoreProfilo {
         Stage window = (Stage) buttonModificaDati.getScene().getWindow();
         MainUtils.previousScene = window.getScene();
         window.setScene(new Scene(root));
+        window.setTitle("Schermata Modifica Profilo");
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         TextField fieldNome = (TextField) root.lookup("#fieldNome");
@@ -93,6 +94,7 @@ public class GestoreProfilo {
             // torno alla schermata precedente
             Stage window = (Stage) buttonSalvaModifiche.getScene().getWindow();
             window.setScene(MainUtils.previousScene);
+            window.setTitle("Schermata Profilo Personale");
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi obbligatori";

@@ -181,6 +181,7 @@ public class GestoreAutenticazione {
                     Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
                     Stage window = (Stage) buttonAccedi.getScene().getWindow();
                     window.setScene(new Scene(root));
+                    window.setTitle("Schermata Home del Responsabile");
                 }
             } else {
                 showErrorAlert = true;
@@ -330,6 +331,7 @@ public class GestoreAutenticazione {
         // salvo la scena corrente in modo da poter tornare indietro
         MainUtils.previousScene = window.getScene();
         window.setScene(new Scene(root));
+        window.setTitle("Schermata Profilo Personale Help");
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) root.lookup("#labelEmail");

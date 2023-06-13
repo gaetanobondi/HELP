@@ -15,6 +15,7 @@ public class SchermataVisualizzaProfiloHelp extends Application {
         stage.setTitle("Profilo");
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("Schermata Profilo Personale di Help");
     }
 
     public static void main(String[] args) {
