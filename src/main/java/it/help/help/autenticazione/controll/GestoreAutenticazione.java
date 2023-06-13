@@ -31,6 +31,20 @@ public class GestoreAutenticazione {
     public Button buttonRegistrati;
     public PasswordField fieldNuovaPassword;
 
+    public Button buttonModificaDati;
+    public Label labelEmail;
+    public Label labelPassword;
+    public Label labelNome;
+    public Label labelCognome;
+    public Button buttonVisualizzaProfiloHelp;
+    public Button buttonVisualizzaPrevisioneDistribuzione;
+    public Button buttonRichiesteDiocesi;
+    public Button buttonRichiesteAziendePartner;
+    public Button buttonListaDonazioniRicevute;
+    public Button buttonGestione;
+    public Button buttonDonazioneAziendaPartner;
+
+
 
 
 
@@ -43,8 +57,6 @@ public class GestoreAutenticazione {
 
     @FXML
     private AnchorPane contentPane;
-
-
 
     public void clickIndietro(ActionEvent actionEvent) {
         System.out.println("ciao autenticazione");
@@ -117,15 +129,14 @@ public class GestoreAutenticazione {
 
         if(!email.isEmpty() && !password.isEmpty()) {
             Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, password);
-            System.out.println(responsabile.getEmail());
-            System.out.println(responsabile.getType());
             if(responsabile != null) {
                 String nomeSchermata = "";
                 switch (responsabile.getType()) {
                     case 0:
                         // HELP
+                        Help help = DBMS.getHelp(responsabile.getId());
                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
-                        GestoreProfilo gestoreProfilo = new GestoreProfilo();
+                        // GestoreProfilo gestoreProfilo = new GestoreProfilo(responsabile, help);
                         break;
                     case 1:
                         // DIOCESI
@@ -140,7 +151,6 @@ public class GestoreAutenticazione {
                         break;
                     case 2:
                         // POLO
-                        System.out.println("OK1");
                         Polo polo = DBMS.getPolo(responsabile.getId());
                         if(polo.getStato_sospensione()) {
                             // POLO SOSPESO
@@ -151,7 +161,6 @@ public class GestoreAutenticazione {
                         break;
                     case 3:
                         // AZIENDA PARTNER
-                        System.out.println("OK2");
                         AziendaPartner aziendaPartner = DBMS.getAziendaPartner(responsabile.getId());
                         if(aziendaPartner.getStatoAccount()) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
@@ -191,10 +200,6 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
         window.setTitle("Schermata Recupero Password");
     }
-
-
-
-
 
     //per la schermata SIGN-IN
 
@@ -302,19 +307,24 @@ public class GestoreAutenticazione {
 
     //per la SCHERMATA HOME RESPONSABILE HELP
 
-    public Button buttonVisualizzaProfiloHelp;
-    public Button buttonVisualizzaPrevisioneDistribuzione;
-    public Button buttonRichiesteDiocesi;
-    public Button buttonRichiesteAziendePartner;
-    public Button buttonListaDonazioniRicevute;
-    public Button buttonGestione;
     public Button buttonVisualizzaReport;
-    public Button buttonDonazioneAziendaPartner;
 
     public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleHelp.fxml"));
         Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
         window.setScene(new Scene(root));
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelPassword = (Label) root.lookup("#labelPassword");
+        Label labelNome = (Label) root.lookup("#labelNome");
+        Label labelCognome = (Label) root.lookup("#labelCognome");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        labelEmail.setText(Responsabile.getEmail());
+        labelPassword.setText("**********");
+        labelNome.setText(Help.getNome());
+        labelCognome.setText(Help.getCognome());
     }
     public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazionePrevisioneDiDistribuzione.fxml"));

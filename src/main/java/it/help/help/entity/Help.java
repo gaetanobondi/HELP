@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class Help {
-    private final int id;
-    private final int id_responsabile;
-    private final String nome;
-    private final String cognome;
+    private static int id;
+    private static int id_responsabile;
+    private static String nome;
+    private static String cognome;
 
     public Help(int id, int id_responsabile, String nome, String cognome) {
         this.id = id;
@@ -17,16 +17,16 @@ public class Help {
         this.cognome = cognome;
     }
 
-    public int getId() {
+    public static int getId() {
         return id;
     }
-    public int getId_responsabile() {
+    public static int getId_responsabile() {
         return id_responsabile;
     }
-    public String getNome() {
+    public static String getNome() {
         return nome;
     }
-    public  String getCognome() {
+    public static String getCognome() {
         return cognome;
     }
 

@@ -4,10 +4,10 @@ import java.util.Objects;
 import java.sql.*;
 
 public class Responsabile {
-    private final int id;
-    private final String email;
-    private final String password;
-    private final int type;
+    private static int id;
+    private static String email;
+    private static String password;
+    private static int type;
 
     public Responsabile(int id, String email, String password, int type) {
         this.id = id;
@@ -16,19 +16,19 @@ public class Responsabile {
         this.type = type;
     }
 
-    public int getId() {
+    public static int getId() {
         return id;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return password;
     }
 
-    public int getType() {
+    public static int getType() {
         return type;
     }
 

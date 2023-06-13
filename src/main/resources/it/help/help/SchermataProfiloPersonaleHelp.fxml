@@ -30,19 +30,19 @@
                 <Image url="@home.png" />
             </image>
         </ImageView>
-        <Label layoutX="182.0" layoutY="216.0" text="CELLULARE">
+        <Label layoutX="182.0" layoutY="216.0" text="NOME">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label layoutX="182.0" layoutY="266.0" text="INDIRIZZO">
+        <Label layoutX="182.0" layoutY="266.0" text="COGNOME">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelEmail" layoutX="349.0" layoutY="129.0" text="Label" />
-        <Label fx:id="labelPassword" layoutX="349.0" layoutY="173.0" text="Label" />
-        <Label fx:id="labelNome" layoutX="349.0" layoutY="219.0" text="Label" />
-        <Label fx:id="labelCognome" layoutX="349.0" layoutY="269.0" prefWidth="30.0" text="Label" />
+        <Label fx:id="labelEmail" layoutX="349.0" layoutY="129.0" />
+        <Label fx:id="labelPassword" layoutX="349.0" layoutY="173.0" />
+        <Label fx:id="labelNome" layoutX="349.0" layoutY="219.0" />
+        <Label fx:id="labelCognome" layoutX="349.0" layoutY="269.0" prefWidth="200.0" />
     </children>
 </Pane>
