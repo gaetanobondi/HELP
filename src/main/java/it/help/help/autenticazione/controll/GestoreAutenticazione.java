@@ -25,6 +25,7 @@ public class GestoreAutenticazione {
     public TextField fieldEmail;
     public Button buttonRecuperaPassword; //schermata login
     public Button buttonAccedi;
+
     public Button buttonIndietro;
     public RadioButton radioButtonDiocesi;
     public RadioButton radioButtonAziendaPartner;
@@ -37,24 +38,12 @@ public class GestoreAutenticazione {
     public Label labelPassword;
     public Label labelNome;
     public Label labelCognome;
-    public Button buttonVisualizzaProfiloHelp;
-    public Button buttonVisualizzaPrevisioneDistribuzione;
-    public Button buttonRichiesteDiocesi;
-    public Button buttonRichiesteAziendePartner;
-    public Button buttonListaDonazioniRicevute;
-    public Button buttonGestione;
-    public Button buttonDonazioneAziendaPartner;
 
 
 
 
 
-    //Scherma Home Responsabile Diocesi
-    public Button buttonVisualizzaSchemaDiDistribuzioneDiocesi;
-    public Button buttonVisualizzaListaPoli;
-    public Button buttonRegistrazionePolo;
-    public Button buttonVisualizzaCarichiInviati;
-    public Button buttonVisualizzaProfiloDiocesi;
+
 
     @FXML
     private AnchorPane contentPane;
@@ -62,47 +51,6 @@ public class GestoreAutenticazione {
     public void clickIndietro(ActionEvent actionEvent) {
         System.out.println("ciao autenticazione");
     }
-
-
-
-
-    //per la SCHERMATA HOME RESPONSABILE DIOCESI
-    public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleDiocesi.fxml"));
-        Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Profilo Personale Diocesi");
-    }
-
-    public void clickVisualizzaListaPoli(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneListaPoli.fxml"));
-        Stage window = (Stage) buttonVisualizzaListaPoli.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizzazione Lista Poli");
-    }
-
-    public void clickRegistrazionePolo(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazionePolo.fxml"));
-        Stage window = (Stage) buttonRegistrazionePolo.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Registrazione Polo");
-    }
-
-    public void clickVisualizzaCarichiInviati(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneCarichi.fxml"));
-        Stage window = (Stage) buttonVisualizzaCarichiInviati.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizzazione Carichi");
-    }
-
-    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDellaDiocesi.fxml"));
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneDiocesi.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Schema Di Distribuzione Della Diocesi");
-    }
-
-
 
 
 
@@ -208,6 +156,11 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Recupero Password");
     }
 
+
+
+
+
+
     //per la schermata SIGN-IN
 
     public boolean isValidEmail(String email) {
@@ -242,6 +195,8 @@ public class GestoreAutenticazione {
         // La password soddisfa tutti i requisiti
         return true;
     }
+
+
 
 
 
@@ -322,6 +277,14 @@ public class GestoreAutenticazione {
 
 
     //per la SCHERMATA HOME RESPONSABILE HELP
+
+    public Button buttonVisualizzaProfiloHelp;
+    public Button buttonVisualizzaPrevisioneDistribuzione;
+    public Button buttonRichiesteDiocesi;
+    public Button buttonRichiesteAziendePartner;
+    public Button buttonListaDonazioniRicevute;
+    public Button buttonGestione;
+    public Button buttonDonazioneAziendaPartner;
 
     public Button buttonVisualizzaReport;
 
@@ -433,4 +396,52 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
         window.setTitle("Schermata Effettua Donazione");
     }
+
+
+
+
+
+    //per la SCHERMATA HOME RESPONSABILE DIOCESI
+
+    public Button buttonVisualizzaSchemaDiDistribuzioneDiocesi;
+    public Button buttonVisualizzaListaPoli;
+    public Button buttonRegistrazionePolo;
+    public Button buttonVisualizzaCarichiInviati;
+    public Button buttonVisualizzaProfiloDiocesi;
+
+    public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataProfiloPersonaleDiocesi.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Profilo Personale Diocesi");
+    }
+
+    public void clickVisualizzaListaPoli(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneListaPoli.fxml"));
+        Stage window = (Stage) buttonVisualizzaListaPoli.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Visualizzazione Lista Poli");
+    }
+
+    public void clickRegistrazionePolo(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazionePolo.fxml"));
+        Stage window = (Stage) buttonRegistrazionePolo.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Registrazione Polo");
+    }
+
+    public void clickVisualizzaCarichiInviati(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazioneCarichi.fxml"));
+        Stage window = (Stage) buttonVisualizzaCarichiInviati.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Visualizzazione Carichi");
+    }
+
+    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDellaDiocesi.fxml"));
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneDiocesi.getScene().getWindow();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Schema Di Distribuzione Della Diocesi");
+    }
+
 }
