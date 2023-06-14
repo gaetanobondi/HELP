@@ -38,24 +38,48 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-        <Label layoutX="109.0" layoutY="215.0" text="EMAIL">
+        <Label layoutX="248.0" layoutY="288.0" text="La tua password deve contenere: ">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="255" layoutY="308" text="-almeno una lettera Maiuscola;  ">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="255" layoutY="328" text="-almeno un numero;  ">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="255" layoutY="348" text="-almeno un carattere speciale: ! * ?  % $ ">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="113.0" layoutY="177.0" text="EMAIL">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="109.0" layoutY="252.0" text="PASSWORD">
+        <Label layoutX="109.0" layoutY="214.0" text="PASSWORD">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="109.0" layoutY="289.0" text="RIPETI PASSWORD">
+        <Label layoutX="109.0" layoutY="251.0" text="RIPETI PASSWORD">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="fieldEmail" layoutX="254.0" layoutY="204.0" />
-        <PasswordField fx:id="fieldPassword" layoutX="253.0" layoutY="247.0" />
-        <PasswordField fx:id="fieldRipetiPassword" layoutX="255.0" layoutY="287.0" prefHeight="24.0" prefWidth="159.0" />
-        <Button fx:id="buttonRegistrati" layoutX="490.0" layoutY="319.0" mnemonicParsing="false" onAction="#clickRegistrati" style="-fx-background-color: FFFFFF;" text="Registrati" />
+        <TextField fx:id="fieldEmail" layoutX="258.0" layoutY="166.0" />
+        <PasswordField fx:id="fieldPassword" layoutX="257.0" layoutY="209.0" />
+        <PasswordField fx:id="fieldRipetiPassword" layoutX="259.0" layoutY="249.0" prefHeight="24.0" prefWidth="159.0" />
+        <Button fx:id="buttonRegistrati" layoutX="498.0" layoutY="362.0" mnemonicParsing="false" onAction="#clickRegistrati" style="-fx-background-color: FFFFFF;" text="Registrati" />
     </children>
 </Pane>

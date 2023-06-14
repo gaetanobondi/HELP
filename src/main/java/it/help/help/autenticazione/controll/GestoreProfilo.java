@@ -34,11 +34,9 @@ public class GestoreProfilo {
     public TextField fieldIndirizzo;
     public PasswordField fieldVecchiaPassword;
     public PasswordField fieldNuovaPassword;
-    public TextField fieldNome;
     public TextField fieldNomeResponsabile;
     public TextField fieldCognomeResponsabile;
-
-
+    public TextField fieldNomePolo;
 
     @FXML
     private AnchorPane contentPane;

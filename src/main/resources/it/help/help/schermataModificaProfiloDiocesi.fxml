@@ -18,13 +18,13 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label layoutX="152.0" layoutY="59.0" text="EMAIL">
+      <Label layoutX="151.0" layoutY="107.0" text="EMAIL">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <Button fx:id="buttonSalvaModificheDiocesi" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModificheDiocesi" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
-      <Label layoutX="146.0" layoutY="100.0" text="CELLULARE">
+      <Label layoutX="151.0" layoutY="148.0" text="CELLULARE">
          <font>
             <Font size="16.0" />
          </font>
@@ -34,39 +34,42 @@
             <Image url="@home.png" />
          </image>
       </ImageView>
-      <Label layoutX="146.0" layoutY="140.0" text="INDIRIZZO">
+      <Label layoutX="151.0" layoutY="187.0" text="INDIRIZZO">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="labelNomeResponsabile" layoutX="349.0" layoutY="53.0" text="Label" />
-      <Label fx:id="labelCognomeResponsabile" layoutX="349.0" layoutY="93.0" text="Label" />
-      <TextField fx:id="fieldEmail" layoutX="278.0" layoutY="56.0" />
-      <TextField fx:id="fieldCellulare" layoutX="278.0" layoutY="99.0" />
-      <TextField fx:id="fieldIndirizzo" layoutX="278.0" layoutY="135.0" />
+      <Label fx:id="labelNomeResponsabile" layoutX="151.0" layoutY="27.0" text="Label" />
+      <Label fx:id="labelCognomeResponsabile" layoutX="151.0" layoutY="66.0" text="Label" />
+      <TextField fx:id="fieldEmail" layoutX="284.0" layoutY="107.0" />
+      <TextField fx:id="fieldCellulare" layoutX="284.0" layoutY="148.0" />
+      <TextField fx:id="fieldIndirizzo" layoutX="284.0" layoutY="187.0" />
       <Label layoutX="48.0" layoutY="300.0" prefHeight="20.0" prefWidth="159.0" text="VECCHIA PASSWORD">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="fieldVecchiaPassword" layoutX="220.0" layoutY="297.0" />
-      <Label layoutX="48.0" layoutY="341.0" prefHeight="20.0" prefWidth="159.0" text="NUOVA PASSWORD">
+      <PasswordField fx:id="fieldVecchiaPassword" layoutX="220.0" layoutY="310.0" />
+      <Label layoutX="48.0" layoutY="351.0" prefHeight="20.0" prefWidth="159.0" text="NUOVA PASSWORD">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="fieldNuovaPassword" layoutX="220.0" layoutY="338.0" />
-      <Label layoutX="145.0" layoutY="183.0" text="NOME DIOCESI">
+      <PasswordField fx:id="fieldNuovaPassword" layoutX="220.0" layoutY="351.0" />
+      <Label layoutX="151.0" layoutY="229.0" text="NOME DIOCESI">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="146.0" layoutY="225.0" text="NOME PRETE">
+      <Label layoutX="151.0" layoutY="270.0" text="NOME PRETE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="fieldNome" layoutX="278.0" layoutY="180.0" />
-      <TextField fx:id="fieldNomePrete" layoutX="278.0" layoutY="220.0" />
+      <TextField fx:id="fieldNome" layoutX="278.0" layoutY="284.0" />
+      <TextField fx:id="fieldNomePrete" layoutX="284.0" layoutY="267.0" />
+      <TextField fx:id="fieldNomeResponsabile" layoutX="284.0" layoutY="27.0" />
+      <TextField fx:id="fieldCognome" layoutX="284.0" layoutY="66.0" />
+
    </children>
 </Pane>

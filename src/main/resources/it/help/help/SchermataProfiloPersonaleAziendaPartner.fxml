@@ -14,13 +14,13 @@
                 <Image url="@freccia.png" />
             </image>
         </ImageView>
-        <Label layoutX="176.0" layoutY="51.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
+        <Label layoutX="176.0" layoutY="115.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
         <Button fx:id="buttonModificaDatiAzienda" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiAzienda" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
-        <Label layoutX="176.0" layoutY="92.0" lineSpacing="2.0" text="PASSWORD">
+        <Label layoutX="176.0" layoutY="151.0" lineSpacing="2.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />
             </font>
@@ -30,27 +30,36 @@
                 <Image url="@home.png" />
             </image>
         </ImageView>
-        <Label layoutX="173.0" layoutY="128.0" lineSpacing="2.0" text="CELLULARE">
+        <Label layoutX="173.0" layoutY="189.0" lineSpacing="2.0" text="CELLULARE">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label layoutX="175.0" layoutY="172.0" lineSpacing="2.0" text="INDIRIZZO">
+        <Label layoutX="175.0" layoutY="229.0" lineSpacing="2.0" text="INDIRIZZO">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelNomeResponsabile" layoutX="349.0" layoutY="53.0" text="Label" />
-        <Label fx:id="labelCognomeResponsabile" layoutX="349.0" layoutY="93.0" text="Label" />
-        <Label fx:id="labelEmail" layoutX="349.0" layoutY="53.0" text="Label" />
-        <Label fx:id="labelPassword" layoutX="349.0" layoutY="93.0" text="Label" />
-        <Label fx:id="labelCellulare" layoutX="349.0" layoutY="126.0" text="Label" />
-        <Label fx:id="labelIndirizzo" layoutX="349.0" layoutY="174.0" prefWidth="30.0" text="Label" />
-        <Label layoutX="174.0" layoutY="218.0" lineSpacing="2.0" text="NOME AZIENDA">
+        <Label layoutX="176.0" layoutY="50.0" lineSpacing="2.0" text="NOME">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelNome" layoutX="349.0" layoutY="221.0" text="Label" />
+        <Label layoutX="176.0" layoutY="82.0" lineSpacing="2.0" text="COGNOME">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelNomeResponsabile" layoutX="347.0" layoutY="53.0" text="Label" />
+        <Label fx:id="labelCognomeResponsabile" layoutX="347.0" layoutY="85.0" text="Label" />
+        <Label fx:id="labelEmail" layoutX="347.0" layoutY="117.0" text="Label" />
+        <Label fx:id="labelPassword" layoutX="347.0" layoutY="154.0" text="Label" />
+        <Label fx:id="labelCellulare" layoutX="347.0" layoutY="192.0" text="Label" />
+        <Label fx:id="labelIndirizzo" layoutX="347.0" layoutY="232.0" prefWidth="30.0" text="Label" />
+        <Label fx:id="labelNome" layoutX="347.0" layoutY="268.0" lineSpacing="2.0" text="NOME AZIENDA">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
     </children>
 </Pane>
