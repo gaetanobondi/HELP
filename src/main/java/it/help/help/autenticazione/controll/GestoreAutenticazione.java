@@ -224,7 +224,25 @@ public class GestoreAutenticazione {
         Stage window = (Stage) buttonVisualizzaProfiloPolo.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Profilo Personale Polo");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelNome = (Label) root.lookup("#labelNome");
+        Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
+        Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        labelNome.setText(Polo.getNome());
+        labelNomeResponsabile.setText(Polo.getNome_responsabile());
+        labelCognomeResponsabile.setText(Polo.getCognome_responsabile());
+        labelEmail.setText(Responsabile.getEmail());
+        labelIndirizzo.setText(Polo.getIndirizzo());
+        labelCellulare.setText("" + Polo.getCellulare());
+
     }
+
 
     public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaVisualizzaListaNuclei.fxml"));
@@ -233,6 +251,7 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Visualizza Lista Nuclei");
     }
 
+
     public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazioneNucleoFamiliare.fxml"));
         Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
@@ -240,18 +259,23 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Registrazione Nucleo Familiare");
     }
 
+
     public void clickVisualizzaSchemaDiDistribuzionePolo(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelPolo.fxml"));
         Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzionePolo.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Schema Di Distribuzione del Polo");
     }
+
+
     public void clickVisualizzaSchemaDiDistribuzioneFamiglie(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDelNucleo.fxml"));
         Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneFamiglie.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Schema Di Distribuzione Del Nucleo");
     }
+
+
     public void clickSegnalazioneErrori(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSegnalazioneErrori.fxml"));
         Stage window = (Stage) buttonSegnalazioneErrori.getScene().getWindow();
@@ -259,18 +283,23 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Segnalazione Errori");
     }
 
+
     public void clickReport(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataScaricamentoReport.fxml"));
         Stage window = (Stage) buttonReport.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Scaricamento Report");
     }
+
+
     public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSospensionePolo.fxml"));
         Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Sospensione Polo");
     }
+
+
     public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCaricamentoViveri.fxml"));
         Stage window = (Stage) buttonAggiungiViveriMagazzino.getScene().getWindow();
@@ -457,6 +486,22 @@ public class GestoreAutenticazione {
         Stage window = (Stage) buttonVisualizzaProfiloAziendaPartner.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Profilo Personale Azienda Partner");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelNome = (Label) root.lookup("#labeldNome");
+        Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
+        Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        labelNome.setText(AziendaPartner.getNome());
+        labelNomeResponsabile.setText(AziendaPartner.getNomeResponsabile());
+        labelCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
+        labelEmail.setText(Responsabile.getEmail());
+        labelIndirizzo.setText(AziendaPartner.getIndirizzo());
+        labelCellulare.setText("" + AziendaPartner.getCellulare());
     }
 
     public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
@@ -504,6 +549,24 @@ public class GestoreAutenticazione {
         Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Profilo Personale Diocesi");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelNome = (Label) root.lookup("#labeldNome");
+        Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
+        Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelNomePrete = (Label) root.lookup("#labelNomePrete");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+        labelNome.setText(Diocesi.getNome());
+        labelNomeResponsabile.setText(Diocesi.getNome_responsabile());
+        labelCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
+        labelEmail.setText(Responsabile.getEmail());
+        labelIndirizzo.setText(Diocesi.getIndirizzo());
+        labelCellulare.setText("" + Diocesi.getCellulare());
+        labelNomePrete.setText(Diocesi.getPrete());
     }
 
     public void clickVisualizzaListaPoli(ActionEvent actionEvent) throws Exception {
