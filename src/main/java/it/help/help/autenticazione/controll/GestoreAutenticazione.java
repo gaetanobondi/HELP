@@ -49,7 +49,10 @@ public class GestoreAutenticazione {
     private AnchorPane contentPane;
 
     public void clickIndietro(ActionEvent actionEvent) {
-        System.out.println("ciao autenticazione");
+        System.out.println("PULSANTE PREMUTO");
+        Stage currentWindow = (Stage) buttonIndietro.getScene().getWindow();
+        Stage previousWindow = MainUtils.boundaryStack.get(MainUtils.boundaryStack.size() - 1);
+        currentWindow.setScene(previousWindow.getScene());
     }
 
     public void clickHome(ActionEvent actionEvent) throws Exception {
@@ -97,6 +100,7 @@ public class GestoreAutenticazione {
     public void clickLogin(ActionEvent actionEvent) throws Exception {
         SchermataLogin l = new SchermataLogin();
         Stage window = (Stage) buttonLogin.getScene().getWindow();
+        MainUtils.boundaryStack.add(window);
         l.start(window);
         // Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
         // Stage window = (Stage) buttonLogin.getScene().getWindow();
@@ -509,10 +513,9 @@ public class GestoreAutenticazione {
     }
 
     public void clickLogout(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        SchermataLogin l = new SchermataLogin();
         Stage window = (Stage) buttonLogout.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Login");
+        l.start(window);
     }
 
     public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {

@@ -17,6 +17,7 @@ import java.util.Base64;
 
 public class MainUtils {
     public static Scene previousScene;
+    public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
 
     public static String encryptPassword(String password) {
         try {

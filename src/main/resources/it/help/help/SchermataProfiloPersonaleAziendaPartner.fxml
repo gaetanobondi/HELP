@@ -9,11 +9,7 @@
 
 <Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fx:id="frecciaIndietro" accessibleRole="BUTTON" fitHeight="39.0" fitWidth="37.0" layoutX="530.0" layoutY="20.0">
-            <image>
-                <Image url="@freccia.png" />
-            </image>
-        </ImageView>
+        <fx:include source="Composizione.fxml" />
         <Label layoutX="176.0" layoutY="115.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
             <font>
                 <Font size="17.0" />
@@ -25,11 +21,6 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <ImageView fx:id="home" accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0">
-            <image>
-                <Image url="@home.png" />
-            </image>
-        </ImageView>
         <Label layoutX="173.0" layoutY="189.0" lineSpacing="2.0" text="CELLULARE">
             <font>
                 <Font size="17.0" />

@@ -45,13 +45,6 @@ public class GestoreProfilo {
     private AnchorPane contentPane;
 
 
-    public Button buttonIndietro;
-    public void clickIndietro(ActionEvent actionEvent) {
-
-    }
-
-
-
 
 
     //per la schermata MODIFICA PROFILO HELP

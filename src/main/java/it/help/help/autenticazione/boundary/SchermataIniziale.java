@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.boundary;
 
+import it.help.help.utils.MainUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ public class SchermataIniziale extends Application {
         stage.setTitle("Schermata Iniziale");
         stage.setScene(scene);
         stage.show();
+        MainUtils.boundaryStack.add((Stage) scene.getWindow());
     }
 
     public static void main(String[] args) {
