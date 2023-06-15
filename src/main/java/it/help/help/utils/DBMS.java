@@ -1,6 +1,6 @@
 package it.help.help.utils;
 
-import it.help.help.entity.Responsabile;
+import it.help.help.entity.*;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ public class DBMS {
     2 => POLO
     3 => AZIENDA PARTNER
      */
-    public static ResponsabileCompleto queryRegistraResponsabile(String email, String password, int type) throws Exception {
+    public static boolean queryRegistraResponsabile(String email, String password, int type) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
@@ -55,7 +55,7 @@ public class DBMS {
                     int id = generatedKeys.getInt(1);
                     int lastID;
                     ResponsabileCompleto responsabileCompleto;
-                    Responsabile responsabile = queryControllaCredenzialiResponsabile(email, password);
+                    queryControllaCredenzialiResponsabile(email, password);
                     switch (type) {
                         case 0:
                             break;
@@ -63,16 +63,17 @@ public class DBMS {
                             // DIOCESI
                             lastID = queryRegistraDiocesi(id);
                             Diocesi diocesi = getDiocesi(lastID);
-                            responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
-                            return responsabileCompleto;
+                            // Responsabile responsabile = Responsabile;
+                            // responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
+                            return true;
                         case 2:
                             break;
                         case 3:
                             // AZIENDA PARTNER
                             lastID = queryRegistraAziendaPartner(id);
                             AziendaPartner aziendaPartner = getAziendaPartner(lastID);
-                            responsabileCompleto = new ResponsabileCompleto(responsabile, aziendaPartner);
-                            return responsabileCompleto;
+                            // responsabileCompleto = new ResponsabileCompleto(Responsabile, aziendaPartner);
+                            return true;
                     }
                 }
             } else {
@@ -81,7 +82,7 @@ public class DBMS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     private static int queryRegistraDiocesi(int id_responsabile) throws Exception {
@@ -172,7 +173,7 @@ public class DBMS {
         return true;
     }
 
-    public static Responsabile queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
+    public static boolean queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
         connect();
         var query = "SELECT * FROM responsabile WHERE email = ? and password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -180,12 +181,13 @@ public class DBMS {
             stmt.setString(2, password);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return Responsabile.createFromDB(r);
+                Responsabile.createFromDB(r);
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     public static Diocesi getDiocesi(int id_responsabile) throws Exception {
@@ -313,9 +315,9 @@ public class DBMS {
         return richiesteAziende.toArray(new AziendaPartner[0]);
     }
 
-    public static void queryModificaDati(int id_responsabile, String tabella, HashMap<String, Object> dati) throws Exception {
+    public static void queryModificaDati(int id_responsabile, String nomeTabellaDB, HashMap<String, Object> dati) throws Exception {
         connect();
-        StringBuilder queryBuilder = new StringBuilder("UPDATE " + tabella + " SET ");
+        StringBuilder queryBuilder = new StringBuilder("UPDATE " + nomeTabellaDB + " SET ");
         List<Object> values = new ArrayList<>();
 
         // Costruisci la clausola SET della query e raccogli i valori da aggiornare
@@ -328,7 +330,11 @@ public class DBMS {
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Rimuovi l'ultima virgola
 
         // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
-        queryBuilder.append(" WHERE id_responsabile = ?");
+        if(nomeTabellaDB.equals("responsabile")) {
+            queryBuilder.append(" WHERE id = ?");
+        } else {
+            queryBuilder.append(" WHERE id_responsabile = ?");
+        }
         values.add(id_responsabile);
 
         String query = queryBuilder.toString();

@@ -41,6 +41,7 @@ public class GestoreAutenticazione {
     public Label labelPassword;
     public Label labelNome;
     public Label labelCognome;
+    public Label labelViveriProdotto;
 
 
 
@@ -88,19 +89,20 @@ public class GestoreAutenticazione {
         String error = "";
 
         if(!email.isEmpty() && !password.isEmpty()) {
-            Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, password);
-            if(responsabile != null) {
+            String encryptPassword = MainUtils.encryptPassword(password);
+            boolean responsabile = DBMS.queryControllaCredenzialiResponsabile(email, encryptPassword);
+            if(responsabile) {
                 String nomeSchermata = "";
-                switch (responsabile.getType()) {
+                switch (Responsabile.getType()) {
                     case 0:
                         // HELP
-                        Help help = DBMS.getHelp(responsabile.getId());
+                        Help help = DBMS.getHelp(Responsabile.getId());
                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
                         // GestoreProfilo gestoreProfilo = new GestoreProfilo(responsabile, help);
                         break;
                     case 1:
                         // DIOCESI
-                        Diocesi diocesi = DBMS.getDiocesi(responsabile.getId());
+                        Diocesi diocesi = DBMS.getDiocesi(Responsabile.getId());
                         if(diocesi.getStato_account()) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                         } else {
@@ -111,7 +113,7 @@ public class GestoreAutenticazione {
                         break;
                     case 2:
                         // POLO
-                        Polo polo = DBMS.getPolo(responsabile.getId());
+                        Polo polo = DBMS.getPolo(Responsabile.getId());
                         if(polo.getStato_sospensione()) {
                             // POLO SOSPESO
                             nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
@@ -121,7 +123,7 @@ public class GestoreAutenticazione {
                         break;
                     case 3:
                         // AZIENDA PARTNER
-                        AziendaPartner aziendaPartner = DBMS.getAziendaPartner(responsabile.getId());
+                        AziendaPartner aziendaPartner = DBMS.getAziendaPartner(Responsabile.getId());
                         if(aziendaPartner.getStatoAccount()) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                         } else {
@@ -334,8 +336,8 @@ public class GestoreAutenticazione {
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) root.lookup("#labelEmail");
         Label labelPassword = (Label) root.lookup("#labelPassword");
-        Label labelNome = (Label) root.lookup("#labelNome");
-        Label labelCognome = (Label) root.lookup("#labelCognome");
+        Label labelNome = (Label) root.lookup("#labelNomeResponsabile");
+        Label labelCognome = (Label) root.lookup("#labelCognomeResponsabile");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
@@ -488,12 +490,13 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Profilo Personale Azienda Partner");
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelNome = (Label) root.lookup("#labeldNome");
+        Label labelNome = (Label) root.lookup("#labelNome");
         Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
         Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
         Label labelEmail = (Label) root.lookup("#labelEmail");
         Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
         Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelViveriProdotto = (Label) root.lookup("#labelViveriProdotto");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
         labelNome.setText(AziendaPartner.getNome());
@@ -501,7 +504,10 @@ public class GestoreAutenticazione {
         labelCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
         labelEmail.setText(Responsabile.getEmail());
         labelIndirizzo.setText(AziendaPartner.getIndirizzo());
-        labelCellulare.setText("" + AziendaPartner.getCellulare());
+        labelViveriProdotto.setText(AziendaPartner.getViveriProdotto());
+        if(AziendaPartner.getCellulare() != 0) {
+            labelCellulare.setText("" + AziendaPartner.getCellulare());
+        }
     }
 
     public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
@@ -551,7 +557,7 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Profilo Personale Diocesi");
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelNome = (Label) root.lookup("#labeldNome");
+        Label labelNome = (Label) root.lookup("#labelNome");
         Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
         Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
         Label labelEmail = (Label) root.lookup("#labelEmail");
@@ -565,7 +571,9 @@ public class GestoreAutenticazione {
         labelCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
         labelEmail.setText(Responsabile.getEmail());
         labelIndirizzo.setText(Diocesi.getIndirizzo());
-        labelCellulare.setText("" + Diocesi.getCellulare());
+        if(Diocesi.getCellulare() != 0) {
+            labelCellulare.setText("" + Diocesi.getCellulare());
+        }
         labelNomePrete.setText(Diocesi.getPrete());
     }
 

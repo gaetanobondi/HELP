@@ -30,6 +30,7 @@ public class GestoreProfilo {
 
 
     public TextField fieldEmail;
+    public TextField fieldNome;
     public TextField fieldCellulare;
     public TextField fieldIndirizzo;
     public PasswordField fieldVecchiaPassword;
@@ -37,6 +38,7 @@ public class GestoreProfilo {
     public TextField fieldNomeResponsabile;
     public TextField fieldCognomeResponsabile;
     public TextField fieldNomePolo;
+    public TextField fieldViveriProdotto;
 
     @FXML
     private AnchorPane contentPane;
@@ -62,8 +64,8 @@ public class GestoreProfilo {
         window.setTitle("Schermata Modifica Profilo Help");
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNome");
-        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognome");
+        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
+        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
         TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
@@ -85,19 +87,43 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
-            HashMap<String, Object> datiAggiornati = new HashMap<>();
-            datiAggiornati.put("nome", nome);
-            datiAggiornati.put("cognome", cognome);
-            DBMS.queryModificaDati(Responsabile.getId(), "help", datiAggiornati);
-            DBMS.getHelp(Responsabile.getId());
-
-            // torno alla schermata precedente
-            Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
-            window.setScene(MainUtils.previousScene);
-            window.setTitle("Schermata Profilo Personale");
+            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                // aggiorno la tabella help
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("nome", nome);
+                datiAggiornati.put("cognome", cognome);
+                DBMS.queryModificaDati(Responsabile.getId(), "help", datiAggiornati);
+                DBMS.getHelp(Responsabile.getId());
+                // aggiorno la tabella responsabile per l'email
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(Responsabile.getId());
+            } else {
+                showErrorAlert = true;
+                error = "Non puoi usare questa email";
+            }
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi obbligatori";
+        }
+
+        if(!password.isEmpty() && !new_password.isEmpty()) {
+            if(MainUtils.validatePassword(new_password)) {
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                String encryptPassword = MainUtils.encryptPassword(password);
+                datiAggiornati.put("password", encryptPassword);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+            } else {
+                showErrorAlert = true;
+                error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
+            }
+        } else if(!password.isEmpty() && new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la nuova password";
+        } else if(password.isEmpty() && !new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la tua password";
         }
 
         if(showErrorAlert) {
@@ -105,6 +131,11 @@ public class GestoreProfilo {
             alert.setTitle("Pop-Up Errore");
             alert.setHeaderText(error);
             alert.showAndWait();
+        } else {
+            // torno alla schermata precedente
+            Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
+            window.setScene(MainUtils.previousScene);
+            window.setTitle("Schermata Profilo Personale");
         }
     }
 
@@ -129,6 +160,7 @@ public class GestoreProfilo {
         TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
         TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
         TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+        TextField fieldViveriProdotto = (TextField) root.lookup("#fieldViveriProdotto");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
         fieldNome.setText(AziendaPartner.getNome());
@@ -136,10 +168,81 @@ public class GestoreProfilo {
         fieldCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
         fieldEmail.setText(Responsabile.getEmail());
         fieldIndirizzo.setText(AziendaPartner.getIndirizzo());
-        fieldCellulare.setText("" + AziendaPartner.getCellulare());
+        fieldViveriProdotto.setText(AziendaPartner.getViveriProdotto());
+        if(AziendaPartner.getCellulare() != 0) {
+            fieldCellulare.setText("" + AziendaPartner.getCellulare());
+        }
     }
     public Button buttonSalvaModificheAzienda;
-    public void clickSalvaModificheAzienda(ActionEvent actionEvent) {
+    public void clickSalvaModificheAzienda(ActionEvent actionEvent) throws Exception {
+        String nome_azienda = fieldNome.getText() != null ? fieldNome.getText() : "";
+        String viveri_prodotto = fieldViveriProdotto.getText() != null ? fieldViveriProdotto.getText() : "";
+        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
+        String nome = fieldNomeResponsabile.getText() != null ? fieldNomeResponsabile.getText() : "";
+        String cognome = fieldCognomeResponsabile.getText() != null ? fieldCognomeResponsabile.getText() : "";
+        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
+        String email = fieldEmail.getText();
+        String password = fieldVecchiaPassword.getText();
+        String new_password = fieldNuovaPassword.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
+
+        // controllo riempimento campi
+        if(!nome_azienda.isEmpty() && !viveri_prodotto.isEmpty() && !cellulare.isEmpty() && !indirizzo.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
+            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                // aggiorno la tabella help
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("nome", nome_azienda);
+                datiAggiornati.put("nome_responsabile", nome);
+                datiAggiornati.put("cognome_responsabile", cognome);
+                datiAggiornati.put("viveri_prodotto", viveri_prodotto);
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
+                DBMS.queryModificaDati(Responsabile.getId(), "azienda_partner", datiAggiornati);
+                DBMS.getAziendaPartner(Responsabile.getId());
+                // aggiorno la tabella responsabile per l'email
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(Responsabile.getId());
+            } else {
+                showErrorAlert = true;
+                error = "Non puoi usare questa email";
+            }
+        } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi obbligatori";
+        }
+
+        if(!password.isEmpty() && !new_password.isEmpty()) {
+            if(MainUtils.validatePassword(new_password)) {
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                String encryptPassword = MainUtils.encryptPassword(password);
+                datiAggiornati.put("password", encryptPassword);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+            } else {
+                showErrorAlert = true;
+                error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
+            }
+        } else if(!password.isEmpty() && new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la nuova password";
+        } else if(password.isEmpty() && !new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la tua password";
+        }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
+        } else {
+            // torno alla schermata precedente
+            Stage window = (Stage) buttonSalvaModificheAzienda.getScene().getWindow();
+            window.setScene(MainUtils.previousScene);
+            window.setTitle("Schermata Profilo Personale");
+        }
     }
 
 
@@ -208,11 +311,81 @@ public class GestoreProfilo {
         fieldCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
         fieldEmail.setText(Responsabile.getEmail());
         fieldIndirizzo.setText(Diocesi.getIndirizzo());
-        fieldCellulare.setText("" + Diocesi.getCellulare());
+        if(Diocesi.getCellulare() != 0) {
+            fieldCellulare.setText("" + Diocesi.getCellulare());
+        }
         fieldNomePrete.setText(Diocesi.getPrete());
     }
 
-    public void clickSalvaModificheDiocesi(ActionEvent actionEvent) {
+    public void clickSalvaModificheDiocesi(ActionEvent actionEvent) throws Exception {
+        String nome_diocesi = fieldNome.getText() != null ? fieldNome.getText() : "";
+        String nome_prete = fieldNomePrete.getText() != null ? fieldNomePrete.getText() : "";
+        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
+        String nome = fieldNomeResponsabile.getText() != null ? fieldNomeResponsabile.getText() : "";
+        String cognome = fieldCognomeResponsabile.getText() != null ? fieldCognomeResponsabile.getText() : "";
+        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
+        String email = fieldEmail.getText();
+        String password = fieldVecchiaPassword.getText();
+        String new_password = fieldNuovaPassword.getText();
+        Boolean showErrorAlert = false;
+        String error = "";
+
+        // controllo riempimento campi
+        if(!nome_diocesi.isEmpty() && !nome_prete.isEmpty() && !cellulare.isEmpty() && !indirizzo.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
+            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                // aggiorno la tabella help
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("nome", nome_diocesi);
+                datiAggiornati.put("nome_responsabile", nome);
+                datiAggiornati.put("cognome_responsabile", cognome);
+                datiAggiornati.put("prete", nome_prete);
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
+                DBMS.queryModificaDati(Responsabile.getId(), "diocesi", datiAggiornati);
+                DBMS.getDiocesi(Responsabile.getId());
+                // aggiorno la tabella responsabile per l'email
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(Responsabile.getId());
+            } else {
+                showErrorAlert = true;
+                error = "Non puoi usare questa email";
+            }
+        } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi obbligatori";
+        }
+
+        if(!password.isEmpty() && !new_password.isEmpty()) {
+            if(MainUtils.validatePassword(new_password)) {
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                String encryptPassword = MainUtils.encryptPassword(password);
+                datiAggiornati.put("password", encryptPassword);
+                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+            } else {
+                showErrorAlert = true;
+                error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
+            }
+        } else if(!password.isEmpty() && new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la nuova password";
+        } else if(password.isEmpty() && !new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la tua password";
+        }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
+        } else {
+            // torno alla schermata precedente
+            Stage window = (Stage) buttonSalvaModificheDiocesi.getScene().getWindow();
+            window.setScene(MainUtils.previousScene);
+            window.setTitle("Schermata Profilo Personale");
+        }
     }
 
 

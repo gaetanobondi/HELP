@@ -40,6 +40,11 @@
                 <Font size="17.0" />
             </font>
         </Label>
+        <Label layoutX="175.0" layoutY="269.0" lineSpacing="2.0" text="VIVERI PRODOTTO">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
         <Label layoutX="176.0" layoutY="50.0" lineSpacing="2.0" text="NOME">
             <font>
                 <Font size="17.0" />
@@ -50,13 +55,14 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelNomeResponsabile" layoutX="347.0" layoutY="53.0" text="Label" />
-        <Label fx:id="labelCognomeResponsabile" layoutX="347.0" layoutY="85.0" text="Label" />
-        <Label fx:id="labelEmail" layoutX="347.0" layoutY="117.0" text="Label" />
-        <Label fx:id="labelPassword" layoutX="347.0" layoutY="154.0" text="Label" />
-        <Label fx:id="labelCellulare" layoutX="347.0" layoutY="192.0" text="Label" />
-        <Label fx:id="labelIndirizzo" layoutX="347.0" layoutY="232.0" prefWidth="30.0" text="Label" />
-        <Label fx:id="labelNome" layoutX="347.0" layoutY="268.0" lineSpacing="2.0" text="NOME AZIENDA">
+        <Label fx:id="labelNomeResponsabile" layoutX="347.0" layoutY="53.0" />
+        <Label fx:id="labelCognomeResponsabile" layoutX="347.0" layoutY="85.0" />
+        <Label fx:id="labelEmail" layoutX="347.0" layoutY="117.0" />
+        <Label fx:id="labelPassword" layoutX="347.0" layoutY="154.0" text="******" />
+        <Label fx:id="labelCellulare" layoutX="347.0" layoutY="192.0" />
+        <Label fx:id="labelIndirizzo" layoutX="347.0" layoutY="232.0" prefWidth="30.0" />
+        <Label fx:id="labelViveriProdotto" layoutX="347.0" layoutY="269.0" prefWidth="30.0" />
+        <Label fx:id="labelNome" layoutX="347.0" layoutY="298.0" lineSpacing="2.0">
             <font>
                 <Font size="17.0" />
             </font>
