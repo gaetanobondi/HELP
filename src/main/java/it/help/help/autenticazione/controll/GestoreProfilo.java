@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -133,9 +134,28 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
+
+            // questo
+            // Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
+            // window.setScene(MainUtils.previousScene);
+            // window.setTitle("Schermata Profilo Personale");
+
+            // oppure questo
+            SchermataVisualizzaProfiloHelp l = new SchermataVisualizzaProfiloHelp();
             Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
-            window.setScene(MainUtils.previousScene);
-            window.setTitle("Schermata Profilo Personale");
+            l.start(window);
+            // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+            Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
+            Label labelPassword = (Label) window.getScene().lookup("#labelPassword");
+            Label labelNome = (Label) window.getScene().lookup("#labelNomeResponsabile");
+            Label labelCognome = (Label) window.getScene().lookup("#labelCognomeResponsabile");
+
+            // Imposta il testo delle label utilizzando i valori delle variabili
+
+            labelEmail.setText(Responsabile.getEmail());
+            labelPassword.setText("**********");
+            labelNome.setText(Help.getNome());
+            labelCognome.setText(Help.getCognome());
         }
     }
 

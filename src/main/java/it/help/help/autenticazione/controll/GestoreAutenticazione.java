@@ -1,6 +1,6 @@
 package it.help.help.autenticazione.controll;
 
-import it.help.help.autenticazione.boundary.SchermataLogin;
+import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -42,11 +42,7 @@ public class GestoreAutenticazione {
     public Label labelNome;
     public Label labelCognome;
     public Label labelViveriProdotto;
-
-
-
-
-
+    public Button buttonHome;
 
 
     @FXML
@@ -56,7 +52,38 @@ public class GestoreAutenticazione {
         System.out.println("ciao autenticazione");
     }
 
-
+    public void clickHome(ActionEvent actionEvent) throws Exception {
+        switch (Responsabile.getType()) {
+            case 0:
+                // HELP
+                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
+                SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
+                Stage window = (Stage) buttonHome.getScene().getWindow();
+                l.start(window);
+                break;
+            case 1:
+                // DIOCESI
+                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
+                SchermataHomeResponsabileDiocesi l1 = new SchermataHomeResponsabileDiocesi();
+                Stage window1 = (Stage) buttonHome.getScene().getWindow();
+                l1.start(window1);
+                break;
+            case 2:
+                // POLO
+                // nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
+                SchermataHomeResponsabilePolo l2 = new SchermataHomeResponsabilePolo();
+                Stage window2 = (Stage) buttonHome.getScene().getWindow();
+                l2.start(window2);
+                break;
+            case 3:
+                // AZIENDA PARTNER
+                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
+                SchermataHomeResponsabileAziendaPartner l3 = new SchermataHomeResponsabileAziendaPartner();
+                Stage window3 = (Stage) buttonHome.getScene().getWindow();
+                l3.start(window3);
+                break;
+        }
+    }
 
 
     //per la SCHERMATA INIZIALE
@@ -163,49 +190,6 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
         window.setTitle("Schermata Recupero Password");
     }
-
-
-
-
-
-
-    //per la schermata SIGN-IN
-
-    public boolean isValidEmail(String email) {
-        // Definisci la regex per il formato dell'email
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-
-        // Verifica se la stringa email corrisponde alla regex
-        return email.matches(emailRegex);
-    }
-
-    public static boolean validatePassword(String password) {
-        // Controlla se la password ha almeno 8 caratteri
-        if (password.length() < 8) {
-            return false;
-        }
-
-        // Controlla se la password contiene almeno una lettera maiuscola
-        if (!password.matches(".*[A-Z].*")) {
-            return false;
-        }
-
-        // Controlla se la password contiene almeno un numero
-        if (!password.matches(".*\\d.*")) {
-            return false;
-        }
-
-        // Controlla se la password contiene almeno un carattere speciale
-        if (!password.matches(".*[!@#$%^&*()].*")) {
-            return false;
-        }
-
-        // La password soddisfa tutti i requisiti
-        return true;
-    }
-
-
-
 
 
     //per la schermata HOME RESPONSABILE POLO
@@ -604,5 +588,4 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
         window.setTitle("Schermata Schema Di Distribuzione Della Diocesi");
     }
-
 }
