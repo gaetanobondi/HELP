@@ -49,14 +49,14 @@ public class GestoreRegistrazione {
                         boolean responsabile = DBMS.queryRegistraResponsabile(email, encryptPassword, type);
                         if(responsabile) {
                             String nomeSchermata = "";
-                            switch (Responsabile.getType()) {
+                            switch (MainUtils.responsabileLoggato.getType()) {
                                 case 0:
                                     // HELP
                                     nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
                                     break;
                                 case 1:
                                     // DIOCESI
-                                    Diocesi diocesi = DBMS.getDiocesi(Responsabile.getId());
+                                    Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
                                     if(diocesi.getStato_account()) {
                                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                                     } else {
@@ -71,7 +71,7 @@ public class GestoreRegistrazione {
                                     break;
                                 case 3:
                                     // AZIENDA PARTNER
-                                    AziendaPartner aziendaPartner = DBMS.getAziendaPartner(Responsabile.getId());
+                                    AziendaPartner aziendaPartner = DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
                                     if(aziendaPartner.getStatoAccount()) {
                                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                                     } else {

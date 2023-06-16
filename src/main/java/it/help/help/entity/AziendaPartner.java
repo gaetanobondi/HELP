@@ -3,16 +3,16 @@ import java.sql.*;
 import java.util.Objects;
 
 public class AziendaPartner {
-    private static int id;
-    private static int id_responsabile;
-    private static String nome;
-    private static String nome_responsabile;
-    private static String cognome_responsabile;
-    private static String indirizzo;
-    private static int cellulare;
-    private static String viveri_prodotto;
-    private static boolean stato_account;
-    private static Date date;
+    private int id;
+    private int id_responsabile;
+    private String nome;
+    private String nome_responsabile;
+    private String cognome_responsabile;
+    private String indirizzo;
+    private int cellulare;
+    private String viveri_prodotto;
+    private boolean stato_account;
+    private Date date;
 
     public AziendaPartner(int id, int id_responsabile, String nome, String nome_responsabile, String cognome_responsabile, String indirizzo, int cellulare, String viveri_prodotto, boolean stato_account, Date date) {
         this.id = id;
@@ -27,34 +27,36 @@ public class AziendaPartner {
         this.date = date;
     }
 
-    public static int getId() {
+    public AziendaPartner() { }
+
+    public int getId() {
         return id;
     }
-    public static int getIdResponsabile() {
+    public int getIdResponsabile() {
         return id_responsabile;
     }
-    public static String getNome() {
+    public String getNome() {
         return nome;
     }
-    public static String getNomeResponsabile() {
+    public String getNomeResponsabile() {
         return nome_responsabile;
     }
-    public static String getCognomeResponsabile() {
+    public String getCognomeResponsabile() {
         return cognome_responsabile;
     }
-    public static String getIndirizzo() {
+    public String getIndirizzo() {
         return indirizzo;
     }
-    public static int getCellulare() {
+    public int getCellulare() {
         return cellulare;
     }
-    public static String getViveriProdotto() {
+    public String getViveriProdotto() {
         return viveri_prodotto;
     }
-    public static boolean getStatoAccount() {
+    public boolean getStatoAccount() {
         return stato_account;
     }
-    public static Date getDate() {
+    public Date getDate() {
         return date;
     }
 

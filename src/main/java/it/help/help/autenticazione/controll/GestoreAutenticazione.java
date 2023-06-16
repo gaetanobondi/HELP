@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.*;
+import it.help.help.azienda_partner.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -56,7 +57,7 @@ public class GestoreAutenticazione {
     }
 
     public void clickHome(ActionEvent actionEvent) throws Exception {
-        switch (Responsabile.getType()) {
+        switch (MainUtils.responsabileLoggato.getType()) {
             case 0:
                 // HELP
                 // nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
@@ -124,16 +125,16 @@ public class GestoreAutenticazione {
             boolean responsabile = DBMS.queryControllaCredenzialiResponsabile(email, encryptPassword);
             if(responsabile) {
                 String nomeSchermata = "";
-                switch (Responsabile.getType()) {
+                switch (MainUtils.responsabileLoggato.getType()) {
                     case 0:
                         // HELP
-                        Help help = DBMS.getHelp(Responsabile.getId());
+                        Help help = DBMS.getHelp(MainUtils.responsabileLoggato.getId());
                         nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
                         // GestoreProfilo gestoreProfilo = new GestoreProfilo(responsabile, help);
                         break;
                     case 1:
                         // DIOCESI
-                        Diocesi diocesi = DBMS.getDiocesi(Responsabile.getId());
+                        Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
                         if(diocesi.getStato_account()) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                         } else {
@@ -144,7 +145,7 @@ public class GestoreAutenticazione {
                         break;
                     case 2:
                         // POLO
-                        Polo polo = DBMS.getPolo(Responsabile.getId());
+                        Polo polo = DBMS.getPolo(MainUtils.responsabileLoggato.getId());
                         if(polo.getStato_sospensione()) {
                             // POLO SOSPESO
                             nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
@@ -154,8 +155,8 @@ public class GestoreAutenticazione {
                         break;
                     case 3:
                         // AZIENDA PARTNER
-                        AziendaPartner aziendaPartner = DBMS.getAziendaPartner(Responsabile.getId());
-                        if(aziendaPartner.getStatoAccount()) {
+                        DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
+                        if(MainUtils.aziendaPartnerLoggata.getStatoAccount()) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                         } else {
                             // account non ancora attivo
@@ -224,12 +225,12 @@ public class GestoreAutenticazione {
         Label labelCellulare = (Label) root.lookup("#labelCellulare");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
-        labelNome.setText(Polo.getNome());
-        labelNomeResponsabile.setText(Polo.getNome_responsabile());
-        labelCognomeResponsabile.setText(Polo.getCognome_responsabile());
-        labelEmail.setText(Responsabile.getEmail());
-        labelIndirizzo.setText(Polo.getIndirizzo());
-        labelCellulare.setText("" + Polo.getCellulare());
+        labelNome.setText(MainUtils.poloLoggato.getNome());
+        labelNomeResponsabile.setText(MainUtils.poloLoggato.getNome_responsabile());
+        labelCognomeResponsabile.setText(MainUtils.poloLoggato.getCognome_responsabile());
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelIndirizzo.setText(MainUtils.poloLoggato.getIndirizzo());
+        labelCellulare.setText("" + MainUtils.poloLoggato.getCellulare());
 
     }
 
@@ -329,10 +330,10 @@ public class GestoreAutenticazione {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
-        labelEmail.setText(Responsabile.getEmail());
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         labelPassword.setText("**********");
-        labelNome.setText(Help.getNome());
-        labelCognome.setText(Help.getCognome());
+        labelNome.setText(MainUtils.helpLoggato.getNome());
+        labelCognome.setText(MainUtils.helpLoggato.getCognome());
     }
     public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazionePrevisioneDiDistribuzione.fxml"));
@@ -350,11 +351,13 @@ public class GestoreAutenticazione {
         window.setScene(new Scene(root));
         window.setTitle("Schermata Visualizza Richieste Diocesi");
 
-        double layoutY = 0;
+        double layoutY = 100;
         double spacing = 40.0; // Spazio verticale tra i componenti
 
         for (Diocesi diocesi : listaRichieste) {
             Responsabile responsabile = DBMS.getResponsabile(diocesi.getId_responsabile());
+            System.out.println("Responsabile diocesi iterata: " + responsabile.getId());
+            System.out.println("Responsabile LOGGATO: " + MainUtils.responsabileLoggato.getId());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
             buttonAccettaRichiesta.setLayoutX(300.0);
@@ -374,7 +377,7 @@ public class GestoreAutenticazione {
             labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
             labelDiocesiRichiesta.setLayoutX(180.0);
             labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
-            labelDiocesiRichiesta.setText(Responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
+            labelDiocesiRichiesta.setText(responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
 
             ScrollPane scrollPane = new ScrollPane();
             Pane paneRoot = (Pane) root;
@@ -394,15 +397,16 @@ public class GestoreAutenticazione {
 
         // Pane root = new Pane();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaRichiesteAziendePartner.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataVisualizzaRichieste.fxml"));
         Stage window = (Stage) buttonRichiesteAziendePartner.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Visualizza Richieste Aziende Partner");
 
-        double layoutY = 0;
+        double layoutY = 100;
         double spacing = 40.0; // Spazio verticale tra i componenti
 
         for (AziendaPartner azienda : listaRichieste) {
+            System.out.println(azienda.getId());
             Responsabile responsabile = DBMS.getResponsabile(azienda.getIdResponsabile());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
@@ -423,7 +427,7 @@ public class GestoreAutenticazione {
             labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
             labelDiocesiRichiesta.setLayoutX(180.0);
             labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
-            labelDiocesiRichiesta.setText(Responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
+            labelDiocesiRichiesta.setText(responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
 
             ScrollPane scrollPane = new ScrollPane();
             Pane paneRoot = (Pane) root;
@@ -487,22 +491,22 @@ public class GestoreAutenticazione {
         Label labelViveriProdotto = (Label) root.lookup("#labelViveriProdotto");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
-        labelNome.setText(AziendaPartner.getNome());
-        labelNomeResponsabile.setText(AziendaPartner.getNomeResponsabile());
-        labelCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
-        labelEmail.setText(Responsabile.getEmail());
-        labelIndirizzo.setText(AziendaPartner.getIndirizzo());
-        labelViveriProdotto.setText(AziendaPartner.getViveriProdotto());
-        if(AziendaPartner.getCellulare() != 0) {
-            labelCellulare.setText("" + AziendaPartner.getCellulare());
+        labelNome.setText(MainUtils.aziendaPartnerLoggata.getNome());
+        labelNomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getNomeResponsabile());
+        labelCognomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getCognomeResponsabile());
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
+        labelViveriProdotto.setText(MainUtils.aziendaPartnerLoggata.getViveriProdotto());
+        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
         }
     }
 
     public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzaDonazioniEffettuate.fxml"));
-        Stage window = (Stage) buttonVisualizzaDonazioniEffettuate.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizza Donazione Effettuate");
+        SchermataVisualizzaDonazioniEffettuate l = new SchermataVisualizzaDonazioniEffettuate();
+        Stage window = (Stage) buttonLogin.getScene().getWindow();
+        // MainUtils.boundaryStack.add(window);
+        l.start(window);
     }
 
     public void clickEffettuaDonazioneAdHoc(ActionEvent actionEvent) throws Exception {
@@ -552,16 +556,18 @@ public class GestoreAutenticazione {
         Label labelCellulare = (Label) root.lookup("#labelCellulare");
         Label labelNomePrete = (Label) root.lookup("#labelNomePrete");
 
+        Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
+
         // Imposta il testo delle label utilizzando i valori delle variabili
-        labelNome.setText(Diocesi.getNome());
-        labelNomeResponsabile.setText(Diocesi.getNome_responsabile());
-        labelCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
-        labelEmail.setText(Responsabile.getEmail());
-        labelIndirizzo.setText(Diocesi.getIndirizzo());
-        if(Diocesi.getCellulare() != 0) {
-            labelCellulare.setText("" + Diocesi.getCellulare());
+        labelNome.setText(diocesi.getNome());
+        labelNomeResponsabile.setText(diocesi.getNome_responsabile());
+        labelCognomeResponsabile.setText(diocesi.getCognome_responsabile());
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelIndirizzo.setText(diocesi.getIndirizzo());
+        if(diocesi.getCellulare() != 0) {
+            labelCellulare.setText("" + diocesi.getCellulare());
         }
-        labelNomePrete.setText(Diocesi.getPrete());
+        labelNomePrete.setText(diocesi.getPrete());
     }
 
     public void clickVisualizzaListaPoli(ActionEvent actionEvent) throws Exception {

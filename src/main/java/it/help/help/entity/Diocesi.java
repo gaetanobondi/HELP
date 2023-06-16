@@ -4,16 +4,16 @@ import java.util.Objects;
 import java.sql.*;
 
 public class Diocesi {
-    private static int id;
-    private static int id_responsabile;
-    private static String nome;
-    private static String nome_responsabile;
-    private static String cognome_responsabile;
-    private static String prete;
-    private static String indirizzo;
-    private static int cellulare;
-    private static boolean stato_account;
-    private static Date date;
+    private int id;
+    private int id_responsabile;
+    private String nome;
+    private String nome_responsabile;
+    private String cognome_responsabile;
+    private String prete;
+    private String indirizzo;
+    private int cellulare;
+    private boolean stato_account;
+    private Date date;
 
     public Diocesi(int id, int id_responsabile, String nome, String nome_responsabile, String cognome_responsabile, String prete, String indirizzo, int cellulare, boolean stato_account, Date date) {
         this.id = id;
@@ -28,35 +28,45 @@ public class Diocesi {
         this.date = date;
     }
 
-    public static int getId() {
+    public Diocesi() { }
+
+    public int getId() {
         return id;
     }
-    public static int getId_responsabile() {
+
+    public int getId_responsabile() {
         return id_responsabile;
     }
 
-    public static String getNome() {
+    public String getNome() {
         return nome;
     }
-    public static String getNome_responsabile() {
+
+    public String getNome_responsabile() {
         return nome_responsabile;
     }
-    public static String getCognome_responsabile() {
+
+    public String getCognome_responsabile() {
         return cognome_responsabile;
     }
-    public static String getPrete() {
+
+    public String getPrete() {
         return prete;
     }
-    public static String getIndirizzo() {
+
+    public String getIndirizzo() {
         return indirizzo;
     }
-    public static int getCellulare() {
+
+    public int getCellulare() {
         return cellulare;
     }
-    public static boolean getStato_account() {
+
+    public boolean getStato_account() {
         return stato_account;
     }
-    public static Date getDate() {
+
+    public Date getDate() {
         return date;
     }
 
@@ -64,7 +74,7 @@ public class Diocesi {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Diocesi) obj;
+        Diocesi that = (Diocesi) obj;
         return this.id == that.getId();
     }
 
@@ -78,7 +88,7 @@ public class Diocesi {
         return "Diocesi[" +
                 "id=" + id + ", " +
                 "id_responsabile=" + id_responsabile + ", " +
-                "nome=" + nome;
+                "nome=" + nome + "]";
     }
 
     public static Diocesi createFromDB(ResultSet row) throws SQLException {
@@ -94,5 +104,5 @@ public class Diocesi {
                 row.getBoolean(9),
                 row.getDate(10));
     }
-
 }
+

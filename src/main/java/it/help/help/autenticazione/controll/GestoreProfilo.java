@@ -64,9 +64,9 @@ public class GestoreProfilo {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
-        fieldNomeResponsabile.setText(Help.getNome());
-        fieldCognomeResponsabile.setText(Help.getCognome());
-        fieldEmail.setText(Responsabile.getEmail());
+        fieldNomeResponsabile.setText(MainUtils.helpLoggato.getNome());
+        fieldCognomeResponsabile.setText(MainUtils.helpLoggato.getCognome());
+        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
     }
 
     public Button buttonSalvaModificheHelp;
@@ -81,18 +81,18 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
-            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
                 // aggiorno la tabella help
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 datiAggiornati.put("nome", nome);
                 datiAggiornati.put("cognome", cognome);
-                DBMS.queryModificaDati(Responsabile.getId(), "help", datiAggiornati);
-                DBMS.getHelp(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "help", datiAggiornati);
+                DBMS.getHelp(MainUtils.responsabileLoggato.getId());
                 // aggiorno la tabella responsabile per l'email
                 HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
                 datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
-                DBMS.getResponsabile(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -107,7 +107,7 @@ public class GestoreProfilo {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -145,10 +145,10 @@ public class GestoreProfilo {
 
             // Imposta il testo delle label utilizzando i valori delle variabili
 
-            labelEmail.setText(Responsabile.getEmail());
+            labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
             labelPassword.setText("**********");
-            labelNome.setText(Help.getNome());
-            labelCognome.setText(Help.getCognome());
+            labelNome.setText(MainUtils.helpLoggato.getNome());
+            labelCognome.setText(MainUtils.helpLoggato.getCognome());
         }
     }
 
@@ -176,14 +176,14 @@ public class GestoreProfilo {
         TextField fieldViveriProdotto = (TextField) root.lookup("#fieldViveriProdotto");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
-        fieldNome.setText(AziendaPartner.getNome());
-        fieldNomeResponsabile.setText(AziendaPartner.getNomeResponsabile());
-        fieldCognomeResponsabile.setText(AziendaPartner.getCognomeResponsabile());
-        fieldEmail.setText(Responsabile.getEmail());
-        fieldIndirizzo.setText(AziendaPartner.getIndirizzo());
-        fieldViveriProdotto.setText(AziendaPartner.getViveriProdotto());
-        if(AziendaPartner.getCellulare() != 0) {
-            fieldCellulare.setText("" + AziendaPartner.getCellulare());
+        fieldNome.setText(MainUtils.aziendaPartnerLoggata.getNome());
+        fieldNomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getNomeResponsabile());
+        fieldCognomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getCognomeResponsabile());
+        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        fieldIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
+        fieldViveriProdotto.setText(MainUtils.aziendaPartnerLoggata.getViveriProdotto());
+        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
+            fieldCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
         }
     }
     public Button buttonSalvaModificheAzienda;
@@ -202,7 +202,7 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome_azienda.isEmpty() && !viveri_prodotto.isEmpty() && !cellulare.isEmpty() && !indirizzo.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
-            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
                 // aggiorno la tabella help
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 datiAggiornati.put("nome", nome_azienda);
@@ -211,13 +211,13 @@ public class GestoreProfilo {
                 datiAggiornati.put("viveri_prodotto", viveri_prodotto);
                 datiAggiornati.put("indirizzo", indirizzo);
                 datiAggiornati.put("cellulare", cellulare);
-                DBMS.queryModificaDati(Responsabile.getId(), "azienda_partner", datiAggiornati);
-                DBMS.getAziendaPartner(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "azienda_partner", datiAggiornati);
+                DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
                 // aggiorno la tabella responsabile per l'email
                 HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
                 datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
-                DBMS.getResponsabile(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -232,7 +232,7 @@ public class GestoreProfilo {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -281,12 +281,12 @@ public class GestoreProfilo {
         TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
-        fieldNome.setText(Polo.getNome());
-        fieldNomeResponsabile.setText(Polo.getNome_responsabile());
-        fieldCognomeResponsabile.setText(Polo.getCognome_responsabile());
-        fieldEmail.setText(Responsabile.getEmail());
-        fieldIndirizzo.setText(Polo.getIndirizzo());
-        fieldCellulare.setText("" + Polo.getCellulare());
+        fieldNome.setText(MainUtils.poloLoggato.getNome());
+        fieldNomeResponsabile.setText(MainUtils.poloLoggato.getNome_responsabile());
+        fieldCognomeResponsabile.setText(MainUtils.poloLoggato.getCognome_responsabile());
+        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        fieldIndirizzo.setText(MainUtils.poloLoggato.getIndirizzo());
+        fieldCellulare.setText("" + MainUtils.poloLoggato.getCellulare());
     }
     public Button buttonSalvaModifichePolo;
 
@@ -318,16 +318,18 @@ public class GestoreProfilo {
         TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
         TextField fieldNomePrete = (TextField) root.lookup("#fieldNomePrete");
 
+        Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
+
         // Imposta il testo delle label utilizzando i valori delle variabili
-        fieldNome.setText(Diocesi.getNome());
-        fieldNomeResponsabile.setText(Diocesi.getNome_responsabile());
-        fieldCognomeResponsabile.setText(Diocesi.getCognome_responsabile());
-        fieldEmail.setText(Responsabile.getEmail());
-        fieldIndirizzo.setText(Diocesi.getIndirizzo());
-        if(Diocesi.getCellulare() != 0) {
-            fieldCellulare.setText("" + Diocesi.getCellulare());
+        fieldNome.setText(diocesi.getNome());
+        fieldNomeResponsabile.setText(diocesi.getNome_responsabile());
+        fieldCognomeResponsabile.setText(diocesi.getCognome_responsabile());
+        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        fieldIndirizzo.setText(diocesi.getIndirizzo());
+        if(diocesi.getCellulare() != 0) {
+            fieldCellulare.setText("" + diocesi.getCellulare());
         }
-        fieldNomePrete.setText(Diocesi.getPrete());
+        fieldNomePrete.setText(diocesi.getPrete());
     }
 
     public void clickSalvaModificheDiocesi(ActionEvent actionEvent) throws Exception {
@@ -345,7 +347,7 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome_diocesi.isEmpty() && !nome_prete.isEmpty() && !cellulare.isEmpty() && !indirizzo.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !email.isEmpty()) {
-            if(email.equals(Responsabile.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
                 // aggiorno la tabella help
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 datiAggiornati.put("nome", nome_diocesi);
@@ -354,13 +356,13 @@ public class GestoreProfilo {
                 datiAggiornati.put("prete", nome_prete);
                 datiAggiornati.put("indirizzo", indirizzo);
                 datiAggiornati.put("cellulare", cellulare);
-                DBMS.queryModificaDati(Responsabile.getId(), "diocesi", datiAggiornati);
-                DBMS.getDiocesi(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "diocesi", datiAggiornati);
+                DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
                 // aggiorno la tabella responsabile per l'email
                 HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
                 datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornatiResponsabile);
-                DBMS.getResponsabile(Responsabile.getId());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -375,7 +377,7 @@ public class GestoreProfilo {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
-                DBMS.queryModificaDati(Responsabile.getId(), "responsabile", datiAggiornati);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";

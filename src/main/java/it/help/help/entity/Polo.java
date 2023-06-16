@@ -4,16 +4,16 @@ import java.util.Objects;
 import java.sql.*;
 
 public class Polo {
-    private static int id;
-    private static int id_responsabile;
-    private static int id_diocesi;
-    private static String nome;
-    private static String nome_responsabile;
-    private static String cognome_responsabile;
-    private static String indirizzo;
-    private static int cellulare;
-    private static boolean stato_sospensione;
-    private static Date date;
+    private int id;
+    private int id_responsabile;
+    private int id_diocesi;
+    private String nome;
+    private String nome_responsabile;
+    private String cognome_responsabile;
+    private String indirizzo;
+    private int cellulare;
+    private boolean stato_sospensione;
+    private Date date;
 
     public Polo(int id, int id_responsabile, int id_diocesi, String nome, String nome_responsabile, String cognome_responsabile, String indirizzo, int cellulare, boolean stato_sospensione, Date date) {
         this.id = id;
@@ -28,34 +28,36 @@ public class Polo {
         this.date = date;
     }
 
-    public static int getId() {
+    public Polo() { }
+
+    public int getId() {
         return id;
     }
-    public static int getId_responsabile() {
+    public int getId_responsabile() {
         return id_responsabile;
     }
-    public static int getId_diocesi() {
+    public int getId_diocesi() {
         return id_diocesi;
     }
-    public static String getNome() {
+    public String getNome() {
         return nome;
     }
-    public static String getNome_responsabile() {
+    public String getNome_responsabile() {
         return nome_responsabile;
     }
-    public static String getCognome_responsabile() {
+    public String getCognome_responsabile() {
         return cognome_responsabile;
     }
-    public static String getIndirizzo() {
+    public String getIndirizzo() {
         return indirizzo;
     }
-    public static int getCellulare() {
+    public int getCellulare() {
         return cellulare;
     }
-    public static boolean getStato_sospensione() {
+    public boolean getStato_sospensione() {
         return stato_sospensione;
     }
-    public static Date getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -80,7 +82,7 @@ public class Polo {
                 "nome=" + nome;
     }
 
-    public static Polo createFromDB(ResultSet row) throws SQLException {
+    public Polo createFromDB(ResultSet row) throws SQLException {
         return new Polo(
                 row.getInt(1),
                 row.getInt(2),

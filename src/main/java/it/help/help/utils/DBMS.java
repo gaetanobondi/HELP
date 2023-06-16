@@ -181,7 +181,25 @@ public class DBMS {
             stmt.setString(2, password);
             var r = stmt.executeQuery();
             if (r.next()) {
-                Responsabile.createFromDB(r);
+                Responsabile responsabile = new Responsabile();
+                MainUtils.responsabileLoggato = responsabile.createFromDB(r);
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean queryDonazioniEffettuate(int id_responsabile) throws Exception {
+        connect();
+        var query = "SELECT * FROM donazione WHERE id_azienda = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_responsabile);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                Responsabile responsabile = new Responsabile();
+                responsabile = responsabile.createFromDB(r);
                 return true;
             }
         } catch (SQLException e) {
@@ -197,7 +215,8 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return Diocesi.createFromDB(r);
+                Diocesi diocesi = new Diocesi();
+                return MainUtils.diocesiLoggata = diocesi.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -212,7 +231,8 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return Help.createFromDB(r);
+                Help help = new Help();
+                return MainUtils.helpLoggato = help.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -227,7 +247,9 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return AziendaPartner.createFromDB(r);
+                AziendaPartner aziendaPartner = new AziendaPartner();
+                MainUtils.aziendaPartnerLoggata = aziendaPartner.createFromDB(r);
+                return aziendaPartner;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -242,7 +264,8 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return Polo.createFromDB(r);
+                Polo polo = new Polo();
+                return MainUtils.poloLoggato = polo.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -269,7 +292,8 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                return Responsabile.createFromDB(r);
+                Responsabile responsabile = new Responsabile();
+                return  responsabile = responsabile.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -298,7 +322,7 @@ public class DBMS {
 
     public static AziendaPartner[] getRichiesteAziendePartner() throws Exception {
         connect();
-        String query = "SELECT * FROM azienda_partener WHERE stato_account = ? ORDER BY date ASC";
+        String query = "SELECT * FROM azienda_partner WHERE stato_account = ? ORDER BY date ASC";
         List<AziendaPartner> richiesteAziende = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
