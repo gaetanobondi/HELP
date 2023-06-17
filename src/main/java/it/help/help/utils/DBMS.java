@@ -33,7 +33,7 @@ public class DBMS {
     2 => POLO
     3 => AZIENDA PARTNER
      */
-    public static boolean queryRegistraResponsabile(String email, String password, int type) throws Exception {
+    public static void queryRegistraResponsabile(String email, String password, int type) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
@@ -50,39 +50,41 @@ public class DBMS {
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                ResultSet generatedKeys = stmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int id = generatedKeys.getInt(1);
-                    int lastID;
-                    ResponsabileCompleto responsabileCompleto;
-                    queryControllaCredenzialiResponsabile(email, password);
-                    switch (type) {
-                        case 0:
-                            break;
-                        case 1:
-                            // DIOCESI
-                            lastID = queryRegistraDiocesi(id);
-                            Diocesi diocesi = getDiocesi(lastID);
-                            // Responsabile responsabile = Responsabile;
-                            // responsabileCompleto = new ResponsabileCompleto(responsabile, diocesi);
-                            return true;
-                        case 2:
-                            break;
-                        case 3:
-                            // AZIENDA PARTNER
-                            lastID = queryRegistraAziendaPartner(id);
-                            AziendaPartner aziendaPartner = getAziendaPartner(lastID);
-                            // responsabileCompleto = new ResponsabileCompleto(Responsabile, aziendaPartner);
-                            return true;
-                    }
-                }
+                System.out.println("Registrato correttamente");
             } else {
-                System.out.println("Nessuna riga inserita");
+                System.out.println("Errore");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+    }
+
+    public static void queryRegistraPolo(int id_diocesi, String nome, String email, String password) throws Exception {
+        connect();
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+
+        String query = "INSERT INTO polo (email, password, type, nome, date, id_diocesi) VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            stmt.setInt(3, 2);
+            stmt.setString(4, nome);
+            stmt.setDate(5, date);
+            stmt.setInt(6, id_diocesi);
+            // return stmt.executeUpdate() > 0;
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Polo registrato correttamente");
+            } else {
+                System.out.println("Errore");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static int queryRegistraDiocesi(int id_responsabile) throws Exception {
@@ -173,7 +175,7 @@ public class DBMS {
         return true;
     }
 
-    public static boolean queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
+    public static Responsabile queryControllaCredenzialiResponsabile(String email, String password) throws Exception {
         connect();
         var query = "SELECT * FROM responsabile WHERE email = ? and password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -181,14 +183,14 @@ public class DBMS {
             stmt.setString(2, password);
             var r = stmt.executeQuery();
             if (r.next()) {
-                Responsabile responsabile = new Responsabile();
-                MainUtils.responsabileLoggato = responsabile.createFromDB(r);
-                return true;
+                Responsabile responsabile = Responsabile.createFromDB(r);
+                // MainUtils.responsabileLoggato = responsabile.createFromDB(r);
+                return responsabile;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     public static boolean queryDonazioniEffettuate(int id_responsabile) throws Exception {
@@ -292,8 +294,8 @@ public class DBMS {
             stmt.setInt(1, id_responsabile);
             var r = stmt.executeQuery();
             if (r.next()) {
-                Responsabile responsabile = new Responsabile();
-                return  responsabile = responsabile.createFromDB(r);
+                Responsabile responsabile = Responsabile.createFromDB(r);
+                return  responsabile;
             }
         } catch (SQLException e) {
             e.printStackTrace();

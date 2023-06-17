@@ -43,7 +43,7 @@ public class MainUtils {
         return null;
     }
 
-    public static boolean validatePassword(String password) {
+    public static boolean isValidPassword(String password) {
         // Controlla se la password ha almeno 8 caratteri
         if (password.length() < 8) {
             return false;

@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.autenticazione.boundary.SchermataLogin;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -36,7 +37,7 @@ public class GestoreRegistrazione {
 
         if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
             if(password.equals(repeatPassword)) {
-                if(MainUtils.isValidEmail(email) && MainUtils.validatePassword(password)) {
+                if(MainUtils.isValidEmail(email) && MainUtils.isValidPassword(password)) {
                     // verifico che l'email non sia già presente nel DBMS
                     if(!DBMS.queryControllaEsistenzaEmail(email)) {
                         // registro l'utente nel DBMS
@@ -46,48 +47,12 @@ public class GestoreRegistrazione {
                             type = 1;
                         }
                         String encryptPassword = MainUtils.encryptPassword(password);
-                        boolean responsabile = DBMS.queryRegistraResponsabile(email, encryptPassword, type);
-                        if(responsabile) {
-                            String nomeSchermata = "";
-                            switch (MainUtils.responsabileLoggato.getType()) {
-                                case 0:
-                                    // HELP
-                                    nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
-                                    break;
-                                case 1:
-                                    // DIOCESI
-                                    Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
-                                    if(diocesi.getStato_account()) {
-                                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
-                                    } else {
-                                       // account non ancora attivo
-                                        showErrorAlert = true;
-                                        error = "Il tuo account non è ancora attivo.";
-                                    }
-                                    break;
-                                case 2:
-                                    // POLO
-                                    nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
-                                    break;
-                                case 3:
-                                    // AZIENDA PARTNER
-                                    AziendaPartner aziendaPartner = DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
-                                    if(aziendaPartner.getStatoAccount()) {
-                                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
-                                    } else {
-                                        // account non ancora attivo
-                                        showErrorAlert = true;
-                                        error = "Il tuo account non è ancora attivo.";
-                                    }
-                                    break;
-                            }
-                            if(!showErrorAlert) {
-                                Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
-                                Stage window = (Stage) buttonRegistrati.getScene().getWindow();
-                                window.setScene(new Scene(root));
-                                window.setTitle("Schermata Home del Responsabile");
-                            }
-                        }
+                        DBMS.queryRegistraResponsabile(email, encryptPassword, type);
+
+                        // rimando alla schermata di login
+                        SchermataLogin l = new SchermataLogin();
+                        Stage window = (Stage) buttonRegistrati.getScene().getWindow();
+                        l.start(window);
                     } else {
                         showErrorAlert = true;
                         error = "Email già esistente";
