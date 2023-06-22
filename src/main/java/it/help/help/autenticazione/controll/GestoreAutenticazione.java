@@ -117,13 +117,13 @@ public class GestoreAutenticazione {
     public void clickAccedi(ActionEvent actionEvent) throws Exception {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
-        Boolean showErrorAlert = false;
+        boolean showErrorAlert = false;
         String error = "";
 
         if(!email.isEmpty() && !password.isEmpty()) {
             String encryptPassword = MainUtils.encryptPassword(password);
-            Responsabile responsabile = DBMS.queryControllaCredenzialiResponsabile(email, encryptPassword);
-            MainUtils.responsabileLoggato = responsabile;
+            MainUtils.responsabileLoggato = DBMS.queryControllaCredenzialiResponsabile(email, encryptPassword);
+            // MainUtils.responsabileLoggato = responsabile;
             if(MainUtils.responsabileLoggato != null) {
                 String nomeSchermata = "";
                 switch (MainUtils.responsabileLoggato.getType()) {
@@ -136,7 +136,7 @@ public class GestoreAutenticazione {
                     case 1:
                         // DIOCESI
                         // Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
-                        if(MainUtils.responsabileLoggato.getStatoAccount()) {
+                        if(DBMS.getStatoAccount("diocesi", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                         } else {
                             // account non ancora attivo
@@ -147,7 +147,7 @@ public class GestoreAutenticazione {
                     case 2:
                         // POLO
                         // Polo polo = DBMS.getPolo(MainUtils.responsabileLoggato.getId());
-                        if(MainUtils.responsabileLoggato.getStatoAccount()) {
+                        if(MainUtils.responsabileLoggato.getIdLavoro() == 1) {
                             // POLO SOSPESO
                             nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
                         } else {
@@ -157,7 +157,7 @@ public class GestoreAutenticazione {
                     case 3:
                         // AZIENDA PARTNER
                         // DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
-                        if(MainUtils.responsabileLoggato.getStatoAccount()) {
+                        if(DBMS.getStatoAccount("azienda", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                         } else {
                             // account non ancora attivo
@@ -316,7 +316,7 @@ public class GestoreAutenticazione {
     public Button buttonVisualizzaReport;
 
     public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataProfiloPersonale.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
         Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
         // salvo la scena corrente in modo da poter tornare indietro
         MainUtils.previousScene = window.getScene();
@@ -325,16 +325,23 @@ public class GestoreAutenticazione {
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) root.lookup("#labelEmail");
-        // Label labelPassword = (Label) root.lookup("#labelPassword");
         Label labelNome = (Label) root.lookup("#labelNome");
-        // Label labelCognome = (Label) root.lookup("#labelCognomeResponsabile");
+        Label labelCognome = (Label) root.lookup("#labelCognome");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
+
+        MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
 
         labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         // labelPassword.setText("**********");
         labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        // labelCognome.setText(MainUtils.helpLoggato.getCognome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.helpLoggato.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
     }
     public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazionePrevisioneDiDistribuzione.fxml"));
@@ -356,7 +363,7 @@ public class GestoreAutenticazione {
         double spacing = 40.0; // Spazio verticale tra i componenti
 
         for (Diocesi diocesi : listaRichieste) {
-            Responsabile responsabile = DBMS.getResponsabile(diocesi.getId_responsabile());
+            Responsabile responsabile = DBMS.getResponsabile(diocesi.getId());
             System.out.println("Responsabile diocesi iterata: " + responsabile.getId());
             System.out.println("Responsabile LOGGATO: " + MainUtils.responsabileLoggato.getId());
             Button buttonAccettaRichiesta = new Button();

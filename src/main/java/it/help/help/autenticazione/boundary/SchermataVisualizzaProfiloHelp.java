@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataVisualizzaProfilo extends Application {
+public class SchermataVisualizzaProfiloHelp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataVisualizzaProfilo.class.getResource("/it/help/help/SchermataProfiloPersonale.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataVisualizzaProfiloHelp.class.getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();

@@ -39,6 +39,7 @@ public class GestoreProfilo {
     public TextField fieldCognomeResponsabile;
     public TextField fieldNomePolo;
     public TextField fieldViveriProdotto;
+    public TextField fieldCognome;
 
     @FXML
     private AnchorPane contentPane;
@@ -50,7 +51,7 @@ public class GestoreProfilo {
     public Button buttonModificaDatiHelp;
 
     public void clickModificaDatiHelp(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfilo.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataModificaProfiloHelp.fxml"));
         Stage window = (Stage) buttonModificaDatiHelp.getScene().getWindow();
         MainUtils.previousScene = window.getScene();
         window.setScene(new Scene(root));
@@ -58,20 +59,28 @@ public class GestoreProfilo {
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        // TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
         TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
         fieldNome.setText(MainUtils.responsabileLoggato.getNome());
-        // fieldCognomeResponsabile.setText(MainUtils.helpLoggato.getCognome());
+        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
         fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        if(MainUtils.helpLoggato.getCellulare() != 0) {
+            fieldCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        }
+        fieldIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
     }
 
     public Button buttonSalvaModificheHelp;
     public void clickSalvaModificheHelp(ActionEvent actionEvent) throws Exception {
         String nome = fieldNome.getText();
-        // String cognome = fieldCognomeResponsabile.getText();
+        String cognome = fieldCognome.getText();
+        String indirizzo = fieldIndirizzo.getText();
+        String cellulare = fieldCellulare.getText();
         String email = fieldEmail.getText();
         String password = fieldVecchiaPassword.getText();
         String new_password = fieldNuovaPassword.getText();
@@ -79,19 +88,20 @@ public class GestoreProfilo {
         String error = "";
 
         // controllo riempimento campi
-        if(!nome.isEmpty() && !email.isEmpty()) {
+        if(!nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty() && !cellulare.isEmpty() && !email.isEmpty()) {
             if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
                 // aggiorno la tabella help
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("nome", nome);
-                datiAggiornati.put("email", email);
-                // datiAggiornati.put("cognome", cognome);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
-                // DBMS.getHelp(MainUtils.responsabileLoggato.getId());
-                // aggiorno la tabella responsabile per l'email
-                // HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                // datiAggiornatiResponsabile.put("email", email);
-                // DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "help", datiAggiornati);
+
+                // aggiorno la tabella responsabile
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("email", email);
+                datiAggiornatiResponsabile.put("nome", nome);
+                datiAggiornatiResponsabile.put("cognome", cognome);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
                 MainUtils.responsabileLoggato = DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
             } else {
                 showErrorAlert = true;
@@ -127,7 +137,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizza();
+            tornaAVisualizzaHelp();
         }
     }
 
@@ -222,7 +232,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizza();
+            // tornaAVisualizza();
         }
     }
 
@@ -344,23 +354,31 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizza();
+            // tornaAVisualizza();
         }
     }
 
-    private void tornaAVisualizza() throws Exception {
-        SchermataVisualizzaProfilo l = new SchermataVisualizzaProfilo();
+    private void tornaAVisualizzaHelp() throws Exception {
+        SchermataVisualizzaProfiloHelp l = new SchermataVisualizzaProfiloHelp();
         Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
         l.start(window);
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
         Label labelNome = (Label) window.getScene().lookup("#labelNome");
-        // Label labelCognome = (Label) window.getScene().lookup("#labelCognomeResponsabile");
+        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
+        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
+        MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+
         labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.helpLoggato.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
     }
 
 

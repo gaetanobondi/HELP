@@ -34,20 +34,24 @@ public class GestoreRegistrazione {
         Boolean showErrorAlert = false;
         String error = "";
         int type = 0;
+        int id_lavoro = 0;
 
         if((radioAzienda || radioDiocesi) && !email.isEmpty() && !password.isEmpty() && !repeatPassword.isEmpty()) {
             if(password.equals(repeatPassword)) {
                 if(MainUtils.isValidEmail(email) && MainUtils.isValidPassword(password)) {
                     // verifico che l'email non sia già presente nel DBMS
                     if(!DBMS.queryControllaEsistenzaEmail(email)) {
+                        String encryptPassword = MainUtils.encryptPassword(password);
                         // registro l'utente nel DBMS
                         if(radioAzienda) {
                             type = 3;
+                            id_lavoro = DBMS.queryRegistraAziendaPartner();
                         } else if(radioDiocesi) {
                             type = 1;
+                            id_lavoro = DBMS.queryRegistraDiocesi();
                         }
-                        String encryptPassword = MainUtils.encryptPassword(password);
-                        DBMS.queryRegistraResponsabile(email, encryptPassword, type);
+
+                        DBMS.queryRegistraResponsabile(email, encryptPassword, type, id_lavoro);
 
                         // rimando alla schermata di login
                         SchermataLogin l = new SchermataLogin();

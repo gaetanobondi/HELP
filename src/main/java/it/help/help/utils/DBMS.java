@@ -33,19 +33,20 @@ public class DBMS {
     2 => POLO
     3 => AZIENDA PARTNER
      */
-    public static void queryRegistraResponsabile(String email, String password, int type) throws Exception {
+    public static void queryRegistraResponsabile(String email, String password, int type, int id_lavoro) throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
 
-        String query = "INSERT INTO responsabile (email, password, type, date) VALUES (?,?,?,?)";
+        String query = "INSERT INTO responsabile (email, password, type, id_lavoro, date) VALUES (?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, email);
             stmt.setString(2, password);
             stmt.setInt(3, type);
-            stmt.setDate(4, date);
+            stmt.setInt(4, id_lavoro);
+            stmt.setDate(5, date);
             // return stmt.executeUpdate() > 0;
 
             int rowsAffected = stmt.executeUpdate();
@@ -87,17 +88,15 @@ public class DBMS {
         }
     }
 
-    private static int queryRegistraDiocesi(int id_responsabile) throws Exception {
+    public static int queryRegistraDiocesi() throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO diocesi (id_responsabile, stato_account, date) VALUES (?,?,?)";
+        String query = "INSERT INTO diocesi (date) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
-            stmt.setBoolean(2, false);
-            stmt.setDate(3, date);
+            stmt.setDate(1, date);
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -111,17 +110,15 @@ public class DBMS {
         return 0;
     }
 
-    private static int queryRegistraAziendaPartner(int id_responsabile) throws Exception {
+    public static int queryRegistraAziendaPartner() throws Exception {
         connect();
         // Ottenere la data di oggi
         LocalDate today = LocalDate.now();
         // Convertire LocalDate in java.sql.Date
         java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO azienda_partner (id_responsabile, stato_account, date) VALUES (?,?,?)";
+        String query = "INSERT INTO azienda (date) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
-            stmt.setBoolean(2, false);
-            stmt.setDate(3, date);
+            stmt.setDate(1, date);
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -183,9 +180,9 @@ public class DBMS {
             stmt.setString(2, password);
             var r = stmt.executeQuery();
             if (r.next()) {
-                Responsabile responsabile = Responsabile.createFromDB(r);
+                return Responsabile.createFromDB(r);
                 // MainUtils.responsabileLoggato = responsabile.createFromDB(r);
-                return responsabile;
+                // return responsabile;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -218,7 +215,7 @@ public class DBMS {
             var r = stmt.executeQuery();
             if (r.next()) {
                 Diocesi diocesi = new Diocesi();
-                return MainUtils.diocesiLoggata = diocesi.createFromDB(r);
+                return diocesi.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -226,15 +223,30 @@ public class DBMS {
         return null;
     }
 
-    public static Help getHelp(int id_responsabile) throws Exception {
+    public static boolean getStatoAccount(String nome_tabella, int id) throws Exception {
         connect();
-        var query = "SELECT * FROM help WHERE id_responsabile = ?";
+        var query = "SELECT stato_account FROM "+nome_tabella+" WHERE id = ? && stato_account = 1";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
+            stmt.setInt(1, id);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Help queryGetHelp(int id) throws Exception {
+        connect();
+        var query = "SELECT * FROM help WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
             var r = stmt.executeQuery();
             if (r.next()) {
                 Help help = new Help();
-                return MainUtils.helpLoggato = help.createFromDB(r);
+                return help.createFromDB(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -356,11 +368,7 @@ public class DBMS {
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Rimuovi l'ultima virgola
 
         // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
-        if(nomeTabellaDB.equals("responsabile")) {
-            queryBuilder.append(" WHERE id = ?");
-        } else {
-            queryBuilder.append(" WHERE id_responsabile = ?");
-        }
+        queryBuilder.append(" WHERE id = ?");
         values.add(id_responsabile);
 
         String query = queryBuilder.toString();

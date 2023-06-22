@@ -17,7 +17,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="buttonSalvaModifiche" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModifiche" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
+        <Button fx:id="buttonSalvaModificheHelp" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModificheHelp" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
         <Label layoutX="151.0" layoutY="198.0" text="CELLULARE">
             <font>
                 <Font size="16.0" />
@@ -28,21 +28,21 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="fieldIndirizzo" layoutX="268.0" layoutY="230.0" onAction="#fillInIndirizzo" />
-        <TextField fx:id="fieldCellulare" layoutX="268.0" layoutY="198.0" onAction="#fillInCellulare" />
-        <TextField fx:id="fieldEmail" layoutX="268.0" layoutY="166.0" onAction="#fillInEmail" />
+        <TextField fx:id="fieldIndirizzo" layoutX="268.0" layoutY="230.0" />
+        <TextField fx:id="fieldCellulare" layoutX="268.0" layoutY="198.0" />
+        <TextField fx:id="fieldEmail" layoutX="268.0" layoutY="166.0" />
         <Label layoutX="48.0" layoutY="300.0" prefHeight="20.0" prefWidth="159.0" text="VECCHIA PASSWORD">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <PasswordField fx:id="fieldVecchiaPassword" layoutX="226.0" layoutY="297.0" onAction="#fillInVecchiaPassword" />
+        <PasswordField fx:id="fieldVecchiaPassword" layoutX="226.0" layoutY="297.0" />
         <Label layoutX="48.0" layoutY="341.0" prefHeight="20.0" prefWidth="159.0" text="NUOVA PASSWORD">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <PasswordField fx:id="fieldNuovaPassword" layoutX="225.0" layoutY="338.0" onAction="#filInNuovaPassword" />
+        <PasswordField fx:id="fieldNuovaPassword" layoutX="225.0" layoutY="338.0" />
         <Label layoutX="148.0" layoutY="134.0" text="COGNOME">
             <font>
                 <Font size="16.0" />
@@ -53,7 +53,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="fieldCognome" layoutX="268.0" layoutY="134.0" onAction="#fillInCognome" />
-        <TextField fx:id="fieldNome" layoutX="268.0" layoutY="102.0" onAction="#fillInNome" />
+        <TextField fx:id="fieldCognome" layoutX="268.0" layoutY="134.0" />
+        <TextField fx:id="fieldNome" layoutX="268.0" layoutY="102.0" />
     </children>
 </Pane>

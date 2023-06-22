@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <fx:include source="../Composizione.fxml" />
         <Label layoutX="180.0" layoutY="163.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
@@ -15,7 +15,7 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Button fx:id="buttonModificaDati" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDati" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
+        <Button fx:id="buttonModificaDatiHelp" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiHelp" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
         <Label layoutX="180.0" layoutY="207.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />
@@ -31,10 +31,10 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelEmail" layoutX="347.0" layoutY="166.0" text="Label" />
-        <Label fx:id="labelPassword" layoutX="347.0" layoutY="210.0" text="Label" />
-        <Label fx:id="labelCellulare" layoutX="347.0" layoutY="256.0" text="Label" />
-        <Label fx:id="labelIndirizzo" layoutX="347.0" layoutY="306.0" prefWidth="30.0" text="Label" />
+        <Label fx:id="labelEmail" layoutX="347.0" layoutY="166.0" />
+        <Label fx:id="labelPassword" layoutX="347.0" layoutY="210.0" text="********" />
+        <Label fx:id="labelCellulare" layoutX="347.0" layoutY="256.0" />
+        <Label fx:id="labelIndirizzo" layoutX="347.0" layoutY="306.0" prefWidth="80.0" />
         <Label layoutX="180.0" layoutY="119.0" prefHeight="22.0" prefWidth="91.0" text="COGNOME">
             <font>
                 <Font size="17.0" />

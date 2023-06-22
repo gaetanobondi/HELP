@@ -6,17 +6,19 @@ import java.sql.*;
 public class Responsabile {
     private int id;
     private String nome;
+    private String cognome;
     private String email;
     private String password;
-    private boolean stato_account;
     private int type;
+    private int id_lavoro;
 
-    public Responsabile(int id, String email, String password, int type, boolean stato_account,  String nome) {
+    public Responsabile(int id, String email, String password, int type, String nome, String cognome, int id_lavoro) {
         this.id = id;
         this.nome = nome;
+        this.cognome = cognome;
         this.email = email;
         this.password = password;
-        this.stato_account = stato_account;
+        this.id_lavoro = id_lavoro;
         this.type = type;
     }
 
@@ -28,6 +30,9 @@ public class Responsabile {
     public String getNome() {
         return nome;
     }
+    public String getCognome() {
+        return cognome;
+    }
 
     public String getEmail() {
         return email;
@@ -36,8 +41,8 @@ public class Responsabile {
     public String getPassword() {
         return password;
     }
-    public boolean getStatoAccount() {
-        return stato_account;
+    public int getIdLavoro() {
+        return id_lavoro;
     }
 
     public int getType() {
@@ -72,8 +77,9 @@ public class Responsabile {
                 row.getString(2),
                 row.getString(3),
                 row.getInt(4),
-                row.getBoolean(5),
-                row.getString(6));
+                row.getString(5),
+                row.getString(6),
+                row.getInt(7));
     }
 
 }
