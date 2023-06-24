@@ -10,7 +10,7 @@ public class Diocesi {
     private int cellulare;
     private boolean stato_account;
 
-    public Diocesi(int id, int id_responsabile, String nome, String indirizzo, int cellulare, boolean stato_account) {
+    public Diocesi(int id, String nome, boolean stato_account, String indirizzo, int cellulare) {
         this.id = id;
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -59,11 +59,10 @@ public class Diocesi {
     public static Diocesi createFromDB(ResultSet row) throws SQLException {
         return new Diocesi(
                 row.getInt(1),
-                row.getInt(2),
-                row.getString(3),
+                row.getString(2),
+                row.getBoolean(3),
                 row.getString(4),
-                row.getInt(5),
-                row.getBoolean(6));
+                row.getInt(5));
     }
 }
 

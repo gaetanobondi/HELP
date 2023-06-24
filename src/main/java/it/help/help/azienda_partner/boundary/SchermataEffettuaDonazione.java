@@ -8,12 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataVisualizzaDonazioniEffettuate extends Application {
+public class SchermataEffettuaDonazione extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataEffettuaDonazione.class.getResource("/it/help/help/SchermataVisualizzaDonazioniEffettuate.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataEffettuaDonazione.class.getResource("/it/help/help/azienda_partner/SchermataEffettuaDonazione.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Visualizza donazioni effettuate");
+        stage.setTitle("Schermata effettua donazione");
         stage.setScene(scene);
         stage.show();
         MainUtils.boundaryStack.add((Stage) scene.getWindow());

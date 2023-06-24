@@ -3,6 +3,7 @@ package it.help.help.autenticazione.controll;
 import it.help.help.autenticazione.boundary.*;
 import it.help.help.azienda_partner.boundary.*;
 import it.help.help.entity.*;
+import it.help.help.polo.controll.GestoreNucleo;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,11 +11,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ScrollPane;
 import javafx.geometry.Insets;
+import javafx.scene.text.Font;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+
+
 
 import it.help.help.utils.DBMS;
 
@@ -237,18 +245,90 @@ public class GestoreAutenticazione {
 
 
     public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaVisualizzaListaNuclei.fxml"));
+        SchermataListaNuclei l = new SchermataListaNuclei();
         Stage window = (Stage) buttonVisualizzaNucleoFamiliare.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizza Lista Nuclei");
+        l.start(window);
+
+        Parent root = window.getScene().getRoot();
+
+        Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
+
+        double layoutY = 100;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+
+        ScrollPane scrollPane = new ScrollPane();
+        Pane paneRoot = (Pane) root;
+        // Imposta il margine per la ScrollPane
+        Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
+        scrollPane.setPadding(margin);
+
+        scrollPane.setFitToWidth(true);
+        paneRoot.getChildren().add(scrollPane);
+
+        VBox container = new VBox();
+        container.setSpacing(spacing);
+        scrollPane.setContent(container);
+
+        for (Nucleo nucleo : listaNuclei) {
+            Button buttonCognome = new Button();
+            buttonCognome.setText(nucleo.getCognome());
+            buttonCognome.setPrefHeight(19.0);
+            buttonCognome.setPrefWidth(155.0);
+            buttonCognome.setOnAction(event -> {
+                try {
+                    GestoreNucleo gestoreNucleo = new GestoreNucleo();
+                    gestoreNucleo.schermataComponentiNucleo(buttonCognome, nucleo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Font font = new Font(15.0);
+            buttonCognome.setFont(font);
+
+            Button buttonModificaNucleo = new Button();
+            buttonModificaNucleo.setText("MODIFICA");
+            // buttonModificaNucleo.setMnemonicParsing(false);
+            // buttonModificaNucleo.setStyle("-fx-background-color: FFFFFF;");
+            buttonModificaNucleo.setOnAction(event -> {
+                try {
+                    // GestoreAccettazioneEsiti.clickAccettaDiocesi(diocesi);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Button buttonEliminaNucleo = new Button();
+            buttonEliminaNucleo.setText("ELIMINA");
+            buttonEliminaNucleo.setOnAction(event -> {
+                try {
+                    GestoreNucleo.eliminaNucleo(nucleo.getId());
+                    MainUtils.tornaAllaHome(buttonEliminaNucleo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            HBox buttonContainer = new HBox();
+            buttonContainer.setAlignment(Pos.CENTER_LEFT);
+            buttonContainer.setSpacing(10.0);
+            buttonContainer.getChildren().addAll(buttonCognome, buttonModificaNucleo, buttonEliminaNucleo);
+
+            container.getChildren().add(buttonContainer);
+
+            layoutY += buttonCognome.getHeight() + spacing;
+        }
     }
 
 
+
+
+
+
     public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRegistrazioneNucleoFamiliare.fxml"));
+        SchermataRegistraNucleo l = new SchermataRegistraNucleo();
         Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Registrazione Nucleo Familiare");
+        l.start(window);
     }
 
 
@@ -511,7 +591,7 @@ public class GestoreAutenticazione {
     }
 
     public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaDonazioniEffettuate l = new SchermataVisualizzaDonazioniEffettuate();
+        SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
         Stage window = (Stage) buttonLogin.getScene().getWindow();
         // MainUtils.boundaryStack.add(window);
         l.start(window);
@@ -531,10 +611,48 @@ public class GestoreAutenticazione {
     }
 
     public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataEffettuaDonazione.fxml"));
+        SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
         Stage window = (Stage) buttonEffettuaDonazioneSpontanea.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Effettua Donazione");
+        l.start(window);
+
+        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
+        Parent root = window.getScene().getRoot();
+        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
+        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
+        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
+        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
+        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
+
+        for (Prodotto prodotto : listaProdotti) {
+            MenuItem menuItem = new MenuItem(prodotto.getTipo());
+            menuItem.setUserData(prodotto.getCodice());
+            menuItem.setOnAction(event -> {
+                String selectedProductName = ((MenuItem) event.getSource()).getText();
+                selectAlimenti.setText(selectedProductName);
+                fieldMenuSelected.setText("" + prodotto.getCodice());
+
+                if(prodotto.getSenzaGlutine()) {
+                    checkBoxSenzaGlutine.setSelected(true);
+                } else {
+                    checkBoxSenzaGlutine.setSelected(false);
+                }
+
+                if(prodotto.getSenzaLattosio()) {
+                    checkBoxSenzaLattosio.setSelected(true);
+                } else {
+                    checkBoxSenzaLattosio.setSelected(false);
+                }
+
+                if(prodotto.getSenzaZucchero()) {
+                    checkBoxSenzaZuccheri.setSelected(true);
+                } else {
+                    checkBoxSenzaZuccheri.setSelected(false);
+                }
+            });
+
+            selectAlimenti.getItems().add(menuItem);
+        }
+
     }
 
 

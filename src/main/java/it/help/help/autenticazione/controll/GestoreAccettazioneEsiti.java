@@ -17,12 +17,12 @@ import javafx.scene.control.Alert.AlertType;
 public class GestoreAccettazioneEsiti {
 
     public static void clickAccettaDiocesi(Diocesi diocesi) throws Exception {
-        // DBMS.accettaRichiesta(diocesi.getId_responsabile(), "diocesi");
-        // System.out.println("Diocesi " + diocesi.getId_responsabile() + " accettata.");
+        DBMS.accettaRichiesta(diocesi.getId(), "diocesi");
+        System.out.println("Diocesi " + diocesi.getId() + " accettata.");
     }
 
     public static void clickAccettaAziendaPartner(AziendaPartner aziendaPartner) throws Exception {
-        DBMS.accettaRichiesta(aziendaPartner.getIdResponsabile(), "azienda_partner");
-        System.out.println("Azienda " + aziendaPartner.getIdResponsabile() + " accettata.");
+        DBMS.accettaRichiesta(aziendaPartner.getId(), "azienda_partner");
+        System.out.println("Azienda " + aziendaPartner.getId() + " accettata.");
     }
 }

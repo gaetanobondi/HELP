@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataRegistrazionePolo extends Application {
+public class SchermataRegistraNucleo extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataRegistrazionePolo.class.getResource("/it/help/help/diocesi/SchermataRegistrazionePolo.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataRegistraNucleo.class.getResource("/it/help/help/polo/SchermataRegistraNucleo.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata registrazione polo");
+        stage.setTitle("Schermata registra nucleo");
         stage.setScene(scene);
         stage.show();
     }

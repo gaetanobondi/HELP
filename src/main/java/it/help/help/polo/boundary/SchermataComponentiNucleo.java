@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.polo.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataRegistrazionePolo extends Application {
+public class SchermataComponentiNucleo extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataRegistrazionePolo.class.getResource("/it/help/help/diocesi/SchermataRegistrazionePolo.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataComponentiNucleo.class.getResource("/it/help/help/polo/SchermataComponentiNucleo.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata registrazione polo");
+        stage.setTitle("Schermata componenti nucleo");
         stage.setScene(scene);
         stage.show();
     }
