@@ -81,6 +81,68 @@ public class DBMS {
         }
     }
 
+    // 0 => diocesi
+    // 1 => polo
+    // 2 => nucleo
+    public static void querySalvaSchemaDistribuzione(int type, int id_type, int codice_prodotto, int quantità) throws Exception {
+        connect();
+
+        // Query di ricerca preliminare
+        String selectQuery = "SELECT quantità FROM schema_distribuzione WHERE type = ? AND id_type = ? AND codice_prodotto = ?";
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery)) {
+            selectStmt.setInt(1, type);
+            selectStmt.setInt(2, id_type);
+            selectStmt.setInt(3, codice_prodotto);
+
+            ResultSet resultSet = selectStmt.executeQuery();
+
+            if (resultSet.next()) {
+                // Record già presente, esegui un'istruzione UPDATE
+                int quantitàEsistente = resultSet.getInt("quantità");
+                int nuovaQuantità = quantitàEsistente + quantità;
+
+                String updateQuery = "UPDATE schema_distribuzione SET quantità = ? WHERE type = ? AND id_type = ? AND codice_prodotto = ?";
+
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, nuovaQuantità);
+                    updateStmt.setInt(2, type);
+                    updateStmt.setInt(3, id_type);
+                    updateStmt.setInt(4, codice_prodotto);
+
+                    int rowsAffected = updateStmt.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Aggiornato correttamente");
+                    } else {
+                        System.out.println("Errore durante l'aggiornamento");
+                    }
+                }
+            } else {
+                // Nessun record corrispondente, esegui un'istruzione INSERT
+                String insertQuery = "INSERT INTO schema_distribuzione (type, id_type, codice_prodotto, quantità) VALUES (?, ?, ?, ?)";
+
+                try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                    insertStmt.setInt(1, type);
+                    insertStmt.setInt(2, id_type);
+                    insertStmt.setInt(3, codice_prodotto);
+                    insertStmt.setInt(4, quantità);
+
+                    int rowsAffected = insertStmt.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Inserito correttamente");
+                    } else {
+                        System.out.println("Errore durante l'inserimento");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void queryRegistraMembro(String codice_fiscale, int id_nucleo, String nome, String cognome, Date data_nascita, String indirizzo, boolean celiachia, boolean intolleranza_lattosio, boolean diabete) throws Exception {
         connect();
         String query = "INSERT INTO membro (codice_fiscale, id_nucleo, nome, cognome, data_nascita, indirizzo, celiachia, intolleranza_lattosio, diabete) VALUES (?,?,?,?,?,?,?,?,?)";
@@ -121,6 +183,27 @@ public class DBMS {
             stmt.setInt(3, quantità);
             stmt.setDate(4, data_scadenza);
             stmt.setDate(5, date);
+            // return stmt.executeUpdate() > 0;
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Registrato correttamente");
+            } else {
+                System.out.println("Errore");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void queryCaricaViveri(int codice_prodotto, int id_magazzino, int quantità, Date data_scadenza) throws Exception {
+        connect();
+        String query = "INSERT INTO scorte (codice_prodotto, id_magazzino, quantità, scadenza_prodotto) VALUES (?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, codice_prodotto);
+            stmt.setInt(2, id_magazzino);
+            stmt.setInt(3, quantità);
+            stmt.setDate(4, data_scadenza);
             // return stmt.executeUpdate() > 0;
 
             int rowsAffected = stmt.executeUpdate();
@@ -294,9 +377,40 @@ public class DBMS {
         return null;
     }
 
-    public static boolean getStatoAccount(String nome_tabella, int id) throws Exception {
+    public static Diocesi getDiocesiById(int id) throws Exception {
+        connect();
+        var query = "SELECT * FROM diocesi WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                Diocesi diocesi = new Diocesi();
+                return diocesi.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean queryGetStatoAccount(String nome_tabella, int id) throws Exception {
         connect();
         var query = "SELECT stato_account FROM "+nome_tabella+" WHERE id = ? && stato_account = 1";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean queryGetStatoSospensione(int id) throws Exception {
+        connect();
+        var query = "SELECT stato_sospensione FROM polo WHERE id = ? && stato_sospensione = 1";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, id);
             var r = stmt.executeQuery();
@@ -358,12 +472,49 @@ public class DBMS {
         return null;
     }
 
+    public static Polo queryGetPoloById(int id) throws Exception {
+        connect();
+        var query = "SELECT * FROM polo WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                Polo polo = new Polo();
+                return MainUtils.poloLoggato = polo.createFromDB(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void accettaRichiesta(int id, String tabella) throws Exception {
         connect();
         var query = "UPDATE "+tabella+" SET stato_account = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, 1);
             stmt.setInt(2, id);
+            var r = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void querySospendiPolo(int id) throws Exception {
+        connect();
+        var query = "UPDATE polo SET stato_sospensione = 1 WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            var r = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void queryRipristinaPolo(int id) throws Exception {
+        connect();
+        var query = "UPDATE polo SET stato_sospensione = 0 WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
             var r = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -379,6 +530,22 @@ public class DBMS {
             if (r.next()) {
                 Responsabile responsabile = Responsabile.createFromDB(r);
                 return  responsabile;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Prodotto queryGetProdotto(int codice_prodotto) throws Exception {
+        connect();
+        var query = "SELECT * FROM prodotto WHERE codice = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, codice_prodotto);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                Prodotto prodotto = Prodotto.createFromDB(r);
+                return prodotto;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -434,6 +601,81 @@ public class DBMS {
 
         return richiesteDiocesi.toArray(new Diocesi[0]);
     }
+    public static Magazzino[] queryGetMagazzini(int type, int id_proprietario) throws Exception {
+        connect();
+        String query = "SELECT * FROM magazzino WHERE type = ? && id_proprietario = ?";
+        List<Magazzino> listaMagazzini = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, type);
+            stmt.setInt(2, id_proprietario);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Magazzino magazzino = Magazzino.createFromDB(rs);
+                listaMagazzini.add(magazzino);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaMagazzini.toArray(new Magazzino[0]);
+    }
+
+    public static Scorte[] queryGetScorte(int id_magazzino) throws Exception {
+        connect();
+        String query = "SELECT * FROM scorte WHERE id_magazzino = ?";
+        List<Scorte> listaScorte = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_magazzino);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Scorte scorte = Scorte.createFromDB(rs);
+                listaScorte.add(scorte);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaScorte.toArray(new Scorte[0]);
+    }
+
+    public static Diocesi[] queryGetAllDiocesi() throws Exception {
+        connect();
+        String query = "SELECT * FROM diocesi";
+        List<Diocesi> listaDiocesi = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Diocesi diocesi = Diocesi.createFromDB(rs);
+                listaDiocesi.add(diocesi);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaDiocesi.toArray(new Diocesi[0]);
+    }
+
+    public static Polo[] queryGetAllPoli(int id_diocesi) throws Exception {
+        connect();
+        String query = "SELECT * FROM polo WHERE id_diocesi = ?";
+        List<Polo> listaPoli = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_diocesi);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Polo polo = Polo.createFromDB(rs);
+                listaPoli.add(polo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaPoli.toArray(new Polo[0]);
+    }
 
     public static Prodotto[] queryGetProdotti() throws Exception {
         connect();
@@ -475,7 +717,7 @@ public class DBMS {
 
     public static Nucleo[] getNuclei(int id_polo) throws Exception {
         connect();
-        String query = "SELECT * FROM nucleo WHERE id_polo = ?";
+        String query = "SELECT * FROM nucleo WHERE id_polo = ? ORDER BY reddito ASC";
         List<Nucleo> listaNuclei = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -490,6 +732,23 @@ public class DBMS {
         }
 
         return listaNuclei.toArray(new Nucleo[0]);
+    }
+
+    public static Nucleo getNucleo(int id) throws Exception {
+        connect();
+        String query = "SELECT * FROM nucleo WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                return Nucleo.createFromDB(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static AziendaPartner[] getRichiesteAziendePartner() throws Exception {
@@ -511,7 +770,7 @@ public class DBMS {
         return richiesteAziende.toArray(new AziendaPartner[0]);
     }
 
-    public static void queryModificaDati(int id_responsabile, String nomeTabellaDB, HashMap<String, Object> dati) throws Exception {
+    public static void queryModificaDati(int id, String nomeTabellaDB, HashMap<String, Object> dati) throws Exception {
         connect();
         StringBuilder queryBuilder = new StringBuilder("UPDATE " + nomeTabellaDB + " SET ");
         List<Object> values = new ArrayList<>();
@@ -527,7 +786,7 @@ public class DBMS {
 
         // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
         queryBuilder.append(" WHERE id = ?");
-        values.add(id_responsabile);
+        values.add(id);
 
         String query = queryBuilder.toString();
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {

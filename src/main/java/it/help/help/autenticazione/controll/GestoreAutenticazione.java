@@ -144,7 +144,7 @@ public class GestoreAutenticazione {
                     case 1:
                         // DIOCESI
                         // Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
-                        if(DBMS.getStatoAccount("diocesi", MainUtils.responsabileLoggato.getIdLavoro())) {
+                        if(DBMS.queryGetStatoAccount("diocesi", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
                         } else {
                             // account non ancora attivo
@@ -155,9 +155,9 @@ public class GestoreAutenticazione {
                     case 2:
                         // POLO
                         // Polo polo = DBMS.getPolo(MainUtils.responsabileLoggato.getId());
-                        if(MainUtils.responsabileLoggato.getIdLavoro() == 1) {
+                        if(DBMS.queryGetStatoSospensione(MainUtils.responsabileLoggato.getIdLavoro())) {
                             // POLO SOSPESO
-                            nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
+                            // nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
                         } else {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
                         }
@@ -165,7 +165,7 @@ public class GestoreAutenticazione {
                     case 3:
                         // AZIENDA PARTNER
                         // DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
-                        if(DBMS.getStatoAccount("azienda", MainUtils.responsabileLoggato.getIdLavoro())) {
+                        if(DBMS.queryGetStatoAccount("azienda", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
                         } else {
                             // account non ancora attivo
@@ -235,8 +235,8 @@ public class GestoreAutenticazione {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
         labelNome.setText(MainUtils.poloLoggato.getNome());
-        labelNomeResponsabile.setText(MainUtils.poloLoggato.getNome_responsabile());
-        labelCognomeResponsabile.setText(MainUtils.poloLoggato.getCognome_responsabile());
+        labelNomeResponsabile.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognomeResponsabile.setText(MainUtils.responsabileLoggato.getCognome());
         labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         labelIndirizzo.setText(MainUtils.poloLoggato.getIndirizzo());
         labelCellulare.setText("" + MainUtils.poloLoggato.getCellulare());
@@ -365,18 +365,54 @@ public class GestoreAutenticazione {
 
 
     public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSospensionePolo.fxml"));
+        SchermataSospensionePolo l = new SchermataSospensionePolo();
         Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Sospensione Polo");
+        l.start(window);
     }
 
 
     public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataCaricamentoViveri.fxml"));
-        Stage window = (Stage) buttonAggiungiViveriMagazzino.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Caricamento Viveri");
+        SchermataCaricamentoViveri l = new SchermataCaricamentoViveri();
+        Stage window = (Stage) buttonAggiungiViveriMagazzino .getScene().getWindow();
+        l.start(window);
+
+        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
+        Parent root = window.getScene().getRoot();
+        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
+        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
+        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
+        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
+        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
+
+        for (Prodotto prodotto : listaProdotti) {
+            MenuItem menuItem = new MenuItem(prodotto.getTipo());
+            menuItem.setUserData(prodotto.getCodice());
+            menuItem.setOnAction(event -> {
+                String selectedProductName = ((MenuItem) event.getSource()).getText();
+                selectAlimenti.setText(selectedProductName);
+                fieldMenuSelected.setText("" + prodotto.getCodice());
+
+                if(prodotto.getSenzaGlutine()) {
+                    checkBoxSenzaGlutine.setSelected(true);
+                } else {
+                    checkBoxSenzaGlutine.setSelected(false);
+                }
+
+                if(prodotto.getSenzaLattosio()) {
+                    checkBoxSenzaLattosio.setSelected(true);
+                } else {
+                    checkBoxSenzaLattosio.setSelected(false);
+                }
+
+                if(prodotto.getSenzaZucchero()) {
+                    checkBoxSenzaZuccheri.setSelected(true);
+                } else {
+                    checkBoxSenzaZuccheri.setSelected(false);
+                }
+            });
+
+            selectAlimenti.getItems().add(menuItem);
+        }
     }
 
 

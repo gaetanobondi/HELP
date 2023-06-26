@@ -260,8 +260,8 @@ public class GestoreProfilo {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
         fieldNome.setText(MainUtils.poloLoggato.getNome());
-        fieldNomeResponsabile.setText(MainUtils.poloLoggato.getNome_responsabile());
-        fieldCognomeResponsabile.setText(MainUtils.poloLoggato.getCognome_responsabile());
+        fieldNomeResponsabile.setText(MainUtils.responsabileLoggato.getNome());
+        fieldCognomeResponsabile.setText(MainUtils.responsabileLoggato.getCognome());
         fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
         fieldIndirizzo.setText(MainUtils.poloLoggato.getIndirizzo());
         fieldCellulare.setText("" + MainUtils.poloLoggato.getCellulare());

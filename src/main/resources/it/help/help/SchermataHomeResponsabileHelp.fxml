@@ -13,7 +13,7 @@
       <Button fx:id="buttonRichiesteAziendePartner" layoutX="184.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickRichiesteAziendePartner" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="RICHIESTE AZIENDE PARTNER" />
       <Button fx:id="buttonListaDonazioniRicevute" layoutX="184.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickListaDonazioniRicevute" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="LISTA DONAZIONI RICEVUTE" />
       <Button fx:id="buttonGestione" layoutX="184.0" layoutY="200.0" mnemonicParsing="false" onAction="#clickGestione" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="GESTIONE" />
-      <Button fx:id="buttonDonazioneAziendaPartner" layoutX="184.0" layoutY="234.0" mnemonicParsing="false" onAction="#clickDonazioneAziendaPartner" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="DONAZIONE AZIENDA PARTNER" />
+      <Button fx:id="buttonAggiungiViveriMagazzino" layoutX="184.0" layoutY="234.0" mnemonicParsing="false" onAction="#clickAggiungiViveriMagazzino" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="AGGIUNGI VIVERI AL MAGAZZINO" />
       <Button fx:id="buttonLogout" layoutX="17.0" layoutY="366.0" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />
    </children>
 </Pane>
