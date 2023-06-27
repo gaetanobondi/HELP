@@ -3,10 +3,199 @@ package it.help.help.tempo;
 import it.help.help.entity.*;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
+import java.util.Random;
 
 import java.util.*;
 
 public class GestoreSistema {
+    public void previsioneDistribuzione() throws Exception {
+        // nella previsione ho già tutte le donazioni nel magazzino
+        // per la previsione dovrei procedere al contrario: itero tutti i membri e vedo se per ogni categoria ci sono almeno due alimenti per membro
+
+        // Inizializza un insieme per tenere traccia dei membri unici
+        Set<Membro> membriDiabetici = new HashSet<>();
+        Set<Membro> membriIntollerantiLattosio = new HashSet<>();
+        Set<Membro> membriCeliaci = new HashSet<>();
+        Set<Membro> membriTutti = new HashSet<>();
+        Set<Membro> membriSenzaBisogni = new HashSet<>();
+
+        Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
+        for (Diocesi diocesi : listaDiocesi) {
+            Polo[] listaPoli = DBMS.queryGetAllPoli(diocesi.getId());
+            for (Polo polo : listaPoli) {
+                Nucleo[] listaNuclei = DBMS.getNuclei(polo.getId());
+                for (Nucleo nucleo : listaNuclei) {
+                    Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
+                    for (Membro membro : listaMembri) {
+                        // aggiungo ogni membro alla propria categoria
+                        if(membro.getCeliachia()) {
+                            membriCeliaci.add(membro);
+                        }
+                        if(membro.getDiabete()) {
+                            membriDiabetici.add(membro);
+                        }
+                        if(membro.getIntolleranzaLattosio()) {
+                            membriIntollerantiLattosio.add(membro);
+                        }
+                        if(!membro.getDiabete() && !membro.getCeliachia() && !membro.getIntolleranzaLattosio()) {
+                            membriSenzaBisogni.add(membro);
+                        }
+
+                        membriTutti.add(membro);
+                    }
+                }
+            }
+        }
+
+        // adesso per ogni categoria controllo che ci siano almeno due alimenti
+        int alimentiPerMembro = 10;
+        Magazzino[] listaMagazziniHelp = DBMS.queryGetMagazzini(0, 1);
+        Set<Scorte> listaScorteHelp = new HashSet<>();
+        for (Magazzino magazzino : listaMagazziniHelp) {
+            if(magazzino.getCapienzaAttuale() > 0) {
+                // se c'è qualcosa in magazzino controllo cosa è
+                Scorte[] listaScorteMagazzino = DBMS.queryGetScorte(magazzino.getId());
+                for (Scorte scorte : listaScorteMagazzino) {
+                    listaScorteHelp.add(scorte);
+                }
+            }
+        }
+
+        Iterator<Scorte> iterator = listaScorteHelp.iterator();
+        if(listaScorteHelp != null) {
+            while (iterator.hasNext()) {
+                int totMembriVivere = 0;
+                Scorte scorte = iterator.next();
+                // ciclo per contare i membri che hanno diritto a ciascun vivere
+                for (Membro membro : membriTutti) {
+                    // per ogni membro devo verificare se può ritirare il vivere in base ai bisogni
+                    Prodotto prodotto = DBMS.queryGetProdotto(scorte.getCodiceProdotto());
+                    if((membro.getDiabete() && prodotto.getSenzaZucchero()) || !membro.getDiabete()) {
+                        if((membro.getIntolleranzaLattosio() && prodotto.getSenzaLattosio()) || !membro.getIntolleranzaLattosio()) {
+                            if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
+                                totMembriVivere += 1;
+                            }
+                        }
+                    }
+                }
+
+                // ciclo per distribuire i viveri
+                if(totMembriVivere != 0) {
+                    int quantitàMinima = alimentiPerMembro * totMembriVivere;
+                    if(scorte.getQuantità() < quantitàMinima) {
+                        Prodotto prodotto = DBMS.queryGetProdotto(scorte.getCodiceProdotto());
+                        int dividedBy = 1;
+                        if(prodotto.getSenzaZucchero()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
+                            dividedBy += 1;
+                        }
+                        if(prodotto.getSenzaGlutine()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaGlutine");
+                            dividedBy += 1;
+                        }
+                        if(prodotto.getSenzaLattosio()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaLattosio");
+                            dividedBy += 1;
+                        }
+
+                        // divido in base alla categoria
+                        int giustaQuantità = quantitàMinima / dividedBy;
+                        if(prodotto.getSenzaZucchero()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
+                            distribuisciProdotti(quantitàMinima, listaProdotti);
+                        }
+                        if(prodotto.getSenzaGlutine()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaGlutine");
+                            distribuisciProdotti(quantitàMinima, listaProdotti);
+                        }
+                        if(prodotto.getSenzaLattosio()) {
+                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaLattosio");
+                            distribuisciProdotti(quantitàMinima, listaProdotti);
+                        }
+                    }
+                }
+            }
+        } else {
+            if(membriDiabetici.size() > 0) {
+                int quantitàMinima = membriDiabetici.size() * alimentiPerMembro;
+                System.out.println("Richieste perché non ci sono scorte:");
+                // nessuna scorta presente
+                Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
+                distribuisciProdotti(quantitàMinima, listaProdotti);
+            }
+
+            if(membriCeliaci.size() > 0) {
+                int quantitàMinima = membriCeliaci.size() * alimentiPerMembro;
+                System.out.println("Richieste perché non ci sono scorte:");
+                // nessuna scorta presente
+                Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaGlutine");
+                distribuisciProdotti(quantitàMinima, listaProdotti);
+            }
+
+            if(membriIntollerantiLattosio.size() > 0) {
+                int quantitàMinima = membriIntollerantiLattosio.size() * alimentiPerMembro;
+                System.out.println("Richieste perché non ci sono scorte:");
+                // nessuna scorta presente
+                Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaLattosio");
+                distribuisciProdotti(quantitàMinima, listaProdotti);
+            }
+
+            if(membriSenzaBisogni.size() > 0) {
+                int quantitàMinima = membriSenzaBisogni.size() * alimentiPerMembro;
+                System.out.println("Richieste perché non ci sono scorte:");
+                // nessuna scorta presente
+                Prodotto[] listaProdotti = DBMS.queryGetProdotti();
+                // Converti l'array in una lista
+                List<Prodotto> listaProdottiList = new ArrayList<>(Arrays.asList(listaProdotti));
+                distribuisciProdotti(quantitàMinima, listaProdotti);
+            }
+        }
+    }
+
+    public static List<List<Integer>> getCombinations(int target, int[] coins) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> combination = new ArrayList<>();
+        generateCombinations(target, coins, 0, combination, result);
+        return result;
+    }
+
+    private static void generateCombinations(int remaining, int[] coins, int start, List<Integer> combination, List<List<Integer>> result) {
+        if (remaining == 0) {
+            result.add(new ArrayList<>(combination));
+            return;
+        }
+
+        for (int i = start; i < coins.length; i++) {
+            if (remaining >= coins[i]) {
+                combination.add(coins[i]);
+                generateCombinations(remaining - coins[i], coins, i, combination, result);
+                combination.remove(combination.size() - 1);
+            }
+        }
+    }
+    public void distribuisciProdotti(int quantitàMinima, Prodotto[] listaProdotti) throws Exception {
+        // Converti l'array in una lista
+        List<Prodotto> listaProdottiList = new ArrayList<>(Arrays.asList(listaProdotti));
+        // Randomizza la lista
+        Collections.shuffle(listaProdottiList);
+
+        int[] coins = {25, 20, 10, 2, 5, 1, 15};
+
+        List<List<Integer>> combinations = getCombinations(quantitàMinima, coins);
+
+        Random r = new Random();
+        int i = r.nextInt(combinations.size());
+
+        Prodotto lastProdotto = null;
+        for (int combination : combinations.get(i)) {
+            if (!listaProdottiList.isEmpty()) {
+                lastProdotto = listaProdottiList.remove(0);
+            }
+            System.out.println("Richiesta ad-hoc: " + combination + " di prodotto con codice " + lastProdotto.getCodice());
+            DBMS.querySalvaRichiesta(lastProdotto.getCodice(), combination);
+        }
+    }
+
     public void generazioneSchemiDistribuzione() throws Exception {
         // nella distribuzione dei viveri help e diocesi distribuiscono tutti i propri viveri, solo i poli possono avere residuo di magazzino
 

@@ -5,10 +5,12 @@ import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import it.help.help.autenticazione.boundary.*;
+import it.help.help.entity.*;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 public class GestoreMagazzino {
     public TextField fieldMenuSelected;
@@ -16,6 +18,52 @@ public class GestoreMagazzino {
     public DatePicker pickerDataScadenza;
     public Button buttonEffettuaDonazione;
     public Button buttonCaricaViveri;
+
+    public Button buttonAggiungiViveriMagazzino;
+
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
+        SchermataCaricamentoViveri l = new SchermataCaricamentoViveri();
+        Stage window = (Stage) buttonAggiungiViveriMagazzino .getScene().getWindow();
+        l.start(window);
+
+        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
+        Parent root = window.getScene().getRoot();
+        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
+        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
+        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
+        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
+        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
+
+        for (Prodotto prodotto : listaProdotti) {
+            MenuItem menuItem = new MenuItem(prodotto.getTipo());
+            menuItem.setUserData(prodotto.getCodice());
+            menuItem.setOnAction(event -> {
+                String selectedProductName = ((MenuItem) event.getSource()).getText();
+                selectAlimenti.setText(selectedProductName);
+                fieldMenuSelected.setText("" + prodotto.getCodice());
+
+                if(prodotto.getSenzaGlutine()) {
+                    checkBoxSenzaGlutine.setSelected(true);
+                } else {
+                    checkBoxSenzaGlutine.setSelected(false);
+                }
+
+                if(prodotto.getSenzaLattosio()) {
+                    checkBoxSenzaLattosio.setSelected(true);
+                } else {
+                    checkBoxSenzaLattosio.setSelected(false);
+                }
+
+                if(prodotto.getSenzaZucchero()) {
+                    checkBoxSenzaZuccheri.setSelected(true);
+                } else {
+                    checkBoxSenzaZuccheri.setSelected(false);
+                }
+            });
+
+            selectAlimenti.getItems().add(menuItem);
+        }
+    }
 
     public void clickCaricaViveri(ActionEvent actionEvent) throws Exception {
         String codice_prodotto = fieldMenuSelected.getText();

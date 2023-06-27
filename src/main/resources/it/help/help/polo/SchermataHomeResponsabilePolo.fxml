@@ -6,12 +6,10 @@
 
 <Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-
+      <fx:include source="buttonGestorePolo.fxml" />
       <Button fx:id="buttonVisualizzaProfiloPolo" layoutX="166.0" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloPolo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
       <Button fx:id="buttonVisualizzaNucleoFamiliare" layoutX="166.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaNucleoFamiliare" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA NUCLEO FAMILIARE" />
       <Button fx:id="buttonInserimentoNucleo" layoutX="166.0" layoutY="95.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickInserimentoNucleo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="INSERIMENTO NUCLEO" />
-      <Button fx:id="buttonVisualizzaSchemaDiDistribuzionePolo" layoutX="166.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaSchemaDiDistribuzionePolo" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA SCHEMA DI DISTRIBUZIONE POLO" />
-      <Button fx:id="buttonVisualizzaSchemaDiDistribuzioneFamiglie" layoutX="166.0" layoutY="166.0" mnemonicParsing="false" onAction="#clickVisualizzaSchemaDiDistribuzioneFamiglie" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA SCHEMA DI DISTRIBUZIONE FAMIGLIE" />
       <Button fx:id="buttonSegnalazioneErrori" layoutX="166.0" layoutY="200.0" mnemonicParsing="false" onAction="#clickSegnalazioneErrori" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text="SEGNALAZIONE ERRORI" />
       <Button fx:id="buttonReport" layoutX="166.0" layoutY="234.0" mnemonicParsing="false" onAction="#clickReport" prefHeight="25.0" prefWidth="323.0" style="-fx-background-color: FFFFFF;" text=" REPORT" />
       <Button fx:id="buttonLogout" layoutX="17.0" layoutY="366.0" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />

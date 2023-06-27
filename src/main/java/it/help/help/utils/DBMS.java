@@ -56,6 +56,7 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,10 +77,61 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public static void querySalvaRichiesta(int codice_prodotto, int quantità) throws Exception {
+        connect();
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+
+        // Controllare se il record esiste già
+        String checkQuery = "SELECT quantità FROM richiesta_ad_hoc WHERE codice_prodotto = ?";
+        try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+            checkStmt.setInt(1, codice_prodotto);
+            ResultSet resultSet = checkStmt.executeQuery();
+            if (resultSet.next()) {
+                // Il record esiste già, incrementa la quantità
+                int existingQuantity = resultSet.getInt("quantità");
+                int newQuantity = existingQuantity + quantità;
+
+                String updateQuery = "UPDATE richiesta_ad_hoc SET quantità = ? WHERE codice_prodotto = ?";
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, newQuantity);
+                    updateStmt.setInt(2, codice_prodotto);
+                    int rowsAffected = updateStmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Quantità aggiornata correttamente");
+                    } else {
+                        System.out.println("Errore nell'aggiornamento della quantità");
+                    }
+                }
+            } else {
+                // Il record non esiste, inserisci un nuovo record
+                String insertQuery = "INSERT INTO richiesta_ad_hoc (codice_prodotto, quantità, data) VALUES (?,?,?)";
+                try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                    insertStmt.setInt(1, codice_prodotto);
+                    insertStmt.setInt(2, quantità);
+                    insertStmt.setDate(3, date);
+
+                    int rowsAffected = insertStmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Record inserito correttamente");
+                    } else {
+                        System.out.println("Errore nell'inserimento del record");
+                    }
+                }
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // 0 => diocesi
     // 1 => polo
@@ -137,6 +189,7 @@ public class DBMS {
                     }
                 }
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -164,6 +217,7 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -191,6 +245,7 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -212,6 +267,7 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -243,6 +299,7 @@ public class DBMS {
             } else {
                 System.out.println("Errore");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -265,6 +322,7 @@ public class DBMS {
                     return generatedKeys.getInt(1);
                 }
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -287,13 +345,89 @@ public class DBMS {
                     return generatedKeys.getInt(1);
                 }
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
+    public static Scorte[] queryGetScortePer(String type) throws Exception {
+        connect();
+        var query = "SELECT * FROM scorte INNER JOIN prodotto ON scorte.codice_prodotto = prodotto.codice INNER JOIN magazzino ON scorte.id_magazzino = magazzino.id WHERE prodotto."+type+" = 1 AND magazzino.type = 0";
+        List<Scorte> listaScorte = new ArrayList<>();
 
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Scorte scorte = new Scorte(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));
+                listaScorte.add(scorte);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaScorte.toArray(new Scorte[0]);
+    }
+
+    public static Scorte[] queryGetScortePerTutti() throws Exception {
+        connect();
+        var query = "SELECT * FROM scorte INNER JOIN prodotto ON scorte.codice_prodotto = prodotto.codice INNER JOIN magazzino ON scorte.id_magazzino = magazzino.id WHERE prodotto.senzaZucchero = 0 AND prodotto.senzaGlutine = 0 AND prodotto.senzaLattosio = 0 AND magazzino.type = 0";
+        List<Scorte> listaScorte = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Scorte scorte = new Scorte(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));
+                listaScorte.add(scorte);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaScorte.toArray(new Scorte[0]);
+    }
+    public static Prodotto[] queryGetProdottiPer(String type) throws Exception {
+        connect();
+        var query = "SELECT * FROM prodotto WHERE "+type+" = 1";
+        List<Prodotto> listaProdotti = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Prodotto prodotto = Prodotto.createFromDB(rs);
+                listaProdotti.add(prodotto);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaProdotti.toArray(new Prodotto[0]);
+    }
+
+    public static SchemaDistribuzione[] queryGetSchemiDistribuzione(int type, int id_type) throws Exception {
+        connect();
+        var query = "SELECT * FROM schema_distribuzione WHERE type = ? && id_type = ?";
+        List<SchemaDistribuzione> schemiDistribuzione = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, type);
+            stmt.setInt(2, id_type);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                SchemaDistribuzione schemaDistribuzione = SchemaDistribuzione.createFromDB(rs);
+                schemiDistribuzione.add(schemaDistribuzione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
+    }
     public static boolean queryControllaEsistenzaEmail(String email) throws Exception {
         connect();
         var query = "SELECT * FROM responsabile WHERE email = ?";
@@ -301,8 +435,10 @@ public class DBMS {
             stmt.setString(1, email);
             var r = stmt.executeQuery();
             if (r.next()) {
+                connection.close();
                 return true;
             }
+            connection.close();
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -317,8 +453,10 @@ public class DBMS {
             stmt.setString(1, codice_fiscale);
             var r = stmt.executeQuery();
             if (r.next()) {
+                connection.close();
                 return true;
             }
+            connection.close();
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -338,6 +476,7 @@ public class DBMS {
                 // MainUtils.responsabileLoggato = responsabile.createFromDB(r);
                 // return responsabile;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -355,6 +494,7 @@ public class DBMS {
                 responsabile = responsabile.createFromDB(r);
                 return true;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -371,6 +511,7 @@ public class DBMS {
                 Diocesi diocesi = new Diocesi();
                 return diocesi.createFromDB(r);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -387,6 +528,7 @@ public class DBMS {
                 Diocesi diocesi = new Diocesi();
                 return diocesi.createFromDB(r);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -402,6 +544,7 @@ public class DBMS {
             if (r.next()) {
                 return true;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -417,6 +560,7 @@ public class DBMS {
             if (r.next()) {
                 return true;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -433,6 +577,7 @@ public class DBMS {
                 Help help = new Help();
                 return help.createFromDB(r);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -450,6 +595,7 @@ public class DBMS {
                 MainUtils.aziendaPartnerLoggata = aziendaPartner.createFromDB(r);
                 return aziendaPartner;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -466,6 +612,7 @@ public class DBMS {
                 Polo polo = new Polo();
                 return MainUtils.poloLoggato = polo.createFromDB(r);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -482,6 +629,7 @@ public class DBMS {
                 Polo polo = new Polo();
                 return MainUtils.poloLoggato = polo.createFromDB(r);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -495,6 +643,7 @@ public class DBMS {
             stmt.setInt(1, 1);
             stmt.setInt(2, id);
             var r = stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -506,6 +655,7 @@ public class DBMS {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             var r = stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -516,6 +666,7 @@ public class DBMS {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             var r = stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -531,6 +682,7 @@ public class DBMS {
                 Responsabile responsabile = Responsabile.createFromDB(r);
                 return  responsabile;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -547,6 +699,7 @@ public class DBMS {
                 Prodotto prodotto = Prodotto.createFromDB(r);
                 return prodotto;
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -567,6 +720,7 @@ public class DBMS {
         try (PreparedStatement stmt = connection.prepareStatement(query2)) {
             stmt.setInt(1, id);
             var r = stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -578,6 +732,7 @@ public class DBMS {
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, codice_fiscale);
             var r = stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -595,6 +750,7 @@ public class DBMS {
                 Diocesi diocesi = Diocesi.createFromDB(rs);
                 richiesteDiocesi.add(diocesi);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -614,6 +770,7 @@ public class DBMS {
                 Magazzino magazzino = Magazzino.createFromDB(rs);
                 listaMagazzini.add(magazzino);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -633,6 +790,7 @@ public class DBMS {
                 Scorte scorte = Scorte.createFromDB(rs);
                 listaScorte.add(scorte);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -651,6 +809,7 @@ public class DBMS {
                 Diocesi diocesi = Diocesi.createFromDB(rs);
                 listaDiocesi.add(diocesi);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -670,6 +829,7 @@ public class DBMS {
                 Polo polo = Polo.createFromDB(rs);
                 listaPoli.add(polo);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -689,6 +849,7 @@ public class DBMS {
                 Prodotto prodotto = Prodotto.createFromDB(rs);
                 listaProdotti.add(prodotto);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -708,6 +869,7 @@ public class DBMS {
                 Membro membro = Membro.createFromDB(rs);
                 listaMembri.add(membro);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -727,6 +889,7 @@ public class DBMS {
                 Nucleo nucleo = Nucleo.createFromDB(rs);
                 listaNuclei.add(nucleo);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -744,6 +907,7 @@ public class DBMS {
             while (rs.next()) {
                 return Nucleo.createFromDB(rs);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -763,6 +927,7 @@ public class DBMS {
                 AziendaPartner aziendaPartner = AziendaPartner.createFromDB(rs);
                 richiesteAziende.add(aziendaPartner);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -799,6 +964,7 @@ public class DBMS {
 
             // Esegui la query di aggiornamento
             stmt.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

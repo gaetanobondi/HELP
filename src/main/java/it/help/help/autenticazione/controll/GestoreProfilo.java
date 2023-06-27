@@ -17,7 +17,7 @@ import java.util.*;
 
 //
 public class GestoreProfilo {
-
+    public Button buttonVisualizzaProfiloHelp;
 
     public Label labelNomeResponsabile;
     public Label labelCognomeResponsabile;
@@ -49,6 +49,35 @@ public class GestoreProfilo {
 
     //per la schermata MODIFICA PROFILO HELP
     public Button buttonModificaDatiHelp;
+
+    public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
+        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
+        // salvo la scena corrente in modo da poter tornare indietro
+        MainUtils.previousScene = window.getScene();
+        window.setScene(new Scene(root));
+        window.setTitle("Schermata Profilo Personale Help");
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelNome = (Label) root.lookup("#labelNome");
+        Label labelCognome = (Label) root.lookup("#labelCognome");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        // labelPassword.setText("**********");
+        labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.helpLoggato.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
+    }
 
     public void clickModificaDatiHelp(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataModificaProfiloHelp.fxml"));

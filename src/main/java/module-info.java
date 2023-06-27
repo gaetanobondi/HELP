@@ -18,9 +18,17 @@ module it.help.help {
     exports it.help.help.azienda_partner.controll;
     opens it.help.help.azienda_partner.controll to javafx.fxml;
     opens it.help.help.azienda_partner.boundary to javafx.fxml;
+    exports it.help.help.help.boundary;
+    exports it.help.help.help.controll;
+    opens it.help.help.help.controll to javafx.fxml;
+    opens it.help.help.help.boundary to javafx.fxml;
     exports it.help.help.magazzino.controll;
     opens it.help.help.magazzino.controll to javafx.fxml;
-    //exports it.help.help.diocesi.boundary;
+    // exports it.help.help.diocesi.boundary;
     exports it.help.help.diocesi.controll;
-    //opens it.help.help.diocesi.boundary to javafx.fxml;
+    opens it.help.help.diocesi.controll to javafx.fxml;
+    // opens it.help.help.diocesi.boundary to javafx.fxml;
+    exports it.help.help.common;
+    opens it.help.help.common to javafx.fxml;
+
 }

@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -138,14 +137,14 @@ public class GestoreAutenticazione {
                     case 0:
                         // HELP
                         // Help help = DBMS.getHelp(MainUtils.responsabileLoggato.getId());
-                        nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
+                        nomeSchermata = "/it/help/help/help/SchermataHomeResponsabileHelp.fxml";
                         // GestoreProfilo gestoreProfilo = new GestoreProfilo(responsabile, help);
                         break;
                     case 1:
                         // DIOCESI
                         // Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
                         if(DBMS.queryGetStatoAccount("diocesi", MainUtils.responsabileLoggato.getIdLavoro())) {
-                            nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
+                            nomeSchermata = "/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml";
                         } else {
                             // account non ancora attivo
                             showErrorAlert = true;
@@ -159,7 +158,7 @@ public class GestoreAutenticazione {
                             // POLO SOSPESO
                             // nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
                         } else {
-                            nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
+                            nomeSchermata = "/it/help/help/polo/SchermataHomeResponsabilePolo.fxml";
                         }
                         break;
                     case 3:
@@ -216,7 +215,6 @@ public class GestoreAutenticazione {
     public Button buttonSegnalazioneErrori;
     public Button buttonReport;
     public Button buttonSospendiPolo;
-    public Button buttonAggiungiViveriMagazzino;
 
 
     public void clickVisualizzaProfiloPolo(ActionEvent actionEvent) throws Exception {
@@ -371,199 +369,23 @@ public class GestoreAutenticazione {
     }
 
 
-    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
-        SchermataCaricamentoViveri l = new SchermataCaricamentoViveri();
-        Stage window = (Stage) buttonAggiungiViveriMagazzino .getScene().getWindow();
-        l.start(window);
-
-        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = window.getScene().getRoot();
-        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
-        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
-        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
-        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
-        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
-
-        for (Prodotto prodotto : listaProdotti) {
-            MenuItem menuItem = new MenuItem(prodotto.getTipo());
-            menuItem.setUserData(prodotto.getCodice());
-            menuItem.setOnAction(event -> {
-                String selectedProductName = ((MenuItem) event.getSource()).getText();
-                selectAlimenti.setText(selectedProductName);
-                fieldMenuSelected.setText("" + prodotto.getCodice());
-
-                if(prodotto.getSenzaGlutine()) {
-                    checkBoxSenzaGlutine.setSelected(true);
-                } else {
-                    checkBoxSenzaGlutine.setSelected(false);
-                }
-
-                if(prodotto.getSenzaLattosio()) {
-                    checkBoxSenzaLattosio.setSelected(true);
-                } else {
-                    checkBoxSenzaLattosio.setSelected(false);
-                }
-
-                if(prodotto.getSenzaZucchero()) {
-                    checkBoxSenzaZuccheri.setSelected(true);
-                } else {
-                    checkBoxSenzaZuccheri.setSelected(false);
-                }
-            });
-
-            selectAlimenti.getItems().add(menuItem);
-        }
-    }
-
-
 
 
 
     //per la SCHERMATA HOME RESPONSABILE HELP
 
-    public Button buttonVisualizzaProfiloHelp;
     public Button buttonVisualizzaPrevisioneDistribuzione;
-    public Button buttonRichiesteDiocesi;
-    public Button buttonRichiesteAziendePartner;
     public Button buttonListaDonazioniRicevute;
     public Button buttonGestione;
     public Button buttonDonazioneAziendaPartner;
 
     public Button buttonVisualizzaReport;
 
-    public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
-        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
-        // salvo la scena corrente in modo da poter tornare indietro
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Profilo Personale Help");
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelEmail = (Label) root.lookup("#labelEmail");
-        Label labelNome = (Label) root.lookup("#labelNome");
-        Label labelCognome = (Label) root.lookup("#labelCognome");
-        Label labelCellulare = (Label) root.lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
-
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        // labelPassword.setText("**********");
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.helpLoggato.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
-    }
     public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataVisualizzazionePrevisioneDiDistribuzione.fxml"));
-        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
+        Stage window = (Stage) buttonVisualizzaPrevisioneDistribuzione.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Visualizzazione Previsione Di Distribuzione");
-    }
-    public void clickRichiesteDiocesi(ActionEvent actionEvent) throws Exception {
-        Diocesi[] listaRichieste = DBMS.getRichiesteDiocesi();
-
-        // Pane root = new Pane();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataVisualizzaRichieste.fxml"));
-        Stage window = (Stage) buttonRichiesteDiocesi.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizza Richieste Diocesi");
-
-        double layoutY = 100;
-        double spacing = 40.0; // Spazio verticale tra i componenti
-
-        for (Diocesi diocesi : listaRichieste) {
-            Responsabile responsabile = DBMS.getResponsabile(diocesi.getId());
-            System.out.println("Responsabile diocesi iterata: " + responsabile.getId());
-            System.out.println("Responsabile LOGGATO: " + MainUtils.responsabileLoggato.getId());
-            Button buttonAccettaRichiesta = new Button();
-            buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
-            buttonAccettaRichiesta.setLayoutX(300.0);
-            buttonAccettaRichiesta.setLayoutY(layoutY);
-            buttonAccettaRichiesta.setMnemonicParsing(false);
-            buttonAccettaRichiesta.setOnAction(event -> {
-                try {
-                    GestoreAccettazioneEsiti.clickAccettaDiocesi(diocesi);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }); // Passa la diocesi al metodo clickAccetta()
-            buttonAccettaRichiesta.setStyle("-fx-background-color: #ffffff;");
-            buttonAccettaRichiesta.setText("ACCETTA");
-
-            Label labelDiocesiRichiesta = new Label();
-            labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
-            labelDiocesiRichiesta.setLayoutX(180.0);
-            labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
-            labelDiocesiRichiesta.setText(responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
-
-            ScrollPane scrollPane = new ScrollPane();
-            Pane paneRoot = (Pane) root;
-            // Imposta il margine per la ScrollPane
-            Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
-            scrollPane.setPadding(margin);
-
-            scrollPane.setFitToWidth(true);
-            paneRoot.getChildren().addAll(buttonAccettaRichiesta, labelDiocesiRichiesta);
-            scrollPane.setContent(paneRoot);
-            layoutY += buttonAccettaRichiesta.getHeight() + spacing;
-        }
-    }
-
-    public void clickRichiesteAziendePartner(ActionEvent actionEvent) throws Exception {
-        AziendaPartner[] listaRichieste = DBMS.getRichiesteAziendePartner();
-
-        // Pane root = new Pane();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataVisualizzaRichieste.fxml"));
-        Stage window = (Stage) buttonRichiesteAziendePartner.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Visualizza Richieste Aziende Partner");
-
-        double layoutY = 100;
-        double spacing = 40.0; // Spazio verticale tra i componenti
-
-        for (AziendaPartner azienda : listaRichieste) {
-            System.out.println(azienda.getId());
-            Responsabile responsabile = DBMS.getResponsabile(azienda.getIdResponsabile());
-            Button buttonAccettaRichiesta = new Button();
-            buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
-            buttonAccettaRichiesta.setLayoutX(300.0);
-            buttonAccettaRichiesta.setLayoutY(layoutY);
-            buttonAccettaRichiesta.setMnemonicParsing(false);
-            buttonAccettaRichiesta.setOnAction(event -> {
-                try {
-                    GestoreAccettazioneEsiti.clickAccettaAziendaPartner(azienda);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }); // Passa la diocesi al metodo clickAccetta()
-            buttonAccettaRichiesta.setStyle("-fx-background-color: #ffffff;");
-            buttonAccettaRichiesta.setText("ACCETTA");
-
-            Label labelDiocesiRichiesta = new Label();
-            labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
-            labelDiocesiRichiesta.setLayoutX(180.0);
-            labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
-            labelDiocesiRichiesta.setText(responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
-
-            ScrollPane scrollPane = new ScrollPane();
-            Pane paneRoot = (Pane) root;
-            // Imposta il margine per la ScrollPane
-            Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
-            scrollPane.setPadding(margin);
-
-            scrollPane.setFitToWidth(true);
-            paneRoot.getChildren().addAll(buttonAccettaRichiesta, labelDiocesiRichiesta);
-            scrollPane.setContent(paneRoot);
-            layoutY += buttonAccettaRichiesta.getHeight() + spacing;
-        }
     }
 
     public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {
@@ -697,7 +519,6 @@ public class GestoreAutenticazione {
 
     //per la SCHERMATA HOME RESPONSABILE DIOCESI
 
-    public Button buttonVisualizzaSchemaDiDistribuzioneDiocesi;
     public Button buttonVisualizzaListaPoli;
     public Button buttonRegistrazionePolo;
     public Button buttonVisualizzaCarichiInviati;
@@ -752,10 +573,9 @@ public class GestoreAutenticazione {
         window.setTitle("Schermata Visualizzazione Carichi");
     }
 
-    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSchemaDiDistribuzioneDellaDiocesi.fxml"));
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneDiocesi.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Schema Di Distribuzione Della Diocesi");
+    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) {
+    }
+
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) {
     }
 }

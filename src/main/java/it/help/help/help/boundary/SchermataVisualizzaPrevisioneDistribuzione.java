@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.help.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabileDiocesi extends Application {
+public class SchermataVisualizzaPrevisioneDistribuzione extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileDiocesi.class.getResource("/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataVisualizzaPrevisioneDistribuzione.class.getResource("/it/help/help/help/SchermataVisualizzaPrevisioneDistribuzione.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Diocesi");
+        stage.setTitle("Schermata visualizza previsione di distribuzione");
         stage.setScene(scene);
         stage.show();
     }
@@ -21,3 +21,4 @@ public class SchermataHomeResponsabileDiocesi extends Application {
         launch();
     }
 }
+
