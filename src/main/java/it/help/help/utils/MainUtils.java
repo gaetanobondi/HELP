@@ -4,6 +4,7 @@ import it.help.help.autenticazione.boundary.SchermataHomeResponsabileDiocesi;
 import it.help.help.autenticazione.boundary.SchermataHomeResponsabileHelp;
 import it.help.help.autenticazione.boundary.SchermataHomeResponsabilePolo;
 import it.help.help.entity.*;
+import it.help.help.polo.boundary.SchermataComponentiNucleo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import javafx.scene.layout.AnchorPane;
 import it.help.help.utils.DBMS;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import java.security.MessageDigest;
@@ -30,6 +33,7 @@ public class MainUtils {
     public static Help helpLoggato;
     public static Nucleo nucleo;
     public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
+    public Button buttonIndietro;
 
     public static String encryptPassword(String password) {
         try {
@@ -49,6 +53,7 @@ public class MainUtils {
 
         return null;
     }
+
 
     public static void tornaAllaHome(Button button) throws IOException {
         switch (MainUtils.responsabileLoggato.getType()) {
@@ -114,5 +119,14 @@ public class MainUtils {
 
         // Verifica se la stringa email corrisponde alla regex
         return email.matches(emailRegex);
+    }
+
+    public void clickIndietro(ActionEvent actionEvent) {
+    }
+
+
+
+
+    public void clickHome(ActionEvent actionEvent) {
     }
 }

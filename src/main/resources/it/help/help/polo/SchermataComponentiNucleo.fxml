@@ -20,6 +20,6 @@
 
 
         <Button fx:id="buttonAggiungiNuovoMembro" layoutX="215.0" layoutY="241.0" mnemonicParsing="false" onAction="#clickAggiungiNuovoMembro" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: FFFFFF;" text="AGGIUNGI NUOVO MEMBRO" />
-        <Button fx:id="buttonSchemaDistribuzioneComponentiNucleo" layoutX="210.0" layoutY="289.0" mnemonicParsing="false" onAction="#clickSchemaDistribuzioneNucleo" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: FFFFFF;" text="SCHEMA DI DI DISTRIBUZIONE" />
+        <Button fx:id="buttonVisualizzaSchemaDiDistribuzioneNucleo" layoutX="210.0" layoutY="289.0" mnemonicParsing="false" onAction="#clickVisualizzaSchemaDiDistribuzioneNucleo" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: FFFFFF;" text="SCHEMA DI DISTRIBUZIONE" />
     </children>
 </Pane>

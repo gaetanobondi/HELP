@@ -15,10 +15,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import it.help.help.common.SchermataVisualizzaSchemaDistribuzione;
 
 public class GestoreNucleo {
     public TextField fieldCognome;
@@ -37,6 +41,43 @@ public class GestoreNucleo {
     public Button buttonSalvaRegistraMembro;
     public DatePicker pickerDataNascita;
     public Label hiddenLabelIdNucleo;
+    public Button buttonVisualizzaSchemaDiDistribuzioneNucleo;
+
+    public void clickVisualizzaSchemaDiDistribuzioneNucleo(ActionEvent actionEvent) throws Exception {
+        SchermataVisualizzaSchemaDistribuzione l = new SchermataVisualizzaSchemaDistribuzione();
+        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneNucleo.getScene().getWindow();
+        l.start(window);
+
+        SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(2, MainUtils.nucleo.getId());
+
+        Parent root = window.getScene().getRoot();
+
+        double layoutY = 140;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+        double layoutX = 20.0; // Spazio laterale
+
+        // Ottieni il nome del mese corrente in italiano
+        LocalDate currentDate = LocalDate.now();
+        String nomeMeseCorrente = currentDate.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
+
+        // Aggiungi il titolo
+        Label titoloLabel = new Label("Schema di distribuzione di " + nomeMeseCorrente);
+        titoloLabel.setLayoutX(layoutX);
+        titoloLabel.setLayoutY(80);
+        titoloLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        ((Pane) root).getChildren().add(titoloLabel);
+
+        for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
+            Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
+
+            Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
+            label.setLayoutX(layoutX);
+            label.setLayoutY(layoutY);
+            layoutY += spacing;
+
+            ((Pane) root).getChildren().add(label);
+        }
+    }
 
     public void clickRegistraNucleo(ActionEvent actionEvent) throws Exception {
         String cognome = fieldCognome.getText();
@@ -70,14 +111,7 @@ public class GestoreNucleo {
         l.start(window);
     }
 
-    public void clickSchemaDistribuzioneNucleo(ActionEvent actionEvent) {
-    }
-
-    public void schermataComponentiNucleo(Button button, Nucleo nucleo) throws Exception {
-        SchermataComponentiNucleo l = new SchermataComponentiNucleo();
-        Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
-
+    public void visualizzaComponentiNucleo(Stage window, Nucleo nucleo) throws Exception {
         MainUtils.nucleo = nucleo;
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
@@ -111,6 +145,14 @@ public class GestoreNucleo {
         }
     }
 
+    public void schermataComponentiNucleo(Button button, Nucleo nucleo) throws Exception {
+        SchermataComponentiNucleo l = new SchermataComponentiNucleo();
+        Stage window = (Stage) button.getScene().getWindow();
+        l.start(window);
+
+        visualizzaComponentiNucleo(window, nucleo);
+    }
+
     public void clickSalvaRegistraMembro(ActionEvent actionEvent) throws Exception {
         String nome = fieldNome.getText();
         String cognome = fieldCognome.getText();
@@ -132,7 +174,7 @@ public class GestoreNucleo {
                 java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
 
                 DBMS.queryRegistraMembro(codice_fiscale, MainUtils.nucleo.getId(), nome, cognome, sqlDate, indirizzo, checkCeliachia, checkLattosio, checkDiabete);
-                MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
+                // MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
             } else {
                 showErrorAlert = true;
                 error = "Il membro risulta già iscritto al programma di aiuto.";
@@ -148,7 +190,12 @@ public class GestoreNucleo {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
+            // MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
+            SchermataComponentiNucleo l = new SchermataComponentiNucleo();
+            Stage window = (Stage) buttonSalvaRegistraMembro.getScene().getWindow();
+            l.start(window);
+
+            visualizzaComponentiNucleo(window, MainUtils.nucleo);
         }
     }
 }

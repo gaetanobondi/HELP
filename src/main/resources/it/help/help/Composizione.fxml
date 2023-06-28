@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.help.help.utils.MainUtils">
     <Button fx:id="buttonIndietro" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickIndietro" layoutX="522.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
         <graphic>
             <ImageView accessibleRole="BUTTON" fitHeight="39.0" fitWidth="37.0" layoutX="530.0" layoutY="20.0" >
