@@ -33,7 +33,7 @@ public class GestoreAccettazioneEsiti {
         double spacing = 40.0; // Spazio verticale tra i componenti
 
         for (Diocesi diocesi : listaRichieste) {
-            Responsabile responsabile = DBMS.getResponsabile(diocesi.getId());
+            Responsabile responsabile = DBMS.getResponsabile(1, diocesi.getId());
             System.out.println("Responsabile diocesi iterata: " + responsabile.getId());
             System.out.println("Responsabile LOGGATO: " + MainUtils.responsabileLoggato.getId());
             Button buttonAccettaRichiesta = new Button();
@@ -85,7 +85,7 @@ public class GestoreAccettazioneEsiti {
 
         for (AziendaPartner azienda : listaRichieste) {
             System.out.println(azienda.getId());
-            Responsabile responsabile = DBMS.getResponsabile(azienda.getIdResponsabile());
+            Responsabile responsabile = DBMS.getResponsabile(3, azienda.getIdResponsabile());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
             buttonAccettaRichiesta.setLayoutX(300.0);

@@ -20,7 +20,7 @@ public class SchermataIniziale extends Application {
         MainUtils.boundaryStack.add((Stage) scene.getWindow());
         GestoreSistema g = new GestoreSistema();
         // g.generazioneSchemiDistribuzione();
-        g.previsioneDistribuzione();
+        // g.previsioneDistribuzione();
     }
 
     public static void main(String[] args) {

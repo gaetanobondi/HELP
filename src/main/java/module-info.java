@@ -3,6 +3,8 @@ module it.help.help {
     requires javafx.fxml;
     requires java.sql;
     requires java.desktop;
+    requires org.apache.pdfbox;
+    requires javax.mail.api;
 
 
     opens it.help.help to javafx.fxml;
@@ -30,5 +32,7 @@ module it.help.help {
     // opens it.help.help.diocesi.boundary to javafx.fxml;
     exports it.help.help.common;
     opens it.help.help.common to javafx.fxml;
+    exports it.help.help.utils;
+    opens it.help.help.utils to javafx.fxml;
 
 }

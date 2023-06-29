@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.*;
+import it.help.help.entity.Help;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +51,9 @@ public class GestoreProfilo {
     //per la schermata MODIFICA PROFILO HELP
     public Button buttonModificaDatiHelp;
 
+    @FXML
     public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
+        System.out.println("OOOOOOOOK");
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
         Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
         // salvo la scena corrente in modo da poter tornare indietro
@@ -119,6 +122,7 @@ public class GestoreProfilo {
         // controllo riempimento campi
         if(!nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty() && !cellulare.isEmpty() && !email.isEmpty()) {
             if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                // NEL SEQUENCE C'è SOLO UNA QUERY, QUI CE NE SONO 2
                 // aggiorno la tabella help
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
                 datiAggiornati.put("indirizzo", indirizzo);
@@ -131,7 +135,7 @@ public class GestoreProfilo {
                 datiAggiornatiResponsabile.put("nome", nome);
                 datiAggiornatiResponsabile.put("cognome", cognome);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -226,7 +230,7 @@ public class GestoreProfilo {
                 datiAggiornati.put("nome", nome_azienda);
                 datiAggiornati.put("email", email);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -348,7 +352,9 @@ public class GestoreProfilo {
                 datiAggiornati.put("nome", nome_diocesi);
                 datiAggiornati.put("email", email);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(MainUtils.responsabileLoggato.getId());
+                System.out.println(MainUtils.responsabileLoggato.getEmail());
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
+                System.out.println(MainUtils.responsabileLoggato.getEmail());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -399,16 +405,16 @@ public class GestoreProfilo {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
-        MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+        // MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+        Help help = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
 
         labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         labelNome.setText(MainUtils.responsabileLoggato.getNome());
         labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.helpLoggato.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        if(help.getCellulare() != 0) {
+            labelCellulare.setText("" + help.getCellulare());
         }
-        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
+        labelIndirizzo.setText(help.getIndirizzo());
     }
-
 
 }

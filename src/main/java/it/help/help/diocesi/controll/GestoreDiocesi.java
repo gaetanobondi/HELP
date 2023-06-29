@@ -57,7 +57,7 @@ public class GestoreDiocesi {
                     HashMap<String, Object> datiAggiornati = new HashMap<>();
                     datiAggiornati.put("nome", nome);
                     datiAggiornati.put("cognome", cognome);
-                    Responsabile responsabile = DBMS.getResponsabile(id_polo);
+                    Responsabile responsabile = DBMS.getResponsabile(2, id_polo);
                     DBMS.queryModificaDati(responsabile.getId(), "responsabile", datiAggiornati);
 
                     // rimando alla schermata precedente

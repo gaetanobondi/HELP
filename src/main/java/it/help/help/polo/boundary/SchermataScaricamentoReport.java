@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.polo.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabileAziendaPartner extends Application {
+public class SchermataScaricamentoReport extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileAziendaPartner.class.getResource("/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataScaricamentoReport.class.getResource("/it/help/help/polo/SchermataScaricamentoReport.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Azienda Partner");
+        stage.setTitle("Schermata scaricamento report");
         stage.setScene(scene);
         stage.show();
     }

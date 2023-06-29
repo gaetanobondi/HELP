@@ -165,7 +165,7 @@ public class GestoreAutenticazione {
                         // AZIENDA PARTNER
                         // DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
                         if(DBMS.queryGetStatoAccount("azienda", MainUtils.responsabileLoggato.getIdLavoro())) {
-                            nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
+                            nomeSchermata = "/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml";
                         } else {
                             // account non ancora attivo
                             showErrorAlert = true;
@@ -416,10 +416,7 @@ public class GestoreAutenticazione {
     //per la schermata HOME RESPONSABILE AZIENDA PARTNER
 
     public Button buttonVisualizzaProfiloAziendaPartner;
-    public Button buttonVisualizzaDonazioniEffettuate;
-    public Button buttonEffettuaDonazioneAdHoc;
     public Button buttonLogout;
-    public Button buttonEffettuaDonazioneSpontanea;
 
     public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataProfiloPersonale.fxml"));
@@ -448,72 +445,11 @@ public class GestoreAutenticazione {
         // }
     }
 
-    public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
-        SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
-        Stage window = (Stage) buttonLogin.getScene().getWindow();
-        // MainUtils.boundaryStack.add(window);
-        l.start(window);
-    }
-
-    public void clickEffettuaDonazioneAdHoc(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataEffettuaDonazioneAdHoc.fxml"));
-        Stage window = (Stage) buttonEffettuaDonazioneAdHoc.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Effettua Donazione Ad-Hoc");
-    }
-
     public void clickLogout(ActionEvent actionEvent) throws Exception {
         SchermataLogin l = new SchermataLogin();
         Stage window = (Stage) buttonLogout.getScene().getWindow();
         l.start(window);
     }
-
-    public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {
-        SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
-        Stage window = (Stage) buttonEffettuaDonazioneSpontanea.getScene().getWindow();
-        l.start(window);
-
-        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = window.getScene().getRoot();
-        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
-        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
-        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
-        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
-        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
-
-        for (Prodotto prodotto : listaProdotti) {
-            MenuItem menuItem = new MenuItem(prodotto.getTipo());
-            menuItem.setUserData(prodotto.getCodice());
-            menuItem.setOnAction(event -> {
-                String selectedProductName = ((MenuItem) event.getSource()).getText();
-                selectAlimenti.setText(selectedProductName);
-                fieldMenuSelected.setText("" + prodotto.getCodice());
-
-                if(prodotto.getSenzaGlutine()) {
-                    checkBoxSenzaGlutine.setSelected(true);
-                } else {
-                    checkBoxSenzaGlutine.setSelected(false);
-                }
-
-                if(prodotto.getSenzaLattosio()) {
-                    checkBoxSenzaLattosio.setSelected(true);
-                } else {
-                    checkBoxSenzaLattosio.setSelected(false);
-                }
-
-                if(prodotto.getSenzaZucchero()) {
-                    checkBoxSenzaZuccheri.setSelected(true);
-                } else {
-                    checkBoxSenzaZuccheri.setSelected(false);
-                }
-            });
-
-            selectAlimenti.getItems().add(menuItem);
-        }
-
-    }
-
-
 
 
 

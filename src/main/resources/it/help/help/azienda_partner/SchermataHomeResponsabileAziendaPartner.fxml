@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.layout.VBox?>
+<VBox fx:controller="it.help.help.azienda_partner.controll.GestoreAziendaPartner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
+   <children>
+      <Button fx:id="buttonVisualizzaDonazioniEffettuate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaDonazioniEffettuate" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA DONAZIONI EFFETTUATE" />
+      <Button fx:id="buttonEffettuaDonazioneSpontanea" mnemonicParsing="false" onAction="#clickEffettuaDonazioneSpontanea" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="EFFETTUA DONAZIONE SPONTANEA" />
+      <Button fx:id="buttonListaDonazioniAdHoc" mnemonicParsing="false" onAction="#clickListaDonazioniAdHoc" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="EFFETTUA DONAZIONE AD-HOC" />
+      <fx:include source="buttonGestoreAutenticazione.fxml" />
+   </children>
+</VBox>

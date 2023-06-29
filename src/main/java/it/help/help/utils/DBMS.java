@@ -62,6 +62,35 @@ public class DBMS {
         }
     }
 
+    public static void querySalvaSegnalazione(int id_polo, int tipo_soggetto, int id_soggetto, int codice_prodotto, int quantità_ricevuta) throws Exception {
+        connect();
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+
+        String query = "INSERT INTO segnalazione (id_polo, tipo_soggetto, id_soggetto, codice_prodotto, quantità_ricevuta, data) VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_polo);
+            stmt.setInt(2, tipo_soggetto);
+            stmt.setInt(3, id_soggetto);
+            stmt.setInt(4, codice_prodotto);
+            stmt.setInt(5, quantità_ricevuta);
+            stmt.setDate(6, date);
+            // return stmt.executeUpdate() > 0;
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Segnalato correttamente");
+            } else {
+                System.out.println("Errore");
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void queryRegistraNucleo(int id_polo, String cognome, int reddito) throws Exception {
         connect();
         String query = "INSERT INTO nucleo (id_polo, cognome, reddito) VALUES (?,?,?)";
@@ -371,6 +400,49 @@ public class DBMS {
         return listaScorte.toArray(new Scorte[0]);
     }
 
+    // type 0 => mensile
+    // 1 => trimestrale
+    // 2 => annuale
+    public static Segnalazione[] queryGetSegnalazioni(int type_interval, int interval) throws Exception {
+        connect();
+        var query = "";
+        switch (type_interval) {
+            case 0:
+                query = "SELECT * FROM segnalazione WHERE MONTH(data) = " + interval;
+                break;
+            case 1:
+                query = "SELECT * FROM segnalazione WHERE MONTH(data) = " + interval;
+                break;
+            case 2:
+                // Calcolo dei mesi corrispondenti al trimestre
+                int startMonth = (interval - 1) * 3 + 1;
+                int endMonth = interval * 3;
+
+                // Creazione della parte della query per il trimestre
+                StringBuilder trimesterQuery = new StringBuilder();
+                trimesterQuery.append("MONTH(data) >= ").append(startMonth);
+                trimesterQuery.append(" AND MONTH(data) <= ").append(endMonth);
+
+                // Composizione della query completa
+                query = "SELECT * FROM segnalazione WHERE YEAR(data) = ? AND (" + trimesterQuery.toString() + ")";
+                break;
+        }
+        List<Segnalazione> listaSegnalazioni = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Segnalazione segnalazione = Segnalazione.createFromDB(rs);
+                listaSegnalazioni.add(segnalazione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaSegnalazioni.toArray(new Segnalazione[0]);
+    }
+
     public static Scorte[] queryGetScortePerTutti() throws Exception {
         connect();
         var query = "SELECT * FROM scorte INNER JOIN prodotto ON scorte.codice_prodotto = prodotto.codice INNER JOIN magazzino ON scorte.id_magazzino = magazzino.id WHERE prodotto.senzaZucchero = 0 AND prodotto.senzaGlutine = 0 AND prodotto.senzaLattosio = 0 AND magazzino.type = 0";
@@ -648,6 +720,18 @@ public class DBMS {
             e.printStackTrace();
         }
     }
+    public static void queryModificaPassword(String email, String password) throws Exception {
+        connect();
+        var query = "UPDATE responsabile SET password = ? WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, password);
+            stmt.setString(2, email);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void querySospendiPolo(int id) throws Exception {
         connect();
@@ -672,11 +756,12 @@ public class DBMS {
         }
     }
 
-    public static Responsabile getResponsabile(int id_lavoro) throws Exception {
+    public static Responsabile getResponsabile(int type, int id_lavoro) throws Exception {
         connect();
-        var query = "SELECT * FROM responsabile WHERE id_lavoro = ?";
+        var query = "SELECT * FROM responsabile WHERE type = ? && id_lavoro = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_lavoro);
+            stmt.setInt(1, type);
+            stmt.setInt(2, id_lavoro);
             var r = stmt.executeQuery();
             if (r.next()) {
                 Responsabile responsabile = Responsabile.createFromDB(r);
@@ -731,6 +816,17 @@ public class DBMS {
         var query = "DELETE FROM membro WHERE codice_fiscale = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, codice_fiscale);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void queryEliminaRichiestaAdHoc(int id) throws Exception {
+        connect();
+        var query = "DELETE FROM richiesta_ad_hoc WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id);
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
@@ -836,6 +932,24 @@ public class DBMS {
 
         return listaPoli.toArray(new Polo[0]);
     }
+    public static Polo[] queryGetAllPoli() throws Exception {
+        connect();
+        String query = "SELECT * FROM polo";
+        List<Polo> listaPoli = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Polo polo = Polo.createFromDB(rs);
+                listaPoli.add(polo);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaPoli.toArray(new Polo[0]);
+    }
 
     public static Prodotto[] queryGetProdotti() throws Exception {
         connect();
@@ -855,6 +969,26 @@ public class DBMS {
         }
 
         return listaProdotti.toArray(new Prodotto[0]);
+    }
+
+    public static RichiestaAdHoc[] queryGetRichiesteAdHoc() throws Exception {
+        connect();
+        String query = "SELECT * FROM richiesta_ad_hoc";
+        List<RichiestaAdHoc> listaRichieste = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            // stmt.setInt(1, 0);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                RichiestaAdHoc richiestaAdHoc = RichiestaAdHoc.createFromDB(rs);
+                listaRichieste.add(richiestaAdHoc);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaRichieste.toArray(new RichiestaAdHoc[0]);
     }
 
     public static Membro[] getMembri(int id_nucleo) throws Exception {

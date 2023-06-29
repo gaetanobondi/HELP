@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.boundary;
+package it.help.help.help.boundary;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabileAziendaPartner extends Application {
+public class SchermataLista extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileAziendaPartner.class.getResource("/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataLista.class.getResource("/it/help/help/help/SchermataLista.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Azienda Partner");
+        stage.setTitle("Schermata lista");
         stage.setScene(scene);
         stage.show();
     }
@@ -21,3 +21,4 @@ public class SchermataHomeResponsabileAziendaPartner extends Application {
         launch();
     }
 }
+

@@ -18,15 +18,31 @@ import it.help.help.utils.DBMS;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
 public class MainUtils {
     public static Scene previousScene;
     public static Responsabile responsabileLoggato;
+    public static Responsabile responsabileHelpLoggato;
     public static Polo poloLoggato;
     public static AziendaPartner aziendaPartnerLoggata;
     public static Diocesi diocesiLoggata;
@@ -34,6 +50,93 @@ public class MainUtils {
     public static Nucleo nucleo;
     public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
     public Button buttonIndietro;
+
+    public static void generatePDF(int type_interval, int interval) {
+        try {
+            // Creazione del documento PDF
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            Segnalazione[] listaSegnalazioni = DBMS.queryGetSegnalazioni(type_interval, interval);
+            // Scrittura dei dati nel PDF
+            int row = 0;
+            int yOffset = 0;
+
+            PDType1Font fontBold = PDType1Font.HELVETICA_BOLD;
+            PDType1Font fontRegular = PDType1Font.HELVETICA;
+
+            // Stampa il titolo in grassetto
+            contentStream.setFont(fontBold, 16);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 750);
+            String monthName = "";
+            if(type_interval == 1) {
+                Month month = Month.of(interval);
+                monthName = month.getDisplayName(TextStyle.FULL, Locale.ITALIAN);
+            }
+            contentStream.showText("Report di " + monthName);
+            contentStream.endText();
+
+            for (Segnalazione segnalazione : listaSegnalazioni) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, 700 - (row * 20) - yOffset);
+                if(segnalazione.getTipoSoggetto() == 0) {
+                    Diocesi diocesi = DBMS.getDiocesiById(segnalazione.getIdSoggetto());
+                    contentStream.showText("Segnalazione riguardante la diocesi " + diocesi.getNome());
+                } else {
+                    Nucleo nucleo = DBMS.getNucleo(segnalazione.getIdSoggetto());
+                    contentStream.showText("Segnalazione riguardante il nucleo " + nucleo.getCognome());
+                }
+                contentStream.endText();
+
+                String campo1 = "" + segnalazione.getCodiceProdotto();
+                String campo2 = "" + segnalazione.getQuantitàRicevuta();
+
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, 680 - (row * 20) - yOffset);
+                Prodotto prodotto = DBMS.queryGetProdotto(segnalazione.getCodiceProdotto());
+                contentStream.showText("Ricevuto " + campo2 + " di " + prodotto.getTipo());
+                contentStream.endText();
+
+                row++;
+                yOffset += 40; // Aggiungi uno spazio verticale tra i titoli
+            }
+
+
+
+            // Chiusura del documento PDF
+            contentStream.close();
+            String fileName = "file.pdf";
+
+            // Ottieni il percorso della cartella di download predefinita in base al sistema operativo
+            String home = System.getProperty("user.home");
+            String os = System.getProperty("os.name").toLowerCase();
+
+            String downloadPath;
+            if (os.contains("win")) {
+                downloadPath = Paths.get(home, "Downloads", fileName).toString();
+            } else if (os.contains("mac")) {
+                downloadPath = Paths.get(home, "Downloads", fileName).toString();
+            } else {
+                downloadPath = Paths.get(home, fileName).toString();
+            }
+
+            Path outputPath = Paths.get(downloadPath);
+
+            // Salva il documento PDF nel percorso di download
+            document.save(outputPath.toFile());
+            document.close();
+
+            System.out.println("PDF generato correttamente.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String encryptPassword(String password) {
         try {
@@ -124,9 +227,7 @@ public class MainUtils {
     public void clickIndietro(ActionEvent actionEvent) {
     }
 
-
-
-
-    public void clickHome(ActionEvent actionEvent) {
+    public void clickHome(ActionEvent actionEvent) throws IOException {
+        tornaAllaHome(buttonIndietro);
     }
 }
