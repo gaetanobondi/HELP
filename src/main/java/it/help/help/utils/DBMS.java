@@ -500,6 +500,30 @@ public class DBMS {
 
         return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
     }
+
+
+    public static SchemaDistribuzione[] queryGetSchemiDistribuzione(int type) throws Exception {
+        connect();
+        var query = "SELECT * FROM schema_distribuzione WHERE type = ?";
+        List<SchemaDistribuzione> schemiDistribuzione = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, type);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                SchemaDistribuzione schemaDistribuzione = SchemaDistribuzione.createFromDB(rs);
+                schemiDistribuzione.add(schemaDistribuzione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
+    }
+
+
+
     public static boolean queryControllaEsistenzaEmail(String email) throws Exception {
         connect();
         var query = "SELECT * FROM responsabile WHERE email = ?";
