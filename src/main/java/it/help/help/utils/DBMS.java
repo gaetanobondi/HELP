@@ -502,9 +502,9 @@ public class DBMS {
     }
 
 
-    public static SchemaDistribuzione[] queryGetSchemiDistribuzione(int type) throws Exception {
+    public static SchemaDistribuzione[] queryGetSchemiDistribuzioneNonRitirati(int type) throws Exception {
         connect();
-        var query = "SELECT * FROM schema_distribuzione WHERE type = ?";
+        var query = "SELECT * FROM schema_distribuzione WHERE type = ? && stato_ritiro = false";
         List<SchemaDistribuzione> schemiDistribuzione = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
