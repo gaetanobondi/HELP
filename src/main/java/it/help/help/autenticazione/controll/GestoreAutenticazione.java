@@ -121,9 +121,7 @@ public class GestoreAutenticazione {
 
 
     //per la SCHERMATA LOGIN
-    public void clickAccedi(ActionEvent actionEvent) throws Exception {
-        String email = fieldEmail.getText();
-        String password = fieldPassword.getText();
+    public void controllaCredenziali(String email, String password) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
