@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.*;
+import it.help.help.entity.AziendaPartner;
 import it.help.help.entity.Help;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -12,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import it.help.help.utils.DBMS;
+
+import java.io.IOException;
 import java.util.*;
 
 // import javax.swing.text.html.ImageView;
@@ -41,6 +44,11 @@ public class GestoreProfilo {
     public TextField fieldNomePolo;
     public TextField fieldViveriProdotto;
     public TextField fieldCognome;
+    public Button buttonVisualizzaProfiloAziendaPartner;
+    public TextField fieldNomeAziendaPartner;
+    public Label labelNomeDiocesi;
+    public Button buttonVisualizzaProfiloDiocesi;
+    public TextField fieldNomeDiocesi;
 
     @FXML
     private AnchorPane contentPane;
@@ -53,13 +61,10 @@ public class GestoreProfilo {
 
     @FXML
     public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
-        System.out.println("OOOOOOOOK");
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataProfiloPersonaleHelp.fxml"));
+        SchermataVisualizzaProfiloHelp l = new SchermataVisualizzaProfiloHelp();
         Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
-        // salvo la scena corrente in modo da poter tornare indietro
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Profilo Personale Help");
+        l.start(window);
+        Parent root = window.getScene().getRoot();
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         Label labelEmail = (Label) root.lookup("#labelEmail");
@@ -83,11 +88,10 @@ public class GestoreProfilo {
     }
 
     public void clickModificaDatiHelp(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/help/SchermataModificaProfiloHelp.fxml"));
+        SchermataModificaProfiloHelp l = new SchermataModificaProfiloHelp();
         Stage window = (Stage) buttonModificaDatiHelp.getScene().getWindow();
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Modifica Profilo Help");
+        l.start(window);
+        Parent root = window.getScene().getRoot();
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         TextField fieldNome = (TextField) root.lookup("#fieldNome");
@@ -128,6 +132,8 @@ public class GestoreProfilo {
                 datiAggiornati.put("indirizzo", indirizzo);
                 datiAggiornati.put("cellulare", cellulare);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "help", datiAggiornati);
+                // ricarico la entity help
+                MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
 
                 // aggiorno la tabella responsabile
                 HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
@@ -135,6 +141,7 @@ public class GestoreProfilo {
                 datiAggiornatiResponsabile.put("nome", nome);
                 datiAggiornatiResponsabile.put("cognome", cognome);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                // ricarico la entity responsabile
                 MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
@@ -151,6 +158,8 @@ public class GestoreProfilo {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -182,40 +191,37 @@ public class GestoreProfilo {
     public Button buttonModificaDatiAzienda;
 
     public void clickModificaDatiAzienda(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfiloAziendaPartner.fxml"));
+        SchermataModificaProfiloAziendaPartner l = new SchermataModificaProfiloAziendaPartner();
         Stage window = (Stage) buttonModificaDatiAzienda.getScene().getWindow();
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Modifica Profilo Azienda Partner");
+        l.start(window);
+        Parent root = window.getScene().getRoot();
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        // TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
-        // TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
         TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        // TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-        // TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-        // TextField fieldViveriProdotto = (TextField) root.lookup("#fieldViveriProdotto");
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
+        TextField fieldNomeAzienda = (TextField) root.lookup("#fieldNomeAziendaPartner");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
+
         fieldNome.setText(MainUtils.responsabileLoggato.getNome());
-        // fieldNomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getNomeResponsabile());
-        // fieldCognomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getCognomeResponsabile());
+        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
         fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        // fieldIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
-        // fieldViveriProdotto.setText(MainUtils.aziendaPartnerLoggata.getViveriProdotto());
-        // if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
-            // fieldCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
-        // }
+        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
+            fieldCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
+        }
+        fieldIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
+        fieldNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
     }
     public Button buttonSalvaModificheAzienda;
     public void clickSalvaModificheAzienda(ActionEvent actionEvent) throws Exception {
-        String nome_azienda = fieldNome.getText() != null ? fieldNome.getText() : "";
-        // String viveri_prodotto = fieldViveriProdotto.getText() != null ? fieldViveriProdotto.getText() : "";
-        // String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
-        // String nome = fieldNomeResponsabile.getText() != null ? fieldNomeResponsabile.getText() : "";
-        // String cognome = fieldCognomeResponsabile.getText() != null ? fieldCognomeResponsabile.getText() : "";
-        // String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
+        String nome_azienda = fieldNomeAziendaPartner.getText() != null ? fieldNomeAziendaPartner.getText() : "";
+        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
+        String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
+        String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";
+        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
         String email = fieldEmail.getText();
         String password = fieldVecchiaPassword.getText();
         String new_password = fieldNuovaPassword.getText();
@@ -223,13 +229,24 @@ public class GestoreProfilo {
         String error = "";
 
         // controllo riempimento campi
-        if(!nome_azienda.isEmpty() && !email.isEmpty()) {
+        if(!nome_azienda.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
             if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // aggiorno la tabella help
+                // aggiorno la tabella azienda
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
                 datiAggiornati.put("nome", nome_azienda);
-                datiAggiornati.put("email", email);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "azienda", datiAggiornati);
+                // ricarico la entity azienda
+                MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+
+                // aggiorno la tabella responsabile
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("nome", nome);
+                datiAggiornatiResponsabile.put("cognome", cognome);
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                // ricarico la entity responsabile
                 MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
@@ -246,6 +263,9 @@ public class GestoreProfilo {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -265,7 +285,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            // tornaAVisualizza();
+            tornaAVisualizzaAzienda();
         }
     }
 
@@ -314,30 +334,37 @@ public class GestoreProfilo {
 
     public Button buttonModificaDatiDiocesi;
     public void clickModificaDatiDiocesi(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfilo.fxml"));
+        SchermataModificaProfiloDiocesi l = new SchermataModificaProfiloDiocesi();
         Stage window = (Stage) buttonModificaDatiDiocesi.getScene().getWindow();
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Modifica Profilo Diocesi");
+        l.start(window);
+        Parent root = window.getScene().getRoot();
 
         // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
         TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        // TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
-        // TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
+        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
         TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        // TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-        // TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-        // TextField fieldNomePrete = (TextField) root.lookup("#fieldNomePrete");
-
-        // Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
+        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
+        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
+        TextField fieldNomeDiocesi = (TextField) root.lookup("#fieldNomeDiocesi");
 
         // Imposta il testo delle label utilizzando i valori delle variabili
+
         fieldNome.setText(MainUtils.responsabileLoggato.getNome());
+        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
         fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
+            fieldCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
+        }
+        fieldIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
+        fieldNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
     }
 
     public void clickSalvaModificheDiocesi(ActionEvent actionEvent) throws Exception {
-        String nome_diocesi = fieldNome.getText() != null ? fieldNome.getText() : "";
+        String nome_diocesi = fieldNomeDiocesi.getText() != null ? fieldNomeDiocesi.getText() : "";
+        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
+        String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
+        String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";
+        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
         String email = fieldEmail.getText();
         String password = fieldVecchiaPassword.getText();
         String new_password = fieldNuovaPassword.getText();
@@ -345,16 +372,24 @@ public class GestoreProfilo {
         String error = "";
 
         // controllo riempimento campi
-        if(!nome_diocesi.isEmpty() && !email.isEmpty()) {
+        if(!nome_diocesi.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
             if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // aggiorno la tabella help
+                // aggiorno la tabella diocesi
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
                 datiAggiornati.put("nome", nome_diocesi);
-                datiAggiornati.put("email", email);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
-                System.out.println(MainUtils.responsabileLoggato.getEmail());
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
-                System.out.println(MainUtils.responsabileLoggato.getEmail());
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "diocesi", datiAggiornati);
+                // ricarico la entity azienda
+                MainUtils.diocesiLoggata = DBMS.queryGetDiocesi(MainUtils.responsabileLoggato.getIdLavoro());
+
+                // aggiorno la tabella responsabile
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("nome", nome_diocesi);
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(1, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "Non puoi usare questa email";
@@ -370,6 +405,8 @@ public class GestoreProfilo {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(1, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -389,7 +426,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            // tornaAVisualizza();
+            tornaAVisualizzaDiocesi();
         }
     }
 
@@ -405,16 +442,114 @@ public class GestoreProfilo {
 
         // Imposta il testo delle label utilizzando i valori delle variabili
 
-        // MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
-        Help help = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.helpLoggato.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
+    }
+
+    private void tornaAVisualizzaAzienda() throws Exception {
+        SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
+        Stage window = (Stage) buttonSalvaModificheAzienda.getScene().getWindow();
+        l.start(window);
+        Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
+        Label labelNome = (Label) window.getScene().lookup("#labelNome");
+        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
+        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
+        Label labelNomeAzienda = (Label) window.getScene().lookup("#labelNomeAzienda");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
 
         labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
         labelNome.setText(MainUtils.responsabileLoggato.getNome());
         labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(help.getCellulare() != 0) {
-            labelCellulare.setText("" + help.getCellulare());
+        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
         }
-        labelIndirizzo.setText(help.getIndirizzo());
+        labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
+        labelNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
     }
 
+    private void tornaAVisualizzaDiocesi() throws Exception {
+        SchermataVisualizzaProfiloDiocesi l = new SchermataVisualizzaProfiloDiocesi();
+        Stage window = (Stage) buttonSalvaModificheDiocesi.getScene().getWindow();
+        l.start(window);
+        Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
+        Label labelNome = (Label) window.getScene().lookup("#labelNome");
+        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
+        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
+        Label labelNomeDiocesi = (Label) window.getScene().lookup("#labelNomeDiocesi");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
+        labelNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
+    }
+
+    public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
+        SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
+        Stage window = (Stage) buttonVisualizzaProfiloAziendaPartner.getScene().getWindow();
+        l.start(window);
+        Parent root = window.getScene().getRoot();
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelNome = (Label) root.lookup("#labelNome");
+        Label labelCognome = (Label) root.lookup("#labelCognome");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+        Label labelNomeAzienda = (Label) root.lookup("#labelNomeAzienda");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
+        labelNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
+    }
+
+    public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
+        SchermataVisualizzaProfiloDiocesi l = new SchermataVisualizzaProfiloDiocesi();
+        Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
+        l.start(window);
+        Parent root = window.getScene().getRoot();
+
+        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
+        Label labelEmail = (Label) root.lookup("#labelEmail");
+        Label labelNome = (Label) root.lookup("#labelNome");
+        Label labelCognome = (Label) root.lookup("#labelCognome");
+        Label labelCellulare = (Label) root.lookup("#labelCellulare");
+        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
+        Label labelNomeDiocesi = (Label) root.lookup("#labelNomeDiocesi");
+
+        // Imposta il testo delle label utilizzando i valori delle variabili
+
+        MainUtils.diocesiLoggata = DBMS.queryGetDiocesi(MainUtils.responsabileLoggato.getIdLavoro());
+
+        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
+        labelNome.setText(MainUtils.responsabileLoggato.getNome());
+        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
+        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
+            labelCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
+        }
+        labelIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
+        labelNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
+    }
 }

@@ -9,4 +9,6 @@
     <Button fx:id="buttonVisualizzaPrevisioneDistribuzione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaPrevisioneDiDistribuzione" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text=" PREVISIONE DI DISTRIBUZIONE" />
     <Region prefHeight="10.0" />
     <Button fx:id="buttonGestione" mnemonicParsing="false" onAction="#clickGestione" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="GESTIONE" />
+    <Region prefHeight="10.0" />
+    <Button fx:id="buttonListaDonazioniRicevute" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickListaDonazioniRicevute" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="LISTA DONAZIONI RICEVUTE" />
 </VBox>

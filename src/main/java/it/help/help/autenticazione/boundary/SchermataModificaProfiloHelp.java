@@ -7,14 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataRegistraNucleo extends Application {
+public class SchermataModificaProfiloHelp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataRegistraNucleo.class.getResource("/it/help/help/polo/SchermataRegistraNucleo.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataModificaProfiloHelp.class.getResource("/it/help/help/help/SchermataModificaProfiloHelp.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata registra nucleo");
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("Schermata modifica profilo");
     }
 
     public static void main(String[] args) {

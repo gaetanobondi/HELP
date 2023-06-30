@@ -243,9 +243,9 @@ public class GestoreAutenticazione {
 
 
     public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
-        SchermataListaNuclei l = new SchermataListaNuclei();
+        // SchermataListaNuclei l = new SchermataListaNuclei();
         Stage window = (Stage) buttonVisualizzaNucleoFamiliare.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
 
         Parent root = window.getScene().getRoot();
 
@@ -324,9 +324,9 @@ public class GestoreAutenticazione {
 
 
     public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
-        SchermataRegistraNucleo l = new SchermataRegistraNucleo();
+        // SchermataRegistraNucleo l = new SchermataRegistraNucleo();
         Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
 
@@ -415,35 +415,7 @@ public class GestoreAutenticazione {
 
     //per la schermata HOME RESPONSABILE AZIENDA PARTNER
 
-    public Button buttonVisualizzaProfiloAziendaPartner;
     public Button buttonLogout;
-
-    public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataProfiloPersonale.fxml"));
-        Stage window = (Stage) buttonVisualizzaProfiloAziendaPartner.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Profilo Personale Azienda Partner");
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelNome = (Label) root.lookup("#labelNome");
-        // Label labelNomeResponsabile = (Label) root.lookup("#labelNomeResponsabile");
-        // Label labelCognomeResponsabile = (Label) root.lookup("#labelCognomeResponsabile");
-        Label labelEmail = (Label) root.lookup("#labelEmail");
-        // Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
-        // Label labelCellulare = (Label) root.lookup("#labelCellulare");
-        // Label labelViveriProdotto = (Label) root.lookup("#labelViveriProdotto");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        // labelNomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getNomeResponsabile());
-        // labelCognomeResponsabile.setText(MainUtils.aziendaPartnerLoggata.getCognomeResponsabile());
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        // labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
-        // labelViveriProdotto.setText(MainUtils.aziendaPartnerLoggata.getViveriProdotto());
-        // if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
-            // labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
-        // }
-    }
 
     public void clickLogout(ActionEvent actionEvent) throws Exception {
         SchermataLogin l = new SchermataLogin();

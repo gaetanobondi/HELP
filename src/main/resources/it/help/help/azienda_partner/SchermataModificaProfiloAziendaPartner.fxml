@@ -15,7 +15,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="buttonSalvaModifiche" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModifiche" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
+        <Button fx:id="buttonSalvaModificheAzienda" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickSalvaModificheAzienda" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
         <Label layoutX="146.0" layoutY="72.0" text="CELLULARE">
             <font>
                 <Font size="16.0" />
@@ -40,13 +40,13 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <PasswordField fx:id="fieldNuovaPassword" layoutX="220.0" layoutY="338.0" onAction="#filInNuovaPassword" />
+        <PasswordField fx:id="fieldNuovaPassword" layoutX="220.0" layoutY="338.0" />
         <Label layoutX="145.0" layoutY="155.0" text="NOME AZIENDA">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="filedNomeAziendaPartner" layoutX="278.0" layoutY="155.0" onAction="#fillInNomeAziendaPartner" />
+        <TextField fx:id="fieldNomeAziendaPartner" layoutX="278.0" layoutY="155.0" />
         <Label layoutX="146.0" layoutY="195.0" text="NOME">
             <font>
                 <Font size="16.0" />
@@ -57,7 +57,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="fielNome" layoutX="278.0" layoutY="195.0" onAction="#fillInNome" />
-        <TextField fx:id="filedNome" layoutX="278.0" layoutY="235.0" onAction="#fillInNome" />
+        <TextField fx:id="fieldNome" layoutX="278.0" layoutY="195.0" />
+        <TextField fx:id="fieldCognome" layoutX="278.0" layoutY="235.0" />
     </children>
 </Pane>

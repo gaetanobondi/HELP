@@ -573,11 +573,11 @@ public class DBMS {
         return false;
     }
 
-    public static Diocesi getDiocesi(int id_responsabile) throws Exception {
+    public static Diocesi queryGetDiocesi(int id) throws Exception {
         connect();
-        var query = "SELECT * FROM diocesi WHERE id_responsabile = ?";
+        var query = "SELECT * FROM diocesi WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
+            stmt.setInt(1, id);
             var r = stmt.executeQuery();
             if (r.next()) {
                 Diocesi diocesi = new Diocesi();
@@ -656,16 +656,15 @@ public class DBMS {
         return null;
     }
 
-    public static AziendaPartner getAziendaPartner(int id_responsabile) throws Exception {
+    public static AziendaPartner queryGetAziendaPartner(int id) throws Exception {
         connect();
-        var query = "SELECT * FROM azienda_partner WHERE id_responsabile = ?";
+        var query = "SELECT * FROM azienda WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
+            stmt.setInt(1, id);
             var r = stmt.executeQuery();
             if (r.next()) {
                 AziendaPartner aziendaPartner = new AziendaPartner();
-                MainUtils.aziendaPartnerLoggata = aziendaPartner.createFromDB(r);
-                return aziendaPartner;
+                return aziendaPartner.createFromDB(r);
             }
             connection.close();
         } catch (SQLException e) {
@@ -852,6 +851,43 @@ public class DBMS {
         }
 
         return richiesteDiocesi.toArray(new Diocesi[0]);
+    }
+    public static Donazione[] queryGetAllDonazioni() throws Exception {
+        connect();
+        String query = "SELECT * FROM donazione ORDER BY date DESC";
+        List<Donazione> listaDonazioni = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Donazione donazione = Donazione.createFromDB(rs);
+                listaDonazioni.add(donazione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaDonazioni.toArray(new Donazione[0]);
+    }
+    public static Donazione[] queryGetAllDonazioni(int id_azienda) throws Exception {
+        connect();
+        String query = "SELECT * FROM donazione WHERE id_azienda = ? ORDER BY date DESC";
+        List<Donazione> listaDonazioni = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, id_azienda);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Donazione donazione = Donazione.createFromDB(rs);
+                listaDonazioni.add(donazione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaDonazioni.toArray(new Donazione[0]);
     }
     public static Magazzino[] queryGetMagazzini(int type, int id_proprietario) throws Exception {
         connect();

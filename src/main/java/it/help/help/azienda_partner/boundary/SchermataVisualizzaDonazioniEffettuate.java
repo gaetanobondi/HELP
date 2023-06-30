@@ -11,7 +11,7 @@ import java.io.IOException;
 public class SchermataVisualizzaDonazioniEffettuate extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataEffettuaDonazione.class.getResource("/it/help/help/SchermataVisualizzaDonazioniEffettuate.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataEffettuaDonazione.class.getResource("/it/help/help/azienda_partner/SchermataVisualizzaDonazioniEffettuate.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Visualizza donazioni effettuate");
         stage.setScene(scene);

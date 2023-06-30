@@ -8,6 +8,6 @@
 
 <Pane fx:controller="it.help.help.autenticazione.controll.GestoreAccettazioneEsiti" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="Composizione.fxml" />
+        <fx:include source="../Composizione.fxml" />
     </children>
 </Pane>

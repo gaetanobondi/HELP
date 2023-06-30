@@ -1,7 +1,6 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.SchermataCambioPassword;
-import it.help.help.autenticazione.boundary.SchermataListaNuclei;
 import it.help.help.autenticazione.boundary.SchermataLogin;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.EmailSender;
@@ -9,9 +8,7 @@ import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Random;
 import javafx.stage.Stage;
 import javafx.scene.Scene;

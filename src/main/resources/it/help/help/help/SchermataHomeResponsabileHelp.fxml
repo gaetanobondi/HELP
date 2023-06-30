@@ -12,7 +12,6 @@
       <fx:include source="buttonGestoreAccettazioneEsiti.fxml" />
       <fx:include source="../buttonGestoreMagazzino.fxml" />
       <fx:include source="buttonGestoreHelp.fxml" />
-      <Button fx:id="buttonListaDonazioniRicevute" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickListaDonazioniRicevute" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="LISTA DONAZIONI RICEVUTE" />
       <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />
    </children>
 </VBox>

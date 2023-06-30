@@ -1,13 +1,10 @@
 package it.help.help.polo.controll;
 
-import it.help.help.autenticazione.boundary.SchermataListaNuclei;
 import it.help.help.entity.*;
 import it.help.help.polo.boundary.SchermataScaricamentoReport;
 import it.help.help.polo.boundary.SchermataSegnalazioneErrore;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.*;

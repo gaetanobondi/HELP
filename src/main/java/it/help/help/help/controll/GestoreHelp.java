@@ -3,11 +3,10 @@ package it.help.help.help.controll;
 import it.help.help.autenticazione.boundary.SchermataHomeResponsabileHelp;
 import it.help.help.autenticazione.boundary.SchermataHomeResponsabilePolo;
 import it.help.help.autenticazione.boundary.SchermataRegistrazionePolo;
-import it.help.help.entity.Diocesi;
-import it.help.help.entity.Polo;
-import it.help.help.entity.Responsabile;
+import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataGestione;
 import it.help.help.help.boundary.SchermataLista;
+import it.help.help.help.boundary.SchermataListaDonazioni;
 import it.help.help.help.boundary.SchermataVisualizzaPrevisioneDistribuzione;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
@@ -34,6 +33,7 @@ public class GestoreHelp {
     public Button buttonListaAziende;
     public Button buttonGestione;
     public VBox lista;
+    public Button buttonListaDonazioniRicevute;
 
     public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
         SchermataVisualizzaPrevisioneDistribuzione l = new SchermataVisualizzaPrevisioneDistribuzione();
@@ -124,5 +124,26 @@ public class GestoreHelp {
         SchermataGestione l = new SchermataGestione();
         Stage window = (Stage) buttonGestione.getScene().getWindow();
         l.start(window);
+    }
+
+    public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {
+        SchermataListaDonazioni l = new SchermataListaDonazioni();
+        Stage window = (Stage) buttonListaDonazioniRicevute.getScene().getWindow();
+        l.start(window);
+
+        Parent root = window.getScene().getRoot();
+
+        Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni();
+        lista = (VBox) window.getScene().getRoot().lookup("#lista");
+        for (Donazione donazione : listaDonazioni) {
+            Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
+            AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());
+
+            Label label = new Label("Prodotto: " + prodotto.getTipo() + "\n"
+                    + "Quantità: " + donazione.getQuantità() + "\n"
+                    + "Azienda donatrice: " + aziendaPartner.getNome() + "\n"
+                    + "Data di scadenza: " + donazione.getScadenzaProdotto() + "\n");
+            lista.getChildren().add(label);
+        }
     }
 }

@@ -4,27 +4,18 @@ import java.util.Objects;
 
 public class AziendaPartner {
     private int id;
-    private int id_responsabile;
     private String nome;
-    private String nome_responsabile;
-    private String cognome_responsabile;
     private String indirizzo;
     private int cellulare;
-    private String viveri_prodotto;
     private boolean stato_account;
     private Date date;
 
-    public AziendaPartner(int id, int id_responsabile, String nome, String nome_responsabile, String cognome_responsabile, String indirizzo, int cellulare, String viveri_prodotto, boolean stato_account, Date date) {
+    public AziendaPartner(int id, String nome, boolean stato_account, String indirizzo, int cellulare) {
         this.id = id;
-        this.id_responsabile = id_responsabile;
         this.nome = nome;
-        this.nome_responsabile = nome_responsabile;
-        this.cognome_responsabile = cognome_responsabile;
         this.indirizzo = indirizzo;
         this.cellulare = cellulare;
-        this.viveri_prodotto = viveri_prodotto;
         this.stato_account = stato_account;
-        this.date = date;
     }
 
     public AziendaPartner() { }
@@ -32,17 +23,8 @@ public class AziendaPartner {
     public int getId() {
         return id;
     }
-    public int getIdResponsabile() {
-        return id_responsabile;
-    }
     public String getNome() {
         return nome;
-    }
-    public String getNomeResponsabile() {
-        return nome_responsabile;
-    }
-    public String getCognomeResponsabile() {
-        return cognome_responsabile;
     }
     public String getIndirizzo() {
         return indirizzo;
@@ -50,14 +32,8 @@ public class AziendaPartner {
     public int getCellulare() {
         return cellulare;
     }
-    public String getViveriProdotto() {
-        return viveri_prodotto;
-    }
     public boolean getStatoAccount() {
         return stato_account;
-    }
-    public Date getDate() {
-        return date;
     }
 
     @Override
@@ -76,15 +52,10 @@ public class AziendaPartner {
     public static AziendaPartner createFromDB(ResultSet row) throws SQLException {
         return new AziendaPartner(
                 row.getInt(1),
-                row.getInt(2),
-                row.getString(3),
+                row.getString(2),
+                row.getBoolean(3),
                 row.getString(4),
-                row.getString(5),
-                row.getString(6),
-                row.getInt(7),
-                row.getString(8),
-                row.getBoolean(9),
-                row.getDate(10));
+                row.getInt(5));
     }
 
 }

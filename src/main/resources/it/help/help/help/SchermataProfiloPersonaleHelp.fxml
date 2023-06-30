@@ -45,7 +45,7 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelCognome" layoutX="347.0" layoutY="119.0" text="Label" />
-        <Label fx:id="labelNome" layoutX="347.0" layoutY="75.0" text="Label" />
+        <Label fx:id="labelCognome" layoutX="347.0" layoutY="119.0" />
+        <Label fx:id="labelNome" layoutX="347.0" layoutY="75.0" />
     </children>
 </Pane>

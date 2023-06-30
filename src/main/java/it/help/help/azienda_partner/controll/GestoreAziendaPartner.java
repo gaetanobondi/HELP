@@ -1,8 +1,11 @@
 package it.help.help.azienda_partner.controll;
 
 import it.help.help.azienda_partner.boundary.*;
+import it.help.help.entity.AziendaPartner;
+import it.help.help.entity.Donazione;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.RichiestaAdHoc;
+import it.help.help.help.boundary.SchermataListaDonazioni;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -29,6 +32,7 @@ public class GestoreAziendaPartner {
     public Button buttonListaDonazioniAdHoc;
     public VBox listaDonazioniAdHoc;
     public TextField fieldIdRichiesta;
+    public VBox lista;
 
     public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {
         SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
@@ -138,7 +142,24 @@ public class GestoreAziendaPartner {
         }
     }
 
-    public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) {
+    public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
+        SchermataVisualizzaDonazioniEffettuate l = new SchermataVisualizzaDonazioniEffettuate();
+        Stage window = (Stage) buttonVisualizzaDonazioniEffettuate.getScene().getWindow();
+        l.start(window);
+
+        Parent root = window.getScene().getRoot();
+
+        Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni(MainUtils.responsabileLoggato.getIdLavoro());
+        lista = (VBox) window.getScene().getRoot().lookup("#lista");
+        for (Donazione donazione : listaDonazioni) {
+            Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
+            AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());
+
+            Label label = new Label("Prodotto: " + prodotto.getTipo() + "\n"
+                    + "Quantità: " + donazione.getQuantità() + "\n"
+                    + "Data di scadenza: " + donazione.getScadenzaProdotto() + "\n");
+            lista.getChildren().add(label);
+        }
     }
 
     public void clickListaDonazioniAdHoc(ActionEvent actionEvent) throws Exception {

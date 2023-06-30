@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <fx:include source="../Composizione.fxml" />
         <Label layoutX="176.0" layoutY="118.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
@@ -13,7 +13,7 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Button fx:id="buttonModificaDati" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDati" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
+        <Button fx:id="buttonModificaDatiAzienda" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiAzienda" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
         <Label layoutX="176.0" layoutY="154.0" lineSpacing="2.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />
@@ -29,16 +29,16 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelNome" layoutX="349.0" layoutY="46.0" text="Label" />
-        <Label fx:id="labelCognome" layoutX="349.0" layoutY="82.0" text="Label" />
-        <Label fx:id="labelEmail" layoutX="349.0" layoutY="118.0" text="Label" />
-        <Label fx:id="labelPassword" layoutX="349.0" layoutY="154.0" prefWidth="30.0" text="Label" />
+        <Label fx:id="labelNome" layoutX="349.0" layoutY="46.0" />
+        <Label fx:id="labelCognome" layoutX="349.0" layoutY="82.0" />
+        <Label fx:id="labelEmail" layoutX="349.0" layoutY="118.0" />
+        <Label fx:id="labelPassword" layoutX="349.0" layoutY="154.0" prefWidth="60.0" text="*******" />
         <Label layoutX="176.0" layoutY="262.0" lineSpacing="2.0" text="NOME AZIENDA">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelCellulare" layoutX="349.0" layoutY="190.0" text="Label" />
+        <Label fx:id="labelCellulare" layoutX="349.0" layoutY="190.0" />
         <Label layoutX="176.0" layoutY="46.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="NOME">
             <font>
                 <Font size="17.0" />
@@ -49,7 +49,7 @@
                 <Font size="17.0" />
             </font>
         </Label>
-        <Label fx:id="labelIndirizzo" layoutX="349.0" layoutY="226.0" text="Label" />
-        <Label fx:id="labelNomeAzienda" layoutX="349.0" layoutY="262.0" text="Label" />
+        <Label fx:id="labelIndirizzo" layoutX="349.0" layoutY="226.0" />
+        <Label fx:id="labelNomeAzienda" layoutX="349.0" layoutY="262.0" />
     </children>
 </Pane>
