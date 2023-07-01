@@ -109,7 +109,7 @@ public class GestoreMagazzino {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            MainUtils.tornaAllaHome(buttonCaricaViveri);
+            // MainUtils.tornaAllaHome(buttonCaricaViveri);
         }
     }
 }

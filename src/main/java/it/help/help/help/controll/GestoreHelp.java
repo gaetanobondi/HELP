@@ -43,9 +43,9 @@ public class GestoreHelp {
 
     public void tornaAHelp(Button button) throws IOException {
         MainUtils.responsabileLoggato = MainUtils.responsabileHelpLoggato;
-        SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
+        // SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
         Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
 

@@ -61,9 +61,9 @@ public class GestoreDiocesi {
                     DBMS.queryModificaDati(responsabile.getId(), "responsabile", datiAggiornati);
 
                     // rimando alla schermata precedente
-                    SchermataHomeResponsabileDiocesi l = new SchermataHomeResponsabileDiocesi();
+                    // SchermataHomeResponsabileDiocesi l = new SchermataHomeResponsabileDiocesi();
                     Stage window = (Stage) buttonRegistraPolo.getScene().getWindow();
-                    l.start(window);
+                    // l.start(window);
                 } else {
                     showErrorAlert = true;
                     error = "Email già esistente";

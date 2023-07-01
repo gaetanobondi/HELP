@@ -70,7 +70,7 @@ public class GestoreSegnalazione {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            MainUtils.tornaAllaHome(buttonSegnala);
+            // MainUtils.tornaAllaHome(buttonSegnala);
         }
     }
 

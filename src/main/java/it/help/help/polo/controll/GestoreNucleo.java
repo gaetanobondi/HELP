@@ -87,7 +87,7 @@ public class GestoreNucleo {
 
         if(!cognome.isEmpty() && !reddito.isEmpty()) {
             DBMS.queryRegistraNucleo(MainUtils.responsabileLoggato.getIdLavoro(), cognome, Integer.parseInt(reddito));
-            MainUtils.tornaAllaHome(buttonRegistraNucleo);
+            // MainUtils.tornaAllaHome(buttonRegistraNucleo);
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi.";
@@ -133,7 +133,7 @@ public class GestoreNucleo {
             buttonElimina.setOnAction(event -> {
                 try {
                     DBMS.queryEliminaMembro(membro.getCodiceFiscale());
-                    MainUtils.tornaAllaHome(buttonElimina);
+                    // MainUtils.tornaAllaHome(buttonElimina);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

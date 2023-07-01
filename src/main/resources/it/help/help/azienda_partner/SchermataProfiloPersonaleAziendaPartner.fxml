@@ -5,15 +5,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane fx:controller="it.help.help.autenticazione.boundary.SchermataVisualizzaProfiloAziendaPartner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="../Composizione.fxml" />
+        <Button fx:id="buttonHome" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickHome" layoutX="27.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
+            <graphic>
+                <ImageView accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0" style="-fx-background-color: a5d9fd;">
+                    <image>
+                        <Image url="@../home.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
         <Label layoutX="176.0" layoutY="118.0" lineSpacing="2.0" prefHeight="20.0" prefWidth="60.0" text="EMAIL">
             <font>
                 <Font size="17.0" />
             </font>
         </Label>
-        <Button fx:id="buttonModificaDatiAzienda" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDatiAzienda" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
+        <Button fx:id="buttonModificaDati" layoutX="442.0" layoutY="331.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickModificaDati" style="-fx-background-color: FFFFFF;" text="MODIFICA DATI" />
         <Label layoutX="176.0" layoutY="154.0" lineSpacing="2.0" text="PASSWORD">
             <font>
                 <Font size="17.0" />

@@ -12,32 +12,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataLogin extends Application {
+public class SchermataLogin {
     public Button buttonIndietro;
     public PasswordField fieldPassword;
     public TextField fieldEmail;
     public Button buttonRecuperaPassword;
     public Button buttonAccedi;
+    public GestoreAutenticazione gestoreAutenticazione;
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataIniziale.class.getResource("/it/help/help/schermataLogin.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
+    public SchermataLogin(GestoreAutenticazione gestoreAutenticazione) {
+        this.gestoreAutenticazione = gestoreAutenticazione;
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
 
     public void clickAccedi(ActionEvent actionEvent) throws Exception {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
 
-        GestoreAutenticazione g = new GestoreAutenticazione();
-        g.controllaCredenziali(email, password);
+        gestoreAutenticazione.controllaCredenziali((Stage) fieldEmail.getScene().getWindow(), email, password);
     }
 
     public void clickIndietro(ActionEvent actionEvent) {

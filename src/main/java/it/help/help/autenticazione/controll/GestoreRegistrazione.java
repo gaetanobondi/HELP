@@ -54,9 +54,9 @@ public class GestoreRegistrazione {
                         DBMS.queryRegistraResponsabile(email, encryptPassword, type, id_lavoro);
 
                         // rimando alla schermata di login
-                        SchermataLogin l = new SchermataLogin();
+                        // SchermataLogin l = new SchermataLogin();
                         Stage window = (Stage) buttonRegistrati.getScene().getWindow();
-                        l.start(window);
+                        // l.start(window);
                     } else {
                         showErrorAlert = true;
                         error = "Email già esistente";

@@ -35,7 +35,7 @@ public class GestoreAccettazioneEsiti {
             alert.setTitle("Pop-Up Errore");
             alert.setHeaderText("Nessuna richiesta presente");
             alert.showAndWait();
-            MainUtils.tornaAllaHome((Button)window.getScene().getRoot().lookup("#buttonHome"));
+            // MainUtils.tornaAllaHome((Button)window.getScene().getRoot().lookup("#buttonHome"));
         }
 
         double layoutY = 100;

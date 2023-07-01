@@ -34,5 +34,5 @@ module it.help.help {
     opens it.help.help.common to javafx.fxml;
     exports it.help.help.utils;
     opens it.help.help.utils to javafx.fxml;
-
+    exports it.help.help;
 }

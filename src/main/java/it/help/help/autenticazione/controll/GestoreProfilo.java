@@ -190,41 +190,22 @@ public class GestoreProfilo {
     //per la schermata MODIFICA PROFILO PERSONALE AZIENDA PARTNER
     public Button buttonModificaDatiAzienda;
 
-    public void clickModificaDatiAzienda(ActionEvent actionEvent) throws Exception {
-        SchermataModificaProfiloAziendaPartner l = new SchermataModificaProfiloAziendaPartner();
-        Stage window = (Stage) buttonModificaDatiAzienda.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
+    public void schermataModificaDatiAzienda(Stage stage) throws Exception {
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.aziendaPartnerLoggata.getIndirizzo();
+        int cellulare = MainUtils.aziendaPartnerLoggata.getCellulare();
+        String nomeAzienda = MainUtils.aziendaPartnerLoggata.getNome();
 
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
-        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-        TextField fieldNomeAzienda = (TextField) root.lookup("#fieldNomeAziendaPartner");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        fieldNome.setText(MainUtils.responsabileLoggato.getNome());
-        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
-            fieldCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
-        }
-        fieldIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
-        fieldNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
+        SchermataModificaProfiloAziendaPartner p = new SchermataModificaProfiloAziendaPartner(this);
+        MainUtils.cambiaInterfaccia("Schermata modifica profilo azienda", "/it/help/help/azienda_partner/SchermataModificaProfiloAziendaPartner.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeAzienda);
     }
     public Button buttonSalvaModificheAzienda;
-    public void clickSalvaModificheAzienda(ActionEvent actionEvent) throws Exception {
-        String nome_azienda = fieldNomeAziendaPartner.getText() != null ? fieldNomeAziendaPartner.getText() : "";
-        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
-        String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
-        String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";
-        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
-        String email = fieldEmail.getText();
-        String password = fieldVecchiaPassword.getText();
-        String new_password = fieldNuovaPassword.getText();
+    public void salvaModificheAzienda(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String nome_azienda, String password, String new_password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
 
@@ -285,7 +266,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizzaAzienda();
+            visualizzaProfiloAziendaPartner(stage);
         }
     }
 
@@ -452,9 +433,9 @@ public class GestoreProfilo {
     }
 
     private void tornaAVisualizzaAzienda() throws Exception {
-        SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
+        // SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
         Stage window = (Stage) buttonSalvaModificheAzienda.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
         Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
         Label labelNome = (Label) window.getScene().lookup("#labelNome");
         Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
@@ -497,32 +478,20 @@ public class GestoreProfilo {
         labelNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
     }
 
-    public void clickVisualizzaProfiloAziendaPartner(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
-        Stage window = (Stage) buttonVisualizzaProfiloAziendaPartner.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelEmail = (Label) root.lookup("#labelEmail");
-        Label labelNome = (Label) root.lookup("#labelNome");
-        Label labelCognome = (Label) root.lookup("#labelCognome");
-        Label labelCellulare = (Label) root.lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
-        Label labelNomeAzienda = (Label) root.lookup("#labelNomeAzienda");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
+    public void visualizzaProfiloAziendaPartner(Stage stage) throws Exception {
         MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.aziendaPartnerLoggata.getIndirizzo();
+        int cellulare = MainUtils.aziendaPartnerLoggata.getCellulare();
+        String nomeAzienda = MainUtils.aziendaPartnerLoggata.getNome();
 
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
-        labelNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
+        SchermataVisualizzaProfiloAziendaPartner p = new SchermataVisualizzaProfiloAziendaPartner();
+        MainUtils.cambiaInterfaccia("Schermata profilo azienda", "/it/help/help/azienda_partner/SchermataProfiloPersonaleAziendaPartner.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeAzienda);
     }
 
     public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {

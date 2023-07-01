@@ -42,9 +42,9 @@ public class GestoreRecupero {
             if(MainUtils.isValidPassword(password)) {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 DBMS.queryModificaPassword(email, encryptPassword);
-                SchermataLogin l = new SchermataLogin();
+                // SchermataLogin l = new SchermataLogin();
                 Stage window = (Stage) buttonSalvaNuovaPassword.getScene().getWindow();
-                l.start(window);
+                // l.start(window);
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";

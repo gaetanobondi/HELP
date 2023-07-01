@@ -26,9 +26,9 @@ public class GestoreSospensionePolo {
         DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
 
         // effettuo il logout
-        SchermataLogin l = new SchermataLogin();
+        // SchermataLogin l = new SchermataLogin();
         Stage window = (Stage) ButtonConfermaSospensione.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
     public void clickVisualizzaSchemaDiDistribuzionePolo(ActionEvent actionEvent) throws Exception {

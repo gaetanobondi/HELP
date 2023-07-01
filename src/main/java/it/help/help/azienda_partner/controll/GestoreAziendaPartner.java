@@ -34,13 +34,13 @@ public class GestoreAziendaPartner {
     public TextField fieldIdRichiesta;
     public VBox lista;
 
-    public void clickEffettuaDonazioneSpontanea(ActionEvent actionEvent) throws Exception {
-        SchermataEffettuaDonazione l = new SchermataEffettuaDonazione();
-        Stage window = (Stage) buttonEffettuaDonazioneSpontanea.getScene().getWindow();
-        l.start(window);
+    public void schermataEffettuaDonazioneSpontanea(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata effettua donazione spontanea","/it/help/help/azienda_partner/SchermataEffettuaDonazione.fxml", stage, c -> {
+            return new SchermataEffettuaDonazione(this);
+        });
 
         Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
         TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
         MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
         CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
@@ -79,10 +79,7 @@ public class GestoreAziendaPartner {
 
     }
 
-    public void clickEffettuaDonazione(ActionEvent actionEvent) throws Exception {
-        String codice_prodotto = fieldMenuSelected.getText();
-        String quantità = fieldQuantità.getText();
-        LocalDate data_scadenza = pickerDataScadenza.getValue();
+    public void effettuaDonazioneSpontanea(Stage stage, String codice_prodotto, String quantità, LocalDate data_scadenza) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
@@ -101,7 +98,7 @@ public class GestoreAziendaPartner {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            MainUtils.tornaAllaHome(buttonEffettuaDonazione);
+            MainUtils.tornaAllaHome(stage);
         }
     }
 
@@ -142,15 +139,15 @@ public class GestoreAziendaPartner {
         }
     }
 
-    public void clickVisualizzaDonazioniEffettuate(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaDonazioniEffettuate l = new SchermataVisualizzaDonazioniEffettuate();
-        Stage window = (Stage) buttonVisualizzaDonazioniEffettuate.getScene().getWindow();
-        l.start(window);
+    public void schermataVisualizzaDonazioniEffettuate(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza donazioni effettuate","/it/help/help/azienda_partner/SchermataVisualizzaDonazioniEffettuate.fxml", stage, c -> {
+            return new SchermataVisualizzaDonazioniEffettuate();
+        });
 
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
         Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni(MainUtils.responsabileLoggato.getIdLavoro());
-        lista = (VBox) window.getScene().getRoot().lookup("#lista");
+        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         for (Donazione donazione : listaDonazioni) {
             Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
             AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());
@@ -162,45 +159,54 @@ public class GestoreAziendaPartner {
         }
     }
 
-    public void clickListaDonazioniAdHoc(ActionEvent actionEvent) throws Exception {
-        SchermataListaDonazioniAdHoc l = new SchermataListaDonazioniAdHoc();
-        Stage window = (Stage) buttonListaDonazioniAdHoc.getScene().getWindow();
-        l.start(window);
+    public void schermataListaDonazioniAdHoc(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata lista donazioni ad hoc","/it/help/help/azienda_partner/SchermataListaDonazioniAdHoc.fxml", stage, c -> {
+            return new SchermataListaDonazioniAdHoc();
+        });
 
         RichiestaAdHoc[] listaRichieste = DBMS.queryGetRichiesteAdHoc();
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
-        VBox container = new VBox(); // Contenitore verticale per i singoli elementi orizzontali
-        container.setSpacing(10); // Spaziatura tra gli elementi all'interno del contenitore
+        VBox listaDonazioniAdHoc = (VBox) root.lookup("#listaDonazioniAdHoc");
+        listaDonazioniAdHoc.getChildren().clear(); // Rimuovi eventuali elementi precedenti
+
+        boolean richiestePresenti = false; // Variabile per tenere traccia dello stato delle richieste
 
         for (RichiestaAdHoc richiestaAdHoc : listaRichieste) {
+            richiestePresenti = true; // Ci sono richieste presenti
             Prodotto prodotto = DBMS.queryGetProdotto(richiestaAdHoc.getCodiceProdotto());
 
-            HBox itemBox = new HBox(); // Contenitore orizzontale per i singoli elementi (Label e Button)
-            itemBox.setSpacing(10); // Spaziatura tra gli elementi all'interno del contenitore orizzontale
+            HBox itemBox = new HBox();
+            itemBox.setSpacing(10);
 
-            Label nomeProdottoLabel = new Label(prodotto.getTipo()); // Label per il nome del prodotto
-            Label quantitaLabel = new Label("Quantità: " + richiestaAdHoc.getQuantità()); // Label per la quantità
-            Button donaButton = new Button("Dona"); // Pulsante "Dona"
+            Label nomeProdottoLabel = new Label(prodotto.getTipo());
+            Label quantitaLabel = new Label("Quantità: " + richiestaAdHoc.getQuantità());
+            Button donaButton = new Button("Dona");
 
-            // Azione da eseguire quando viene premuto il pulsante "Dona"
             donaButton.setOnAction(e -> {
-                // Puoi aggiungere qui il codice per gestire l'evento del pulsante "Dona"
                 try {
-                    effettuaDonazioneAdHoc(donaButton, richiestaAdHoc);
+                    // effettuaDonazioneAdHoc(donaButton, richiestaAdHoc);
+                    DBMS.querySalvaDonazione(MainUtils.responsabileLoggato.getIdLavoro(), richiestaAdHoc.getCodiceProdotto(), richiestaAdHoc.getQuantità(), null);
+                    // elimino la richiesta ad-hoc perché l'ho soddisfatta
+                    DBMS.queryEliminaRichiestaAdHoc(richiestaAdHoc.getId());
+                    schermataListaDonazioniAdHoc(stage);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             });
 
             itemBox.getChildren().addAll(nomeProdottoLabel, quantitaLabel, donaButton);
-            container.getChildren().add(itemBox);
+            listaDonazioniAdHoc.getChildren().add(itemBox);
         }
 
-        // Rimuovi il contenuto esistente e aggiungi il contenitore radice
-        Pane rootPane = (Pane) root;
-        rootPane.getChildren().add(container);
+        if (!richiestePresenti) {
+            // Nessuna richiesta presente, aggiungi la label al contenitore
+            Label nessunaRichiestaLabel = new Label("Nessuna richiesta ad-hoc");
+            listaDonazioniAdHoc.getChildren().add(nessunaRichiestaLabel);
+        }
     }
+
+
 
     public void clickEffettuaDonazioneAdHoc(ActionEvent actionEvent) throws Exception {
         String id_richiesta = fieldIdRichiesta.getText();
@@ -227,7 +233,7 @@ public class GestoreAziendaPartner {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            MainUtils.tornaAllaHome(buttonEffettuaDonazioneAdHoc);
+            // MainUtils.tornaAllaHome(buttonEffettuaDonazioneAdHoc);
         }
     }
 }

@@ -23,13 +23,13 @@ public class GestoreModificaPassword {
     }
 
     public void clickConferma(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataLogin.fxml"));
         Stage window = (Stage) buttonConferma.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Login");
     }
     public void clickHome(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataLogin.fxml"));
         Stage window = (Stage) buttonHome.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Login");

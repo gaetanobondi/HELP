@@ -1,7 +1,7 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.Main;
 import it.help.help.autenticazione.boundary.*;
-import it.help.help.azienda_partner.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.polo.controll.GestoreNucleo;
 import it.help.help.utils.MainUtils;
@@ -63,57 +63,18 @@ public class GestoreAutenticazione {
         currentWindow.setScene(previousWindow.getScene());
     }
 
-    public void clickHome(ActionEvent actionEvent) throws Exception {
-        switch (MainUtils.responsabileLoggato.getType()) {
-            case 0:
-                // HELP
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
-                SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
-                Stage window = (Stage) buttonHome.getScene().getWindow();
-                l.start(window);
-                break;
-            case 1:
-                // DIOCESI
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
-                SchermataHomeResponsabileDiocesi l1 = new SchermataHomeResponsabileDiocesi();
-                Stage window1 = (Stage) buttonHome.getScene().getWindow();
-                l1.start(window1);
-                break;
-            case 2:
-                // POLO
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
-                SchermataHomeResponsabilePolo l2 = new SchermataHomeResponsabilePolo();
-                Stage window2 = (Stage) buttonHome.getScene().getWindow();
-                l2.start(window2);
-                break;
-            case 3:
-                // AZIENDA PARTNER
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
-                SchermataHomeResponsabileAziendaPartner l3 = new SchermataHomeResponsabileAziendaPartner();
-                Stage window3 = (Stage) buttonHome.getScene().getWindow();
-                l3.start(window3);
-                break;
-        }
-    }
-
 
     //per la SCHERMATA INIZIALE
-    public void clickSignIn(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataSignin.fxml"));
-        Stage window = (Stage) buttonSignIn.getScene().getWindow();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Sign-In");
+    public void creaSchermataSignIn(Button button) throws Exception {
+        SchermataSignin l = new SchermataSignin();
+        Stage window = (Stage) button.getScene().getWindow();
+        l.start(window);
     }
 
-    public void clickLogin(ActionEvent actionEvent) throws Exception {
-        SchermataLogin l = new SchermataLogin();
-        Stage window = (Stage) buttonLogin.getScene().getWindow();
-        MainUtils.boundaryStack.add(window);
-        l.start(window);
-        // Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataLogin.fxml"));
-        // Stage window = (Stage) buttonLogin.getScene().getWindow();
-        // window.setScene(new Scene(root));
-        // window.setTitle("Schermata Login");
+    public void creaSchermataLogin(Stage stage, GestoreAutenticazione gestoreAutenticazione) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata login","/it/help/help/SchermataLogin.fxml", stage, c -> {
+            return new SchermataLogin(this);
+        });
     }
 
 
@@ -121,28 +82,30 @@ public class GestoreAutenticazione {
 
 
     //per la SCHERMATA LOGIN
-    public void controllaCredenziali(String email, String password) throws Exception {
+    public void controllaCredenziali(Stage stage, String email, String password) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
         if(!email.isEmpty() && !password.isEmpty()) {
             String encryptPassword = MainUtils.encryptPassword(password);
             MainUtils.responsabileLoggato = DBMS.queryControllaCredenzialiResponsabile(email, encryptPassword);
-            // MainUtils.responsabileLoggato = responsabile;
             if(MainUtils.responsabileLoggato != null) {
                 String nomeSchermata = "";
                 switch (MainUtils.responsabileLoggato.getType()) {
                     case 0:
                         // HELP
-                        // Help help = DBMS.getHelp(MainUtils.responsabileLoggato.getId());
                         nomeSchermata = "/it/help/help/help/SchermataHomeResponsabileHelp.fxml";
-                        // GestoreProfilo gestoreProfilo = new GestoreProfilo(responsabile, help);
+                        MainUtils.cambiaInterfaccia("Schermata responsabile help", nomeSchermata, stage, c -> {
+                            return new SchermataHomeResponsabileHelp();
+                        });
                         break;
                     case 1:
                         // DIOCESI
-                        // Diocesi diocesi = DBMS.getDiocesi(MainUtils.responsabileLoggato.getId());
                         if(DBMS.queryGetStatoAccount("diocesi", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml";
+                            MainUtils.cambiaInterfaccia("Schermata responsabile diocesi", nomeSchermata, stage, c -> {
+                                return new SchermataHomeResponsabileDiocesi();
+                            });
                         } else {
                             // account non ancora attivo
                             showErrorAlert = true;
@@ -151,31 +114,29 @@ public class GestoreAutenticazione {
                         break;
                     case 2:
                         // POLO
-                        // Polo polo = DBMS.getPolo(MainUtils.responsabileLoggato.getId());
                         if(DBMS.queryGetStatoSospensione(MainUtils.responsabileLoggato.getIdLavoro())) {
                             // POLO SOSPESO
                             // nomeSchermata = "/it/help/help/SchermataSospensionePolo.fxml";
                         } else {
                             nomeSchermata = "/it/help/help/polo/SchermataHomeResponsabilePolo.fxml";
+                            MainUtils.cambiaInterfaccia("Schermata responsabile polo", nomeSchermata, stage, c -> {
+                                return new SchermataHomeResponsabilePolo();
+                            });
                         }
                         break;
                     case 3:
                         // AZIENDA PARTNER
-                        // DBMS.getAziendaPartner(MainUtils.responsabileLoggato.getId());
                         if(DBMS.queryGetStatoAccount("azienda", MainUtils.responsabileLoggato.getIdLavoro())) {
                             nomeSchermata = "/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml";
+                            MainUtils.cambiaInterfaccia("Schermata responsabile azienda", nomeSchermata, stage, c -> {
+                                return new SchermataHomeResponsabileAziendaPartner();
+                            });
                         } else {
                             // account non ancora attivo
                             showErrorAlert = true;
                             error = "Il tuo account non è ancora attivo.";
                         }
                         break;
-                }
-                if(!showErrorAlert) {
-                    Parent root = FXMLLoader.load(getClass().getResource(nomeSchermata));
-                    Stage window = (Stage) buttonAccedi.getScene().getWindow();
-                    window.setScene(new Scene(root));
-                    window.setTitle("Schermata Home del Responsabile");
                 }
             } else {
                 showErrorAlert = true;
@@ -196,7 +157,7 @@ public class GestoreAutenticazione {
 
     public void clickRecuperaPassword(ActionEvent actionEvent) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/schermataRecuperoPassword.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataRecuperoPassword.fxml"));
         Stage window = (Stage) buttonRecuperaPassword.getScene().getWindow();
         window.setScene(new Scene(root));
         window.setTitle("Schermata Recupero Password");
@@ -299,7 +260,7 @@ public class GestoreAutenticazione {
             buttonEliminaNucleo.setOnAction(event -> {
                 try {
                     GestoreNucleo.eliminaNucleo(nucleo.getId());
-                    MainUtils.tornaAllaHome(buttonEliminaNucleo);
+                    // MainUtils.tornaAllaHome(buttonEliminaNucleo);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -415,10 +376,10 @@ public class GestoreAutenticazione {
 
     public Button buttonLogout;
 
-    public void clickLogout(ActionEvent actionEvent) throws Exception {
-        SchermataLogin l = new SchermataLogin();
-        Stage window = (Stage) buttonLogout.getScene().getWindow();
-        l.start(window);
+    public void logout(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata login","/it/help/help/SchermataLogin.fxml", stage, c -> {
+            return new SchermataLogin(this);
+        });
     }
 
 
@@ -483,5 +444,8 @@ public class GestoreAutenticazione {
     }
 
     public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) {
+    }
+
+    public void clickLogout(ActionEvent actionEvent) {
     }
 }

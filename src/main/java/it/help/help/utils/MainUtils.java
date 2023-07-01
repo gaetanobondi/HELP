@@ -1,8 +1,6 @@
 package it.help.help.utils;
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabileAziendaPartner;
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabileDiocesi;
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabileHelp;
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabilePolo;
+import it.help.help.Main;
+import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.polo.boundary.SchermataComponentiNucleo;
 import javafx.event.ActionEvent;
@@ -10,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -37,6 +36,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javafx.util.Callback;
 
 
 public class MainUtils {
@@ -50,6 +50,37 @@ public class MainUtils {
     public static Nucleo nucleo;
     public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
     public Button buttonIndietro;
+
+    public static Object cambiaInterfaccia(String title, String interfaccia, Stage stage, Callback c) {
+        stage.setTitle(title);
+        FXMLLoader loader = creaLoader(interfaccia);
+        loader.setControllerFactory(c);
+        creaInterfaccia(loader, 600, 400, stage);
+        return loader.getController();
+    }
+
+    public static FXMLLoader creaLoader(String path) {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(path));
+        return loader;
+    }
+
+    private static void creaInterfaccia(FXMLLoader loader, int w, int h, Stage stage) {
+        if (Main.mainStage != null) {
+            try {
+                stage.initOwner(Main.mainStage);
+                stage.initModality(Modality.APPLICATION_MODAL);
+            } catch (Exception e) {
+            }
+        }
+        stage.setResizable(false);
+        try {
+            Scene s = new Scene(loader.load(), w, h);
+            stage.setScene(s);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void generatePDF(int type_interval, int interval) {
         try {
@@ -158,35 +189,36 @@ public class MainUtils {
     }
 
 
-    public static void tornaAllaHome(Button button) throws IOException {
+    public static void tornaAllaHome(Stage stage) throws IOException {
+        String nomeSchermata;
         switch (MainUtils.responsabileLoggato.getType()) {
             case 0:
                 // HELP
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileHelp.fxml";
-                SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
-                Stage window = (Stage) button.getScene().getWindow();
-                l.start(window);
+                nomeSchermata = "/it/help/help/help/SchermataHomeResponsabileHelp.fxml";
+                MainUtils.cambiaInterfaccia("Schermata responsabile help", nomeSchermata, stage, c -> {
+                    return new SchermataHomeResponsabileHelp();
+                });
                 break;
             case 1:
                 // DIOCESI
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileDiocesi.fxml";
-                SchermataHomeResponsabileDiocesi l1 = new SchermataHomeResponsabileDiocesi();
-                Stage window1 = (Stage) button.getScene().getWindow();
-                l1.start(window1);
+                nomeSchermata = "/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml";
+                MainUtils.cambiaInterfaccia("Schermata responsabile diocesi", nomeSchermata, stage, c -> {
+                    return new SchermataHomeResponsabileDiocesi();
+                });
                 break;
             case 2:
                 // POLO
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabilePolo.fxml";
-                SchermataHomeResponsabilePolo l2 = new SchermataHomeResponsabilePolo();
-                Stage window2 = (Stage) button.getScene().getWindow();
-                l2.start(window2);
+                nomeSchermata = "/it/help/help/polo/SchermataHomeResponsabilePolo.fxml";
+                MainUtils.cambiaInterfaccia("Schermata responsabile polo", nomeSchermata, stage, c -> {
+                    return new SchermataHomeResponsabilePolo();
+                });
                 break;
             case 3:
                 // AZIENDA PARTNER
-                // nomeSchermata = "/it/help/help/SchermataHomeResponsabileAziendaPartner.fxml";
-                SchermataHomeResponsabileAziendaPartner l3 = new SchermataHomeResponsabileAziendaPartner();
-                Stage window3 = (Stage) button.getScene().getWindow();
-                l3.start(window3);
+                nomeSchermata = "/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml";
+                MainUtils.cambiaInterfaccia("Schermata responsabile azienda", nomeSchermata, stage, c -> {
+                    return new SchermataHomeResponsabileAziendaPartner();
+                });
                 break;
         }
     }
@@ -225,9 +257,5 @@ public class MainUtils {
     }
 
     public void clickIndietro(ActionEvent actionEvent) {
-    }
-
-    public void clickHome(ActionEvent actionEvent) throws IOException {
-        tornaAllaHome(buttonIndietro);
     }
 }

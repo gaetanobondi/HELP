@@ -10,9 +10,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.DatePicker?>
 
-<Pane fx:controller="it.help.help.azienda_partner.controll.GestoreAziendaPartner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane fx:controller="it.help.help.azienda_partner.boundary.SchermataEffettuaDonazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="../Composizione.fxml" />
+        <Button fx:id="buttonHome" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickHome" layoutX="27.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
+            <graphic>
+                <ImageView accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0" style="-fx-background-color: a5d9fd;">
+                    <image>
+                        <Image url="@../home.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
         <MenuButton fx:id="selectAlimenti" layoutX="262.0" layoutY="83.0" mnemonicParsing="false" style="-fx-background-color: FFFFFF;" text="SELEZIONA ALIMENTO">
         </MenuButton>
         <TextField fx:id="fieldMenuSelected" visible="false" />

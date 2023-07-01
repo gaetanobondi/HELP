@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreAutenticazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: A5D9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.boundary.SchermataIniziale" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: A5D9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Button fx:id="buttonSignIn" contentDisplay="BOTTOM" layoutX="120.0" layoutY="307.0" mnemonicParsing="false" onAction="#clickSignIn" style="-fx-background-color: FFFFFF;" text="Sign-In" textAlignment="CENTER" textFill="#111111">
             <font>

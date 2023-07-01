@@ -7,17 +7,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabileDiocesi extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabileDiocesi.class.getResource("/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Diocesi");
-        stage.setScene(scene);
-        stage.show();
-    }
+public class SchermataHomeResponsabileDiocesi {
 
-    public static void main(String[] args) {
-        launch();
-    }
 }

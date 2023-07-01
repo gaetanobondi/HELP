@@ -61,6 +61,10 @@ public class GestoreSistema {
             }
         }
 
+        // CONTEGGIARE I DATI DELLE DONAZIONI DELLE AZIENDE PARTNER
+        // posso iterare tutte le donazioni, creare un oggetto comune di donazioni e scorte con i dati in comune
+        // e poi il codice continua normalmente
+
         Iterator<Scorte> iterator = listaScorteHelp.iterator();
         if(listaScorteHelp != null) {
             while (iterator.hasNext()) {
