@@ -1,22 +1,15 @@
 package it.help.help.autenticazione.controll;
 
-import it.help.help.azienda_partner.boundary.SchermataEffettuaDonazione;
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataVisualizzaRichieste;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.ScrollPane;
-import javafx.geometry.Insets;
 
 import it.help.help.utils.DBMS;
 
-public class GestoreAccettazioneEsiti {
+public class GestoreAccettazioneAccount {
 
     public Button buttonRichiesteDiocesi;
     public Button buttonRichiesteAziendePartner;

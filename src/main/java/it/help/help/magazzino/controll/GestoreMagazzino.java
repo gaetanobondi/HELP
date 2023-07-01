@@ -1,6 +1,7 @@
 package it.help.help.magazzino.controll;
 
 import it.help.help.entity.Magazzino;
+import it.help.help.magazzino.boundary.SchermataCaricamentoViveri;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -21,13 +22,14 @@ public class GestoreMagazzino {
 
     public Button buttonAggiungiViveriMagazzino;
 
-    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
-        SchermataCaricamentoViveri l = new SchermataCaricamentoViveri();
-        Stage window = (Stage) buttonAggiungiViveriMagazzino .getScene().getWindow();
-        // l.start(window);
+    public void aggiungiViveriMagazzino(Stage stage) throws Exception {
+        SchermataCaricamentoViveri p = new SchermataCaricamentoViveri(this);
+        MainUtils.cambiaInterfaccia("Schermata aggiungi viveri magazzino","/it/help/help/help/SchermataCaricamentoViveri.fxml", stage, c -> {
+            return p;
+        });
 
         Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
         TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
         MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
         CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
@@ -65,10 +67,7 @@ public class GestoreMagazzino {
         }
     }
 
-    public void clickCaricaViveri(ActionEvent actionEvent) throws Exception {
-        String codice_prodotto = fieldMenuSelected.getText();
-        String quantità = fieldQuantità.getText();
-        LocalDate data_scadenza = pickerDataScadenza.getValue();
+    public void caricaViveri(Stage stage, String codice_prodotto, String quantità, LocalDate data_scadenza) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
@@ -109,7 +108,7 @@ public class GestoreMagazzino {
             alert.setHeaderText(error);
             alert.showAndWait();
         } else {
-            // MainUtils.tornaAllaHome(buttonCaricaViveri);
+            MainUtils.tornaAllaHome(stage);
         }
     }
 }

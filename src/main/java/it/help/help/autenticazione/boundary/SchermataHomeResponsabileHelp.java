@@ -1,12 +1,11 @@
 package it.help.help.autenticazione.boundary;
 
-import it.help.help.autenticazione.controll.GestoreAccettazioneEsiti;
+import it.help.help.autenticazione.controll.GestoreAccettazioneAccount;
 import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.autenticazione.controll.GestoreProfilo;
-import javafx.application.Application;
+import it.help.help.help.controll.GestoreHelp;
+import it.help.help.magazzino.controll.GestoreMagazzino;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -34,25 +33,32 @@ public class SchermataHomeResponsabileHelp {
     }
 
     public void clickRichiesteDiocesi(ActionEvent actionEvent) throws Exception {
-        GestoreAccettazioneEsiti gestoreAccettazioneEsiti = new GestoreAccettazioneEsiti();
-        gestoreAccettazioneEsiti.schermataRichiesteDiocesi((Stage) buttonRichiesteDiocesi.getScene().getWindow());
+        GestoreAccettazioneAccount gestoreAccettazioneAccount = new GestoreAccettazioneAccount();
+        gestoreAccettazioneAccount.schermataRichiesteDiocesi((Stage) buttonRichiesteDiocesi.getScene().getWindow());
     }
 
     public void clickRichiesteAziendePartner(ActionEvent actionEvent) throws Exception {
-        GestoreAccettazioneEsiti gestoreAccettazioneEsiti = new GestoreAccettazioneEsiti();
-        gestoreAccettazioneEsiti.schermataRichiesteAziende((Stage) buttonRichiesteAziendePartner.getScene().getWindow());
+        GestoreAccettazioneAccount gestoreAccettazioneAccount = new GestoreAccettazioneAccount();
+        gestoreAccettazioneAccount.schermataRichiesteAziende((Stage) buttonRichiesteAziendePartner.getScene().getWindow());
     }
 
-    public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) {
+    public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
+        GestoreHelp gestoreHelp = new GestoreHelp();
+        gestoreHelp.visualizzaPrevisioneDiDistribuzione((Stage) buttonVisualizzaPrevisioneDistribuzione.getScene().getWindow());
     }
 
-    public void clickListaDonazioniRicevute(ActionEvent actionEvent) {
+    public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {
+        GestoreHelp gestoreHelp = new GestoreHelp();
+        gestoreHelp.schermataListaDonazioniRicevute((Stage) buttonListaDonazioniRicevute.getScene().getWindow());
     }
 
-    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) {
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
+        GestoreMagazzino gestoreMagazzino = new GestoreMagazzino();
+        gestoreMagazzino.aggiungiViveriMagazzino((Stage) buttonAggiungiViveriMagazzino.getScene().getWindow());
     }
-
-    public void clickGestione(ActionEvent actionEvent) {
+    public void clickGestione(ActionEvent actionEvent) throws IOException {
+        GestoreHelp gestoreHelp = new GestoreHelp();
+        gestoreHelp.schermataGestione((Stage) buttonGestione.getScene().getWindow());
     }
 }
 

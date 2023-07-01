@@ -1,24 +1,28 @@
 package it.help.help.help.boundary;
 
+import it.help.help.help.controll.GestoreHelp;
+import it.help.help.utils.MainUtils;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataLista extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataLista.class.getResource("/it/help/help/help/SchermataLista.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata lista");
-        stage.setScene(scene);
-        stage.show();
+public class SchermataLista {
+    public Button buttonHome;
+    public VBox lista;
+    public GestoreHelp gestoreHelp;
+
+    public SchermataLista(GestoreHelp gestoreHelp) {
+        this.gestoreHelp = gestoreHelp;
     }
 
-    public static void main(String[] args) {
-        launch();
+    public void clickHome(ActionEvent actionEvent) throws IOException {
+        MainUtils.tornaAllaHome((Stage) buttonHome.getScene().getWindow());
     }
 }
 

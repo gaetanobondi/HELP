@@ -7,9 +7,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.help.help.help.controll.GestoreHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.help.boundary.SchermataGestione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="../Composizione.fxml" />
+        <Button fx:id="buttonHome" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickHome" layoutX="27.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
+            <graphic>
+                <ImageView accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0" style="-fx-background-color: a5d9fd;">
+                    <image>
+                        <Image url="@../home.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
         <Button fx:id="buttonListaPoli" layoutX="232.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickListaPoli" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: ffffff;" text="POLO" />
         <Button fx:id="buttonListaDiocesi" layoutX="232.0" layoutY="153.0" mnemonicParsing="false" onAction="#clickListaDiocesi" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: ffffff;" text="DIOCESI" />
         <Button fx:id="buttonListaAziende" layoutX="232.0" layoutY="195.0" mnemonicParsing="false" onAction="#clickListaAziende" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: ffffff;" text="AZIENDA PARTNER" />

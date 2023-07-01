@@ -35,10 +35,10 @@ public class GestoreHelp {
     public VBox lista;
     public Button buttonListaDonazioniRicevute;
 
-    public void clickVisualizzaPrevisioneDiDistribuzione(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaPrevisioneDistribuzione l = new SchermataVisualizzaPrevisioneDistribuzione();
-        Stage window = (Stage) buttonVisualizzaPrevisioneDistribuzione.getScene().getWindow();
-        l.start(window);
+    public void visualizzaPrevisioneDiDistribuzione(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza previsione di distribuzione","/it/help/help/help/SchermataVisualizzaPrevisioneDistribuzione.fxml", stage, c -> {
+            return new SchermataVisualizzaPrevisioneDistribuzione();
+        });
     }
 
     public void tornaAHelp(Button button) throws IOException {
@@ -49,13 +49,15 @@ public class GestoreHelp {
     }
 
 
-    public void amministraPolo(Button button, int id_polo) throws Exception {
+    public void amministraPolo(Stage stage, int id_polo) throws Exception {
         MainUtils.responsabileHelpLoggato = MainUtils.responsabileLoggato;
         MainUtils.responsabileLoggato = DBMS.getResponsabile(2, id_polo);
-        SchermataHomeResponsabilePolo l = new SchermataHomeResponsabilePolo();
-        Stage window = (Stage) button.getScene().getWindow();
-        // l.start(window);
-        Parent root = window.getScene().getRoot();
+
+        MainUtils.cambiaInterfaccia("Schermata home responsabile polo","/it/help/help/polo/SchermataHomeResponsabilePolo.fxml", stage, c -> {
+            return new SchermataHomeResponsabilePolo();
+        });
+
+        Parent root = stage.getScene().getRoot();
 
         Button backButton = new Button("Torna a Help"); // Creazione del bottone "Torna a Help"
         backButton.setOnAction(e -> {
@@ -77,15 +79,15 @@ public class GestoreHelp {
     }
 
 
-    public void clickListaPoli(ActionEvent actionEvent) throws Exception {
-        SchermataLista l = new SchermataLista();
-        Stage window = (Stage) buttonListaPoli.getScene().getWindow();
-        l.start(window);
+    public void schermataListaPoli(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata lista poli","/it/help/help/help/SchermataLista.fxml", stage, c -> {
+            return new SchermataLista(this);
+        });
 
         Polo[] listaPoli = DBMS.queryGetAllPoli();
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
-        lista = (VBox) window.getScene().getRoot().lookup("#lista");
+        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
@@ -94,7 +96,7 @@ public class GestoreHelp {
             poloButton.setOnAction(e -> {
                 // Azione da eseguire quando viene premuto il pulsante del polo
                 try {
-                    amministraPolo(poloButton, polo.getId());
+                    amministraPolo((Stage) poloButton.getScene().getWindow(), polo.getId());
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -109,32 +111,32 @@ public class GestoreHelp {
 
 
     public void clickListaDiocesi(ActionEvent actionEvent) throws IOException {
-        SchermataLista l = new SchermataLista();
+        // SchermataLista l = new SchermataLista();
         Stage window = (Stage) buttonListaDiocesi.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
     public void clickListaAziende(ActionEvent actionEvent) throws IOException {
-        SchermataLista l = new SchermataLista();
+        // SchermataLista l = new SchermataLista();
         Stage window = (Stage) buttonListaAziende.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
-    public void clickGestione(ActionEvent actionEvent) throws IOException {
-        SchermataGestione l = new SchermataGestione();
-        Stage window = (Stage) buttonGestione.getScene().getWindow();
-        l.start(window);
+    public void schermataGestione(Stage stage) throws IOException {
+        MainUtils.cambiaInterfaccia("Schermata gestione","/it/help/help/help/SchermataGestione.fxml", stage, c -> {
+            return new SchermataGestione(this);
+        });
     }
 
-    public void clickListaDonazioniRicevute(ActionEvent actionEvent) throws Exception {
-        SchermataListaDonazioni l = new SchermataListaDonazioni();
-        Stage window = (Stage) buttonListaDonazioniRicevute.getScene().getWindow();
-        l.start(window);
+    public void schermataListaDonazioniRicevute(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata lista donazioni ricevute","/it/help/help/help/SchermataListaDonazioni.fxml", stage, c -> {
+            return new SchermataListaDonazioni();
+        });
 
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
         Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni();
-        lista = (VBox) window.getScene().getRoot().lookup("#lista");
+        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         for (Donazione donazione : listaDonazioni) {
             Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
             AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());

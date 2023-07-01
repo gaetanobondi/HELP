@@ -35,4 +35,5 @@ module it.help.help {
     exports it.help.help.utils;
     opens it.help.help.utils to javafx.fxml;
     exports it.help.help;
+    exports it.help.help.magazzino.boundary;
 }
