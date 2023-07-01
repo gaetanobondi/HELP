@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.VBox?>
 <VBox fx:controller="it.help.help.autenticazione.boundary.SchermataHomeResponsabileDiocesi" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
    <children>
-      <fx:include source="buttonGestoreProfiloDiocesi.fxml" />
-      <fx:include source="buttonGestoreDiocesi.fxml" />
+      <Button fx:id="buttonVisualizzaProfiloDiocesi" layoutX="166.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaProfiloDiocesi" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA PROFILO" />
+      <Button fx:id="buttonVisualizzaSchemaDiDistribuzioneDiocesi" layoutX="166.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaSchemaDiDistribuzioneDiocesi" prefHeight="25.0" prefWidth="287.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA SCHEMA DI DISTRIBUZIONE" />
       <Button fx:id="buttonVisualizzaListaPoli" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickVisualizzaListaPoli" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="VISUALIZZA LISTA POLI" />
       <Button fx:id="buttonRegistrazionePolo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickRegistrazionePolo" prefHeight="25.0" prefWidth="238.0" style="-fx-background-color: FFFFFF;" text="REGISTRAZIONE POLO" />
+      <Button fx:id="buttonLogout" layoutX="17.0" layoutY="366.0" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: FFFFFF;" text="LOGOUT" />
    </children>
 </VBox>

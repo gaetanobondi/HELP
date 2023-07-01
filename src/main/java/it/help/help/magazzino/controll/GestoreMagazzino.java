@@ -24,7 +24,7 @@ public class GestoreMagazzino {
     public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
         SchermataCaricamentoViveri l = new SchermataCaricamentoViveri();
         Stage window = (Stage) buttonAggiungiViveriMagazzino .getScene().getWindow();
-        l.start(window);
+        // l.start(window);
 
         Prodotto[] listaProdotti = DBMS.queryGetProdotti();
         Parent root = window.getScene().getRoot();

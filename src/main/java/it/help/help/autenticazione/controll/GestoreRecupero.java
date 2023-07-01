@@ -111,13 +111,8 @@ public class GestoreRecupero {
                             if (!codeInserito.isEmpty() && code.equals(codeInserito)) {   //se il codice inserito coincide
                                 SchermataCambioPassword l = new SchermataCambioPassword();
                                 Stage window = (Stage) buttonRecupera.getScene().getWindow();
-                                try {
-                                    l.start(window);
-                                    TextField fieldEmail = (TextField) window.getScene().lookup("#fieldEmail");
-                                    fieldEmail.setText(email);
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+                                TextField fieldEmail = (TextField) window.getScene().lookup("#fieldEmail");
+                                fieldEmail.setText(email);
 
                                 // Chiudi il popup
                                 popupStage.close();

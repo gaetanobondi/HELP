@@ -8,20 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataHomeResponsabilePolo extends Application {
-    public Button buttonLogout;
+public class SchermataHomeResponsabilePolo {
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataHomeResponsabilePolo.class.getResource("/it/help/help/polo/SchermataHomeResponsabilePolo.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata Home Responsabile Polo");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
-    }
 }
 

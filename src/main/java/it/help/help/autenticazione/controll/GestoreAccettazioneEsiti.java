@@ -1,5 +1,6 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.azienda_partner.boundary.SchermataEffettuaDonazione;
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataVisualizzaRichieste;
 import it.help.help.utils.MainUtils;
@@ -20,14 +21,10 @@ public class GestoreAccettazioneEsiti {
     public Button buttonRichiesteDiocesi;
     public Button buttonRichiesteAziendePartner;
 
-    public void clickRichiesteDiocesi(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaRichieste l = new SchermataVisualizzaRichieste();
-        Stage window = (Stage) buttonRichiesteDiocesi.getScene().getWindow();
-        l.start(window);
-        listaRichiesteDiocesi(window);
-    }
-
-    public static void listaRichiesteDiocesi(Stage window) throws Exception {
+    public void schermataRichiesteDiocesi(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata richieste diocesi","/it/help/help/help/SchermataVisualizzaRichieste.fxml", stage, c -> {
+            return new SchermataVisualizzaRichieste(this);
+        });
         Diocesi[] listaRichieste = DBMS.getRichiesteDiocesi();
 
         if(listaRichieste.length == 0) {
@@ -35,12 +32,12 @@ public class GestoreAccettazioneEsiti {
             alert.setTitle("Pop-Up Errore");
             alert.setHeaderText("Nessuna richiesta presente");
             alert.showAndWait();
-            // MainUtils.tornaAllaHome((Button)window.getScene().getRoot().lookup("#buttonHome"));
+            MainUtils.tornaAllaHome(stage);
         }
 
         double layoutY = 100;
         double spacing = 40.0; // Spazio verticale tra i componenti
-        Pane rootPane = (Pane) window.getScene().getRoot();
+        Pane rootPane = (Pane) stage.getScene().getRoot();
         for (Diocesi diocesi : listaRichieste) {
             Responsabile responsabile = DBMS.getResponsabile(1, diocesi.getId());
             Button buttonAccettaRichiesta = new Button();
@@ -50,7 +47,9 @@ public class GestoreAccettazioneEsiti {
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
                 try {
-                    GestoreAccettazioneEsiti.clickAccettaDiocesi(buttonAccettaRichiesta, diocesi);
+                    DBMS.accettaRichiesta(diocesi.getId(), "diocesi");
+                    System.out.println("Diocesi " + diocesi.getId() + " accettata.");
+                    schermataRichiesteDiocesi(stage);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -69,20 +68,24 @@ public class GestoreAccettazioneEsiti {
         }
     }
 
-    public void clickRichiesteAziendePartner(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaRichieste l = new SchermataVisualizzaRichieste();
-        Stage window = (Stage) buttonRichiesteAziendePartner.getScene().getWindow();
-        l.start(window);
-        listaRichiesteAziende(window);
-    }
-
-    public static void listaRichiesteAziende(Stage window) throws Exception {
+    public void schermataRichiesteAziende(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata richieste aziende partner","/it/help/help/help/SchermataVisualizzaRichieste.fxml", stage, c -> {
+            return new SchermataVisualizzaRichieste(this);
+        });
         AziendaPartner[] listaRichieste = DBMS.getRichiesteAziendePartner();
+
+        if(listaRichieste.length == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Nessuna richiesta presente");
+            alert.showAndWait();
+            MainUtils.tornaAllaHome(stage);
+        }
 
         double layoutY = 100;
         double spacing = 40.0; // Spazio verticale tra i componenti
 
-        Pane rootPane = (Pane) window.getScene().getRoot(); // Ottieni il nodo radice esistente
+        Pane rootPane = (Pane) stage.getScene().getRoot(); // Ottieni il nodo radice esistente
 
         for (AziendaPartner azienda : listaRichieste) {
             System.out.println(azienda.getId());
@@ -94,7 +97,9 @@ public class GestoreAccettazioneEsiti {
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
                 try {
-                    GestoreAccettazioneEsiti.clickAccettaAziendaPartner(buttonAccettaRichiesta, azienda);
+                    DBMS.accettaRichiesta(azienda.getId(), "azienda");
+                    System.out.println("Azienda " + azienda.getId() + " accettata.");
+                    schermataRichiesteAziende(stage);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -112,25 +117,5 @@ public class GestoreAccettazioneEsiti {
 
             layoutY += buttonAccettaRichiesta.getHeight() + spacing;
         }
-    }
-
-
-
-    public static void clickAccettaDiocesi(Button button, Diocesi diocesi) throws Exception {
-        DBMS.accettaRichiesta(diocesi.getId(), "diocesi");
-        System.out.println("Diocesi " + diocesi.getId() + " accettata.");
-        SchermataVisualizzaRichieste l = new SchermataVisualizzaRichieste();
-        Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
-        listaRichiesteDiocesi(window);
-    }
-
-    public static void clickAccettaAziendaPartner(Button button, AziendaPartner aziendaPartner) throws Exception {
-        DBMS.accettaRichiesta(aziendaPartner.getId(), "azienda");
-        System.out.println("Azienda " + aziendaPartner.getId() + " accettata.");
-        SchermataVisualizzaRichieste l = new SchermataVisualizzaRichieste();
-        Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
-        listaRichiesteAziende(window);
     }
 }

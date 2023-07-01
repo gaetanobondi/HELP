@@ -54,7 +54,7 @@ public class GestoreHelp {
         MainUtils.responsabileLoggato = DBMS.getResponsabile(2, id_polo);
         SchermataHomeResponsabilePolo l = new SchermataHomeResponsabilePolo();
         Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
         Parent root = window.getScene().getRoot();
 
         Button backButton = new Button("Torna a Help"); // Creazione del bottone "Torna a Help"

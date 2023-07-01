@@ -7,17 +7,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataSospensionePolo extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataSospensionePolo.class.getResource("/it/help/help/polo/SchermataSospensionePolo.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata sospensione polo");
-        stage.setScene(scene);
-        stage.show();
-    }
+public class SchermataSospensionePolo {
 
-    public static void main(String[] args) {
-        launch();
-    }
 }

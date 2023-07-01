@@ -7,17 +7,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataRegistrazionePolo extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataRegistrazionePolo.class.getResource("/it/help/help/diocesi/SchermataRegistrazionePolo.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Schermata registrazione polo");
-        stage.setScene(scene);
-        stage.show();
-    }
+public class SchermataRegistrazionePolo {
 
-    public static void main(String[] args) {
-        launch();
-    }
 }

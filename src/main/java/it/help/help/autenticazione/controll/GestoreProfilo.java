@@ -60,66 +60,37 @@ public class GestoreProfilo {
     public Button buttonModificaDatiHelp;
 
     @FXML
-    public void clickVisualizzaProfiloHelp(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaProfiloHelp l = new SchermataVisualizzaProfiloHelp();
-        Stage window = (Stage) buttonVisualizzaProfiloHelp.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelEmail = (Label) root.lookup("#labelEmail");
-        Label labelNome = (Label) root.lookup("#labelNome");
-        Label labelCognome = (Label) root.lookup("#labelCognome");
-        Label labelCellulare = (Label) root.lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
+    public void visualizzaProfiloHelp(Stage stage) throws Exception {
         MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.helpLoggato.getIndirizzo();
+        int cellulare = MainUtils.helpLoggato.getCellulare();
 
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        // labelPassword.setText("**********");
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.helpLoggato.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
+        SchermataVisualizzaProfiloHelp p = new SchermataVisualizzaProfiloHelp();
+        MainUtils.cambiaInterfaccia("Schermata profilo help", "/it/help/help/help/SchermataProfiloPersonaleHelp.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo);
     }
 
-    public void clickModificaDatiHelp(ActionEvent actionEvent) throws Exception {
-        SchermataModificaProfiloHelp l = new SchermataModificaProfiloHelp();
-        Stage window = (Stage) buttonModificaDatiHelp.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
+    public void schermataModificaDatiHelp(Stage stage) throws Exception {
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.helpLoggato.getIndirizzo();
+        int cellulare = MainUtils.helpLoggato.getCellulare();
 
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
-        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        fieldNome.setText(MainUtils.responsabileLoggato.getNome());
-        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        if(MainUtils.helpLoggato.getCellulare() != 0) {
-            fieldCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
-        }
-        fieldIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
+        SchermataModificaProfiloHelp p = new SchermataModificaProfiloHelp(this);
+        MainUtils.cambiaInterfaccia("Schermata modifica profilo help", "/it/help/help/help/SchermataModificaProfiloHelp.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo);
     }
 
     public Button buttonSalvaModificheHelp;
-    public void clickSalvaModificheHelp(ActionEvent actionEvent) throws Exception {
-        String nome = fieldNome.getText();
-        String cognome = fieldCognome.getText();
-        String indirizzo = fieldIndirizzo.getText();
-        String cellulare = fieldCellulare.getText();
-        String email = fieldEmail.getText();
-        String password = fieldVecchiaPassword.getText();
-        String new_password = fieldNuovaPassword.getText();
+    public void salvaModificheHelp(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String password, String new_password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
 
@@ -179,7 +150,7 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizzaHelp();
+            visualizzaProfiloHelp(stage);
         }
     }
 
@@ -314,41 +285,22 @@ public class GestoreProfilo {
     public Button buttonSalvaModificheDiocesi;
 
     public Button buttonModificaDatiDiocesi;
-    public void clickModificaDatiDiocesi(ActionEvent actionEvent) throws Exception {
-        SchermataModificaProfiloDiocesi l = new SchermataModificaProfiloDiocesi();
-        Stage window = (Stage) buttonModificaDatiDiocesi.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
+    public void schermataModificaDatiDiocesi(Stage stage) throws Exception {
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.diocesiLoggata.getIndirizzo();
+        int cellulare = MainUtils.diocesiLoggata.getCellulare();
+        String nomeDiocesi = MainUtils.diocesiLoggata.getNome();
 
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        TextField fieldCognome = (TextField) root.lookup("#fieldCognome");
-        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-        TextField fieldNomeDiocesi = (TextField) root.lookup("#fieldNomeDiocesi");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        fieldNome.setText(MainUtils.responsabileLoggato.getNome());
-        fieldCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
-            fieldCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
-        }
-        fieldIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
-        fieldNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
+        SchermataModificaProfiloDiocesi p = new SchermataModificaProfiloDiocesi(this);
+        MainUtils.cambiaInterfaccia("Schermata modifica profilo diocesi", "/it/help/help/diocesi/SchermataModificaProfiloDiocesi.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeDiocesi);
     }
 
-    public void clickSalvaModificheDiocesi(ActionEvent actionEvent) throws Exception {
-        String nome_diocesi = fieldNomeDiocesi.getText() != null ? fieldNomeDiocesi.getText() : "";
-        String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
-        String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
-        String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";
-        String indirizzo = fieldIndirizzo.getText() != null ? fieldIndirizzo.getText() : "";
-        String email = fieldEmail.getText();
-        String password = fieldVecchiaPassword.getText();
-        String new_password = fieldNuovaPassword.getText();
+    public void salvaModificheDiocesi(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String nome_diocesi, String password, String new_password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
 
@@ -407,76 +359,10 @@ public class GestoreProfilo {
             alert.showAndWait();
         } else {
             // torno alla schermata precedente
-            tornaAVisualizzaDiocesi();
+            visualizzaProfiloDiocesi(stage);
         }
     }
 
-    private void tornaAVisualizzaHelp() throws Exception {
-        SchermataVisualizzaProfiloHelp l = new SchermataVisualizzaProfiloHelp();
-        Stage window = (Stage) buttonSalvaModificheHelp.getScene().getWindow();
-        l.start(window);
-        Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
-        Label labelNome = (Label) window.getScene().lookup("#labelNome");
-        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
-        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.helpLoggato.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.helpLoggato.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.helpLoggato.getIndirizzo());
-    }
-
-    private void tornaAVisualizzaAzienda() throws Exception {
-        // SchermataVisualizzaProfiloAziendaPartner l = new SchermataVisualizzaProfiloAziendaPartner();
-        Stage window = (Stage) buttonSalvaModificheAzienda.getScene().getWindow();
-        // l.start(window);
-        Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
-        Label labelNome = (Label) window.getScene().lookup("#labelNome");
-        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
-        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
-        Label labelNomeAzienda = (Label) window.getScene().lookup("#labelNomeAzienda");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.aziendaPartnerLoggata.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.aziendaPartnerLoggata.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.aziendaPartnerLoggata.getIndirizzo());
-        labelNomeAzienda.setText(MainUtils.aziendaPartnerLoggata.getNome());
-    }
-
-    private void tornaAVisualizzaDiocesi() throws Exception {
-        SchermataVisualizzaProfiloDiocesi l = new SchermataVisualizzaProfiloDiocesi();
-        Stage window = (Stage) buttonSalvaModificheDiocesi.getScene().getWindow();
-        l.start(window);
-        Label labelEmail = (Label) window.getScene().lookup("#labelEmail");
-        Label labelNome = (Label) window.getScene().lookup("#labelNome");
-        Label labelCognome = (Label) window.getScene().lookup("#labelCognome");
-        Label labelCellulare = (Label) window.getScene().lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) window.getScene().lookup("#labelIndirizzo");
-        Label labelNomeDiocesi = (Label) window.getScene().lookup("#labelNomeDiocesi");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
-        labelNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
-    }
 
     public void visualizzaProfiloAziendaPartner(Stage stage) throws Exception {
         MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
@@ -494,31 +380,19 @@ public class GestoreProfilo {
         p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeAzienda);
     }
 
-    public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaProfiloDiocesi l = new SchermataVisualizzaProfiloDiocesi();
-        Stage window = (Stage) buttonVisualizzaProfiloDiocesi.getScene().getWindow();
-        l.start(window);
-        Parent root = window.getScene().getRoot();
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelEmail = (Label) root.lookup("#labelEmail");
-        Label labelNome = (Label) root.lookup("#labelNome");
-        Label labelCognome = (Label) root.lookup("#labelCognome");
-        Label labelCellulare = (Label) root.lookup("#labelCellulare");
-        Label labelIndirizzo = (Label) root.lookup("#labelIndirizzo");
-        Label labelNomeDiocesi = (Label) root.lookup("#labelNomeDiocesi");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-
+    public void visualizzaProfiloDiocesi(Stage stage) throws Exception {
         MainUtils.diocesiLoggata = DBMS.queryGetDiocesi(MainUtils.responsabileLoggato.getIdLavoro());
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.diocesiLoggata.getIndirizzo();
+        int cellulare = MainUtils.diocesiLoggata.getCellulare();
+        String nomeDiocesi = MainUtils.diocesiLoggata.getNome();
 
-        labelEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        labelNome.setText(MainUtils.responsabileLoggato.getNome());
-        labelCognome.setText(MainUtils.responsabileLoggato.getCognome());
-        if(MainUtils.diocesiLoggata.getCellulare() != 0) {
-            labelCellulare.setText("" + MainUtils.diocesiLoggata.getCellulare());
-        }
-        labelIndirizzo.setText(MainUtils.diocesiLoggata.getIndirizzo());
-        labelNomeDiocesi.setText(MainUtils.diocesiLoggata.getNome());
+        SchermataVisualizzaProfiloDiocesi p = new SchermataVisualizzaProfiloDiocesi();
+        MainUtils.cambiaInterfaccia("Schermata profilo diocesi", "/it/help/help/diocesi/SchermataProfiloPersonaleDiocesi.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeDiocesi);
     }
 }

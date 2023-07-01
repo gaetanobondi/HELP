@@ -66,9 +66,9 @@ public class GestoreAutenticazione {
 
     //per la SCHERMATA INIZIALE
     public void creaSchermataSignIn(Button button) throws Exception {
-        SchermataSignin l = new SchermataSignin();
+        // SchermataSignin l = new SchermataSignin();
         Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
     public void creaSchermataLogin(Stage stage, GestoreAutenticazione gestoreAutenticazione) throws Exception {
@@ -322,9 +322,9 @@ public class GestoreAutenticazione {
 
 
     public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
-        SchermataSospensionePolo l = new SchermataSospensionePolo();
+        // SchermataSospensionePolo l = new SchermataSospensionePolo();
         Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
 
@@ -428,9 +428,9 @@ public class GestoreAutenticazione {
     }
 
     public void clickRegistrazionePolo(ActionEvent actionEvent) throws Exception {
-        SchermataRegistrazionePolo l = new SchermataRegistrazionePolo();
+        // SchermataRegistrazionePolo l = new SchermataRegistrazionePolo();
         Stage window = (Stage) buttonRegistrazionePolo.getScene().getWindow();
-        l.start(window);
+        // l.start(window);
     }
 
     public void clickVisualizzaCarichiInviati(ActionEvent actionEvent) throws Exception {
