@@ -126,7 +126,7 @@ public class GestoreProfilo {
         if(!password.isEmpty() && !new_password.isEmpty()) {
             if(MainUtils.isValidPassword(new_password)) {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
-                String encryptPassword = MainUtils.encryptPassword(password);
+                String encryptPassword = MainUtils.encryptPassword(new_password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
                 // ricarico la entity responsabile
@@ -212,10 +212,9 @@ public class GestoreProfilo {
         if(!password.isEmpty() && !new_password.isEmpty()) {
             if(MainUtils.isValidPassword(new_password)) {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
-                String encryptPassword = MainUtils.encryptPassword(password);
+                String encryptPassword = MainUtils.encryptPassword(new_password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
                 // ricarico la entity responsabile
                 MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
             } else {
@@ -248,32 +247,84 @@ public class GestoreProfilo {
 
     //per la schermata MODIFICA PROFILO PERSONALE POLO
     public Button buttonModificaDatiPolo;
-    public void clickModificaDatiPolo(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/it/help/help/SchermataModificaProfiloPolo.fxml"));
-        Stage window = (Stage) buttonModificaDatiPolo.getScene().getWindow();
-        MainUtils.previousScene = window.getScene();
-        window.setScene(new Scene(root));
-        window.setTitle("Schermata Modifica Profilo Polo");
+    public void schermataModificaDatiPolo(Stage stage) throws Exception {
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.poloLoggato.getIndirizzo();
+        int cellulare = MainUtils.poloLoggato.getCellulare();
+        String nomePolo = MainUtils.poloLoggato.getNome();
 
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        TextField fieldNome = (TextField) root.lookup("#fieldNome");
-        TextField fieldNomeResponsabile = (TextField) root.lookup("#fieldNomeResponsabile");
-        TextField fieldCognomeResponsabile = (TextField) root.lookup("#fieldCognomeResponsabile");
-        TextField fieldEmail = (TextField) root.lookup("#fieldEmail");
-        TextField fieldIndirizzo = (TextField) root.lookup("#fieldIndirizzo");
-        TextField fieldCellulare = (TextField) root.lookup("#fieldCellulare");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-        fieldNome.setText(MainUtils.poloLoggato.getNome());
-        fieldNomeResponsabile.setText(MainUtils.responsabileLoggato.getNome());
-        fieldCognomeResponsabile.setText(MainUtils.responsabileLoggato.getCognome());
-        fieldEmail.setText(MainUtils.responsabileLoggato.getEmail());
-        fieldIndirizzo.setText(MainUtils.poloLoggato.getIndirizzo());
-        fieldCellulare.setText("" + MainUtils.poloLoggato.getCellulare());
+        SchermataModificaProfiloPolo p = new SchermataModificaProfiloPolo(this);
+        MainUtils.cambiaInterfaccia("Schermata modifica profilo polo", "/it/help/help/polo/SchermataModificaProfiloPolo.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomePolo);
     }
     public Button buttonSalvaModifichePolo;
 
-    public void clickSalvaModifichePolo(ActionEvent actionEvent) {
+    public void salvaModifichePolo(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String nome_polo, String password, String new_password) throws Exception {
+        Boolean showErrorAlert = false;
+        String error = "";
+
+        // controllo riempimento campi
+        if(!nome_polo.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
+            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                // aggiorno la tabella azienda
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                datiAggiornati.put("indirizzo", indirizzo);
+                datiAggiornati.put("cellulare", cellulare);
+                datiAggiornati.put("nome", nome_polo);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "polo", datiAggiornati);
+                // ricarico la entity azienda
+                MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+
+                // aggiorno la tabella responsabile
+                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                datiAggiornatiResponsabile.put("nome", nome);
+                datiAggiornatiResponsabile.put("cognome", cognome);
+                datiAggiornatiResponsabile.put("email", email);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(2, MainUtils.responsabileLoggato.getIdLavoro());
+            } else {
+                showErrorAlert = true;
+                error = "Non puoi usare questa email";
+            }
+        } else {
+            showErrorAlert = true;
+            error = "Compila tutti i campi obbligatori";
+        }
+
+        if(!password.isEmpty() && !new_password.isEmpty()) {
+            if(MainUtils.isValidPassword(new_password)) {
+                HashMap<String, Object> datiAggiornati = new HashMap<>();
+                String encryptPassword = MainUtils.encryptPassword(new_password);
+                datiAggiornati.put("password", encryptPassword);
+                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
+                // ricarico la entity responsabile
+                MainUtils.responsabileLoggato = DBMS.getResponsabile(2, MainUtils.responsabileLoggato.getIdLavoro());
+            } else {
+                showErrorAlert = true;
+                error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
+            }
+        } else if(!password.isEmpty() && new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la nuova password";
+        } else if(password.isEmpty() && !new_password.isEmpty()) {
+            showErrorAlert = true;
+            error = "Inserisci la tua password";
+        }
+
+        if(showErrorAlert) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText(error);
+            alert.showAndWait();
+        } else {
+            // torno alla schermata precedente
+            visualizzaProfiloPolo(stage);
+        }
     }
 
 
@@ -335,7 +386,7 @@ public class GestoreProfilo {
         if(!password.isEmpty() && !new_password.isEmpty()) {
             if(MainUtils.isValidPassword(new_password)) {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();
-                String encryptPassword = MainUtils.encryptPassword(password);
+                String encryptPassword = MainUtils.encryptPassword(new_password);
                 datiAggiornati.put("password", encryptPassword);
                 DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornati);
                 // ricarico la entity responsabile
@@ -394,5 +445,20 @@ public class GestoreProfilo {
             return p;
         });
         p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeDiocesi);
+    }
+    public void visualizzaProfiloPolo(Stage stage) throws Exception {
+        MainUtils.poloLoggato = DBMS.queryGetPolo(MainUtils.responsabileLoggato.getIdLavoro());
+        String nome = MainUtils.responsabileLoggato.getNome();
+        String cognome = MainUtils.responsabileLoggato.getCognome();
+        String email = MainUtils.responsabileLoggato.getEmail();
+        String indirizzo = MainUtils.poloLoggato.getIndirizzo();
+        int cellulare = MainUtils.poloLoggato.getCellulare();
+        String nomePolo = MainUtils.poloLoggato.getNome();
+
+        SchermataVisualizzaProfiloPolo p = new SchermataVisualizzaProfiloPolo();
+        MainUtils.cambiaInterfaccia("Schermata profilo polo", "/it/help/help/polo/SchermataProfiloPersonalePolo.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nome, cognome, email, cellulare, indirizzo, nomePolo);
     }
 }

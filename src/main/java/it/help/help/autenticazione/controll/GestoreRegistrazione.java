@@ -1,6 +1,8 @@
 package it.help.help.autenticazione.controll;
 
+import it.help.help.autenticazione.boundary.SchermataIniziale;
 import it.help.help.autenticazione.boundary.SchermataLogin;
+import it.help.help.autenticazione.boundary.SchermataSignin;
 import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -25,12 +27,19 @@ public class GestoreRegistrazione {
     public PasswordField fieldRipetiPassword;
     public Button buttonRegistrati;
 
-    public void clickRegistrati(ActionEvent actionEvent) throws Exception {
-        Boolean radioDiocesi = radioButtonDiocesi.isSelected();
-        Boolean radioAzienda = radioButtonAziendaPartner.isSelected();
-        String email = fieldEmail.getText();
-        String password = fieldPassword.getText();
-        String repeatPassword = fieldRipetiPassword.getText();
+    public void schermataIniziale(Stage stage) {
+        MainUtils.cambiaInterfaccia("Help", "/it/help/help/SchermataIniziale.fxml", stage, c -> {
+            return new SchermataIniziale(stage);
+        });
+    }
+
+    public void schermataSignin(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata signin","/it/help/help/SchermataSignin.fxml", stage, c -> {
+            return new SchermataSignin(this);
+        });
+    }
+
+    public void registraResponsabile(Stage stage, Boolean radioDiocesi, Boolean radioAzienda, String email, String password, String repeatPassword) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
         int type = 0;
@@ -82,6 +91,4 @@ public class GestoreRegistrazione {
         }
     }
 
-    public void clickIndietro(ActionEvent actionEvent) {
-    }
 }

@@ -30,10 +30,12 @@ public class SchermataGestione {
         gestoreHelp.schermataListaPoli((Stage) buttonListaPoli.getScene().getWindow());
     }
 
-    public void clickListaDiocesi(ActionEvent actionEvent) {
+    public void clickListaDiocesi(ActionEvent actionEvent) throws Exception {
+        gestoreHelp.schermataListaDiocesi((Stage) buttonListaDiocesi.getScene().getWindow());
     }
 
-    public void clickListaAziende(ActionEvent actionEvent) {
+    public void clickListaAziende(ActionEvent actionEvent) throws Exception {
+        gestoreHelp.schermataListaAziende((Stage) buttonListaAziende.getScene().getWindow());
     }
 }
 

@@ -1,10 +1,9 @@
 package it.help.help.polo.controll;
 
-import it.help.help.autenticazione.boundary.SchermataLogin;
-import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.common.SchermataVisualizzaSchemaDistribuzione;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.SchemaDistribuzione;
+import it.help.help.polo.boundary.SchermataVisualizzaSchemaDistribuzionePolo;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
@@ -18,27 +17,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class GestoreSospensionePolo {
-    public Button ButtonConfermaSospensione;
+public class GestorePolo {
     public Button buttonVisualizzaSchemaDiDistribuzionePolo;
 
-    public void clickConfermaSospensione(ActionEvent actionEvent) throws Exception {
-        DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
-
-        // effettuo il logout
-        // SchermataLogin l = new SchermataLogin();
-        Stage window = (Stage) ButtonConfermaSospensione.getScene().getWindow();
-        // l.start(window);
-    }
-
-    public void clickVisualizzaSchemaDiDistribuzionePolo(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaSchemaDistribuzione l = new SchermataVisualizzaSchemaDistribuzione();
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzionePolo.getScene().getWindow();
-        l.start(window);
+    public void schermataVisualizzaSchemaDiDistribuzionePolo(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataVisualizzaSchemaDistribuzionePolo.fxml", stage, c -> {
+            return new SchermataVisualizzaSchemaDistribuzionePolo();
+        });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(1, MainUtils.responsabileLoggato.getIdLavoro());
 
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
         double layoutY = 140;
         double spacing = 40.0; // Spazio verticale tra i componenti

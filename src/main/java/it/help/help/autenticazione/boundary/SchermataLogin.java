@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.boundary;
 
 import it.help.help.autenticazione.controll.GestoreAutenticazione;
+import it.help.help.autenticazione.controll.GestorePassword;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -33,8 +34,11 @@ public class SchermataLogin {
     }
 
     public void clickIndietro(ActionEvent actionEvent) {
+        gestoreAutenticazione.schermataIniziale((Stage) buttonIndietro.getScene().getWindow());
     }
 
     public void clickRecuperaPassword(ActionEvent actionEvent) {
+        GestorePassword gestorePassword = new GestorePassword();
+        gestorePassword.schermataRecuperoPassword((Stage) buttonRecuperaPassword.getScene().getWindow());
     }
 }

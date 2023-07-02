@@ -3,12 +3,12 @@ package it.help.help.polo.controll;
 import it.help.help.polo.boundary.*;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import it.help.help.entity.*;
 import javafx.scene.control.*;
@@ -18,11 +18,10 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Locale;
-import it.help.help.common.SchermataVisualizzaSchemaDistribuzione;
 
 public class GestoreNucleo {
     public TextField fieldCognome;
@@ -43,14 +42,14 @@ public class GestoreNucleo {
     public Label hiddenLabelIdNucleo;
     public Button buttonVisualizzaSchemaDiDistribuzioneNucleo;
 
-    public void clickVisualizzaSchemaDiDistribuzioneNucleo(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaSchemaDistribuzione l = new SchermataVisualizzaSchemaDistribuzione();
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneNucleo.getScene().getWindow();
-        l.start(window);
+    public void schermataSchemaDistribuzioneNucleo(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataSchemaDistribuzioneNucleo.fxml", stage, c -> {
+            return new SchermataSchemaDistribuzioneNucleo();
+        });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(2, MainUtils.nucleo.getId());
 
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
 
         double layoutY = 140;
         double spacing = 40.0; // Spazio verticale tra i componenti
@@ -79,15 +78,13 @@ public class GestoreNucleo {
         }
     }
 
-    public void clickRegistraNucleo(ActionEvent actionEvent) throws Exception {
-        String cognome = fieldCognome.getText();
-        String reddito = fieldReddito.getText();
+    public void registraNucleo(Stage stage, String cognome, String reddito) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
         if(!cognome.isEmpty() && !reddito.isEmpty()) {
             DBMS.queryRegistraNucleo(MainUtils.responsabileLoggato.getIdLavoro(), cognome, Integer.parseInt(reddito));
-            // MainUtils.tornaAllaHome(buttonRegistraNucleo);
+            MainUtils.tornaAllaHome(stage);
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi.";
@@ -104,81 +101,24 @@ public class GestoreNucleo {
     public static void eliminaNucleo(int id_nucleo) throws Exception {
         DBMS.queryEliminaNucleo(id_nucleo);
     }
-
-    public void clickAggiungiNuovoMembro(ActionEvent actionEvent) throws Exception {
-        SchermataRegistraMembro l = new SchermataRegistraMembro();
-        Stage window = (Stage) buttonAggiungiNuovoMembro.getScene().getWindow();
-        l.start(window);
+    public void schermataModificaNucleo(Stage stage, Nucleo nucleo) {
+        SchermataModificaNucleo p = new SchermataModificaNucleo(this);
+        MainUtils.cambiaInterfaccia("Schermata modifica nucleo", "/it/help/help/polo/SchermataModificaNucleo.fxml", stage, c -> {
+            return p;
+        });
+        p.inizialize(nucleo.getId(), nucleo.getCognome(), nucleo.getReddito());
     }
-
-    public void visualizzaComponentiNucleo(Stage window, Nucleo nucleo) throws Exception {
-        MainUtils.nucleo = nucleo;
-
-        // Recupera le label dal file FXML utilizzando gli ID specificati nel file FXML
-        Label labelCognome = (Label) window.getScene().getRoot().lookup("#labelCognome");
-
-        // Imposta il testo delle label utilizzando i valori delle variabili
-        labelCognome.setText("Famiglia " + nucleo.getCognome());
-
-        Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
-
-        Parent root = window.getScene().getRoot();
-
-        listaComponenti = (VBox) window.getScene().getRoot().lookup("#listaComponenti");
-
-        for(Membro membro : listaMembri) {
-            Label labelNome = new Label(membro.getNome() + " " + membro.getCognome());
-            Button buttonModifica = new Button("Modifica");
-            Button buttonElimina = new Button("Elimina");
-            buttonElimina.setOnAction(event -> {
-                try {
-                    DBMS.queryEliminaMembro(membro.getCodiceFiscale());
-                    // MainUtils.tornaAllaHome(buttonElimina);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            HBox hBox = new HBox(10.0);
-            hBox.getChildren().addAll(labelNome, buttonModifica, buttonElimina);
-            listaComponenti.getChildren().add(hBox);
-        }
-    }
-
-    public void schermataComponentiNucleo(Button button, Nucleo nucleo) throws Exception {
-        SchermataComponentiNucleo l = new SchermataComponentiNucleo();
-        Stage window = (Stage) button.getScene().getWindow();
-        l.start(window);
-
-        visualizzaComponentiNucleo(window, nucleo);
-    }
-
-    public void clickSalvaRegistraMembro(ActionEvent actionEvent) throws Exception {
-        String nome = fieldNome.getText();
-        String cognome = fieldCognome.getText();
-        String codice_fiscale = fieldCodFiscale.getText();
-        String cellulare = fieldCellulare.getText();
-        String indirizzo = fieldIndirizzo.getText();
-        Boolean checkCeliachia = checkBoxCeliachia.isSelected();
-        Boolean checkLattosio = checkBoxLattosio.isSelected();
-        Boolean checkDiabete = checkBoxDiabete.isSelected();
-        LocalDate dataNascita = pickerDataNascita.getValue();
-
+    public void modificaNucleo(Stage stage, int idNucleo, String cognome, String reddito) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
-        if(!nome.isEmpty() && !cognome.isEmpty() && !codice_fiscale.isEmpty() && !cellulare.isEmpty() && !indirizzo.isEmpty() && dataNascita != null) {
-            // controllo che il membro non sia già iscritto
-            if(!DBMS.queryControllaEsistenzaMembro(codice_fiscale)) {
-                // Conversione da LocalDate a java.sql.Date
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
-
-                DBMS.queryRegistraMembro(codice_fiscale, MainUtils.nucleo.getId(), nome, cognome, sqlDate, indirizzo, checkCeliachia, checkLattosio, checkDiabete);
-                // MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
-            } else {
-                showErrorAlert = true;
-                error = "Il membro risulta già iscritto al programma di aiuto.";
-            }
+        if(!cognome.isEmpty() && !reddito.isEmpty()) {
+            // aggiorno la tabella azienda
+            HashMap<String, Object> datiAggiornati = new HashMap<>();
+            datiAggiornati.put("cognome", cognome);
+            datiAggiornati.put("reddito", reddito);
+            DBMS.queryModificaDati(idNucleo, "nucleo", datiAggiornati);
+            MainUtils.tornaAllaHome(stage);
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi.";
@@ -189,13 +129,87 @@ public class GestoreNucleo {
             alert.setTitle("Pop-Up Errore");
             alert.setHeaderText(error);
             alert.showAndWait();
-        } else {
-            // MainUtils.tornaAllaHome(buttonSalvaRegistraMembro);
-            SchermataComponentiNucleo l = new SchermataComponentiNucleo();
-            Stage window = (Stage) buttonSalvaRegistraMembro.getScene().getWindow();
-            l.start(window);
-
-            visualizzaComponentiNucleo(window, MainUtils.nucleo);
         }
+    }
+    public void schermataVisualizzaListaNucleiFamiliari(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza lista nuclei familiari", "/it/help/help/polo/SchermataVisualizzaListaNucleiFamiliari.fxml", stage, c -> {
+            return new SchermataVisualizzaListaNucleiFamiliari();
+        });
+
+        Parent root = stage.getScene().getRoot();
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+
+        Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
+
+        double layoutY = 100;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+
+        for (Nucleo nucleo : listaNuclei) {
+            Button buttonCognome = new Button();
+            buttonCognome.setText(nucleo.getCognome());
+            buttonCognome.setPrefHeight(19.0);
+            buttonCognome.setPrefWidth(155.0);
+            buttonCognome.setOnAction(event -> {
+                try {
+                    GestoreMembro gestoreMembro = new GestoreMembro();
+                    gestoreMembro.schermataComponentiNucleo((Stage) buttonCognome.getScene().getWindow(), nucleo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Font font = new Font(15.0);
+            buttonCognome.setFont(font);
+
+            Button buttonModificaNucleo = new Button();
+            buttonModificaNucleo.setText("MODIFICA");
+            // buttonModificaNucleo.setMnemonicParsing(false);
+            // buttonModificaNucleo.setStyle("-fx-background-color: FFFFFF;");
+            buttonModificaNucleo.setOnAction(event -> {
+                try {
+                    schermataModificaNucleo((Stage) buttonModificaNucleo.getScene().getWindow(), nucleo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Button buttonEliminaNucleo = new Button();
+            buttonEliminaNucleo.setText("ELIMINA");
+            buttonEliminaNucleo.setOnAction(event -> {
+                try {
+                    GestoreNucleo.eliminaNucleo(nucleo.getId());
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Pop-Up Errore");
+                    alert.setHeaderText("Nucleo " + nucleo.getCognome() + " eliminato");
+                    alert.showAndWait();
+                    schermataVisualizzaListaNucleiFamiliari(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            HBox buttonContainer = new HBox();
+            buttonContainer.setAlignment(Pos.CENTER_LEFT);
+            buttonContainer.setSpacing(10.0);
+            buttonContainer.getChildren().addAll(buttonCognome, buttonModificaNucleo, buttonEliminaNucleo);
+
+            lista.getChildren().add(buttonContainer);
+
+            layoutY += buttonCognome.getHeight() + spacing;
+        }
+
+        if(listaNuclei.length == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Nessun nucleo presente");
+            alert.showAndWait();
+            MainUtils.tornaAllaHome(stage);
+        }
+    }
+
+    public void schermataInserimentoNucleo(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata inserimento nucleo", "/it/help/help/polo/SchermataInserimentoNucleo.fxml", stage, c -> {
+            return new SchermataInserimentoNucleo(this);
+        });
     }
 }

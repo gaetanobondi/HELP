@@ -4,25 +4,36 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane fx:controller="it.help.help.diocesi.controll.GestoreDiocesi" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <fx:include source="../Composizione.fxml" />
-        <Button fx:id="buttonRegistraPolo" layoutX="448.0" layoutY="356.0" mnemonicParsing="false" onAction="#clickRegistraPolo" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: FFFFFF;" text="REGISTRA POLO" />
-        <TextField fx:id="fieldNome" layoutX="226.0" layoutY="47.0" />
-        <TextField fx:id="fieldCognome" layoutX="226.0" layoutY="99.0" />
-        <TextField fx:id="fieldIndirizzo" layoutX="226.0" layoutY="147.0" />
-        <TextField fx:id="fieldCellulare" layoutX="226.0" layoutY="200.0" />
-        <TextField fx:id="fieldEmail" layoutX="226.0" layoutY="249.0" />
-        <Label layoutX="119.0" layoutY="53.0" text="Nome" />
-        <Label layoutX="112.0" layoutY="103.0" text="Cognome" />
-        <Label layoutX="117.0" layoutY="151.0" text="Indirizzo" />
-        <Label layoutX="115.0" layoutY="204.0" text="Cellulare" />
-        <Label layoutX="115.0" layoutY="253.0" text="Email" />
-        <Label layoutX="113.0" layoutY="301.0" text="Password" />
-        <PasswordField fx:id="fieldPassword" layoutX="226.0" layoutY="297.0" />
+        <Label layoutX="152.0" layoutY="76.0" text="EMAIL">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonRegistraPolo" layoutX="438.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickRegistraPolo" style="-fx-background-color: FFFFFF;" text="SALVA MODIFICHE" />
+        <Label layoutX="152.0" layoutY="180.0" text="NOME">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <TextField fx:id="fieldEmail" layoutX="269.0" layoutY="73.0" />
+        <TextField fx:id="fieldNome" layoutX="269.0" layoutY="122.0" />
+        <Label layoutX="48.0" layoutY="307.0" prefHeight="20.0" prefWidth="159.0" text="PASSWORD">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="109.0" layoutY="251.0" text="RIPETI PASSWORD">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <PasswordField fx:id="fieldPassword" layoutX="225.0" layoutY="304.0" />
+        <PasswordField fx:id="fieldRipetiPassword" layoutX="259.0" layoutY="249.0" prefHeight="24.0" prefWidth="159.0" />
     </children>
 </Pane>

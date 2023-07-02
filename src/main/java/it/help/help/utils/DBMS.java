@@ -697,11 +697,11 @@ public class DBMS {
         return null;
     }
 
-    public static Polo getPolo(int id_responsabile) throws Exception {
+    public static Polo queryGetPolo(int id) throws Exception {
         connect();
-        var query = "SELECT * FROM polo WHERE id_responsabile = ?";
+        var query = "SELECT * FROM polo WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
+            stmt.setInt(1, id);
             var r = stmt.executeQuery();
             if (r.next()) {
                 Polo polo = new Polo();
@@ -1010,6 +1010,24 @@ public class DBMS {
 
         return listaPoli.toArray(new Polo[0]);
     }
+    public static AziendaPartner[] queryGetAllAziende() throws Exception {
+        connect();
+        String query = "SELECT * FROM azienda";
+        List<AziendaPartner> listaAziende = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                AziendaPartner aziendaPartner = AziendaPartner.createFromDB(rs);
+                listaAziende.add(aziendaPartner);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaAziende.toArray(new AziendaPartner[0]);
+    }
 
     public static Prodotto[] queryGetProdotti() throws Exception {
         connect();
@@ -1146,6 +1164,41 @@ public class DBMS {
         // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
         queryBuilder.append(" WHERE id = ?");
         values.add(id);
+
+        String query = queryBuilder.toString();
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            // Imposta i valori nella query
+            int i = 1;
+            for (Object valore : values) {
+                stmt.setObject(i, valore);
+                i++;
+            }
+
+            // Esegui la query di aggiornamento
+            stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void queryModificaDati(String codice_fiscale, HashMap<String, Object> dati) throws Exception {
+        connect();
+        StringBuilder queryBuilder = new StringBuilder("UPDATE membro SET ");
+        List<Object> values = new ArrayList<>();
+
+        // Costruisci la clausola SET della query e raccogli i valori da aggiornare
+        for (Map.Entry<String, Object> entry : dati.entrySet()) {
+            String campo = entry.getKey();
+            Object valore = entry.getValue();
+            queryBuilder.append(campo).append(" = ?, ");
+            values.add(valore);
+        }
+        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length()); // Rimuovi l'ultima virgola
+
+        // Aggiungi la clausola WHERE alla query (assumendo che ci sia un campo "id")
+        queryBuilder.append(" WHERE codice_fiscale = ?");
+        values.add(codice_fiscale);
 
         String query = queryBuilder.toString();
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {

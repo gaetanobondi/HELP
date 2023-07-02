@@ -54,7 +54,8 @@ public class SchermataHomeResponsabileHelp {
 
     public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
         GestoreMagazzino gestoreMagazzino = new GestoreMagazzino();
-        gestoreMagazzino.aggiungiViveriMagazzino((Stage) buttonAggiungiViveriMagazzino.getScene().getWindow());
+        // type 0 help
+        gestoreMagazzino.aggiungiViveriMagazzino((Stage) buttonAggiungiViveriMagazzino.getScene().getWindow(), 0);
     }
     public void clickGestione(ActionEvent actionEvent) throws IOException {
         GestoreHelp gestoreHelp = new GestoreHelp();

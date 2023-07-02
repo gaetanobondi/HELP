@@ -1,8 +1,7 @@
 package it.help.help.help.controll;
 
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabileHelp;
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabilePolo;
-import it.help.help.autenticazione.boundary.SchermataRegistrazionePolo;
+import it.help.help.autenticazione.boundary.*;
+import it.help.help.diocesi.controll.GestoreDiocesi;
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataGestione;
 import it.help.help.help.boundary.SchermataLista;
@@ -41,14 +40,52 @@ public class GestoreHelp {
         });
     }
 
-    public void tornaAHelp(Button button) throws IOException {
+    public void tornaAHelp(Stage stage) throws IOException {
         MainUtils.responsabileLoggato = MainUtils.responsabileHelpLoggato;
-        // SchermataHomeResponsabileHelp l = new SchermataHomeResponsabileHelp();
-        Stage window = (Stage) button.getScene().getWindow();
-        // l.start(window);
+        MainUtils.responsabileHelpLoggato = null;
+        MainUtils.cambiaInterfaccia("Schermata home responsabile help","/it/help/help/help/SchermataHomeResponsabileHelp.fxml", stage, c -> {
+            return new SchermataHomeResponsabileHelp();
+        });
     }
 
+    public void amministraDiocesi(Stage stage, int id_diocesi) throws Exception {
+        MainUtils.responsabileHelpLoggato = MainUtils.responsabileLoggato;
+        MainUtils.responsabileLoggato = DBMS.getResponsabile(1, id_diocesi);
 
+        SchermataHomeResponsabileDiocesi p = new SchermataHomeResponsabileDiocesi();
+        MainUtils.cambiaInterfaccia("Schermata home responsabile diocesi","/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml", stage, c -> {
+            return p;
+        });
+        p.inizializeHelp(stage);
+    }
+    public void amministraAzienda(Stage stage, int id_azienda) throws Exception {
+        MainUtils.responsabileHelpLoggato = MainUtils.responsabileLoggato;
+        MainUtils.responsabileLoggato = DBMS.getResponsabile(3, id_azienda);
+
+        MainUtils.cambiaInterfaccia("Schermata home responsabile azienda","/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml", stage, c -> {
+            return new SchermataHomeResponsabileAziendaPartner();
+        });
+
+        Parent root = stage.getScene().getRoot();
+
+        Button backButton = new Button("Torna a Help"); // Creazione del bottone "Torna a Help"
+        backButton.setOnAction(e -> {
+            // Azione da eseguire quando viene premuto il bottone "Torna a Help"
+            try {
+                tornaAHelp(stage);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        HBox buttonContainer = new HBox(backButton); // Contenitore per il bottone "Torna a Help"
+        buttonContainer.setAlignment(Pos.CENTER); // Allineamento del bottone al centro
+
+        VBox layout = new VBox(buttonContainer); // Layout principale
+        layout.setAlignment(Pos.CENTER); // Allineamento del layout al centro
+        Pane rootPane = (Pane) root;
+        rootPane.getChildren().add(layout);
+    }
     public void amministraPolo(Stage stage, int id_polo) throws Exception {
         MainUtils.responsabileHelpLoggato = MainUtils.responsabileLoggato;
         MainUtils.responsabileLoggato = DBMS.getResponsabile(2, id_polo);
@@ -63,7 +100,7 @@ public class GestoreHelp {
         backButton.setOnAction(e -> {
             // Azione da eseguire quando viene premuto il bottone "Torna a Help"
             try {
-                tornaAHelp(backButton);
+                tornaAHelp(stage);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -110,16 +147,64 @@ public class GestoreHelp {
     }
 
 
-    public void clickListaDiocesi(ActionEvent actionEvent) throws IOException {
-        // SchermataLista l = new SchermataLista();
-        Stage window = (Stage) buttonListaDiocesi.getScene().getWindow();
-        // l.start(window);
+    public void schermataListaDiocesi(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata lista diocesi","/it/help/help/help/SchermataLista.fxml", stage, c -> {
+            return new SchermataLista(this);
+        });
+
+        Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
+        Parent root = stage.getScene().getRoot();
+
+        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
+        buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
+
+        for (Diocesi diocesi : listaDiocesi) {
+            Button diocesiButton = new Button(diocesi.getNome()); // Creazione del pulsante con il nome del polo
+            diocesiButton.setOnAction(e -> {
+                // Azione da eseguire quando viene premuto il pulsante del polo
+                try {
+                    amministraDiocesi((Stage) diocesiButton.getScene().getWindow(), diocesi.getId());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            buttonContainer.getChildren().add(diocesiButton); // Aggiunta del pulsante al contenitore
+        }
+
+        // Rimuovi il contenuto esistente e imposta il contenitore dei bottoni come nuovo contenuto
+        lista.getChildren().add(buttonContainer);
     }
 
-    public void clickListaAziende(ActionEvent actionEvent) throws IOException {
-        // SchermataLista l = new SchermataLista();
-        Stage window = (Stage) buttonListaAziende.getScene().getWindow();
-        // l.start(window);
+    public void schermataListaAziende(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata lista aziende","/it/help/help/help/SchermataLista.fxml", stage, c -> {
+            return new SchermataLista(this);
+        });
+
+        AziendaPartner[] listaAziende = DBMS.queryGetAllAziende();
+        Parent root = stage.getScene().getRoot();
+
+        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
+        buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
+
+        for (AziendaPartner aziendaPartner : listaAziende) {
+            Button aziendaButton = new Button(aziendaPartner.getNome()); // Creazione del pulsante con il nome del polo
+            aziendaButton.setOnAction(e -> {
+                // Azione da eseguire quando viene premuto il pulsante del polo
+                try {
+                    amministraAzienda((Stage) aziendaButton.getScene().getWindow(), aziendaPartner.getId());
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            buttonContainer.getChildren().add(aziendaButton); // Aggiunta del pulsante al contenitore
+        }
+
+        // Rimuovi il contenuto esistente e imposta il contenitore dei bottoni come nuovo contenuto
+        lista.getChildren().add(buttonContainer);
     }
 
     public void schermataGestione(Stage stage) throws IOException {

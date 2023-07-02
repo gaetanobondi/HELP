@@ -20,9 +20,11 @@ public class SchermataCaricamentoViveri {
     public CheckBox checkBoxSenzaZuccheri;
     public CheckBox checkBoxSenzaLattosio;
     public Button buttonCaricaViveri;
+    public int type;
 
-    public SchermataCaricamentoViveri(GestoreMagazzino gestoreMagazzino) {
+    public SchermataCaricamentoViveri(GestoreMagazzino gestoreMagazzino, int type) {
         this.gestoreMagazzino = gestoreMagazzino;
+        this.type = type;
     }
 
     public void clickHome(ActionEvent actionEvent) throws IOException {
@@ -33,6 +35,6 @@ public class SchermataCaricamentoViveri {
         String codice_prodotto = fieldMenuSelected.getText();
         String quantità = fieldQuantità.getText();
         LocalDate data_scadenza = pickerDataScadenza.getValue();
-        gestoreMagazzino.caricaViveri((Stage) buttonCaricaViveri.getScene().getWindow(), codice_prodotto, quantità, data_scadenza);
+        gestoreMagazzino.caricaViveri((Stage) buttonCaricaViveri.getScene().getWindow(), type, codice_prodotto, quantità, data_scadenza);
     }
 }

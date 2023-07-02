@@ -9,9 +9,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:controller="it.help.help.autenticazione.controll.GestoreProfilo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="it.help.help.autenticazione.boundary.SchermataModificaProfiloPolo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <fx:include source="../Composizione.fxml" />
+        <Button fx:id="buttonHome" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickHome" layoutX="27.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
+            <graphic>
+                <ImageView accessibleRole="BUTTON" fitHeight="43.0" fitWidth="41.0" layoutX="27.0" layoutY="18.0" style="-fx-background-color: a5d9fd;">
+                    <image>
+                        <Image url="@../home.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
         <Label layoutX="146.0" layoutY="31.0" text="EMAIL">
             <font>
                 <Font size="16.0" />

@@ -2,21 +2,14 @@ package it.help.help.utils;
 import it.help.help.Main;
 import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
-import it.help.help.polo.boundary.SchermataComponentiNucleo;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.Parent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
-import it.help.help.utils.DBMS;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Month;
@@ -32,10 +25,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import javafx.util.Callback;
 
 
@@ -48,6 +37,7 @@ public class MainUtils {
     public static Diocesi diocesiLoggata;
     public static Help helpLoggato;
     public static Nucleo nucleo;
+    public static String codice_fiscale;
     public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
     public Button buttonIndietro;
 
@@ -202,23 +192,29 @@ public class MainUtils {
             case 1:
                 // DIOCESI
                 nomeSchermata = "/it/help/help/diocesi/SchermataHomeResponsabileDiocesi.fxml";
+                SchermataHomeResponsabileDiocesi homeDiocesi = new SchermataHomeResponsabileDiocesi();
                 MainUtils.cambiaInterfaccia("Schermata responsabile diocesi", nomeSchermata, stage, c -> {
-                    return new SchermataHomeResponsabileDiocesi();
+                    return homeDiocesi;
                 });
+                homeDiocesi.inizializeHelp(stage);
                 break;
             case 2:
                 // POLO
                 nomeSchermata = "/it/help/help/polo/SchermataHomeResponsabilePolo.fxml";
+                SchermataHomeResponsabilePolo homePolo = new SchermataHomeResponsabilePolo();
                 MainUtils.cambiaInterfaccia("Schermata responsabile polo", nomeSchermata, stage, c -> {
-                    return new SchermataHomeResponsabilePolo();
+                    return homePolo;
                 });
+                homePolo.inizializeHelp(stage);
                 break;
             case 3:
                 // AZIENDA PARTNER
                 nomeSchermata = "/it/help/help/azienda_partner/SchermataHomeResponsabileAziendaPartner.fxml";
+                SchermataHomeResponsabileAziendaPartner homeAzienda = new SchermataHomeResponsabileAziendaPartner();
                 MainUtils.cambiaInterfaccia("Schermata responsabile azienda", nomeSchermata, stage, c -> {
-                    return new SchermataHomeResponsabileAziendaPartner();
+                    return homeAzienda;
                 });
+                homeAzienda.inizializeHelp(stage);
                 break;
         }
     }

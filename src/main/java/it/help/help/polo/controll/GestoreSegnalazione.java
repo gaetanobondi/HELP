@@ -52,7 +52,7 @@ public class GestoreSegnalazione {
             } else if(diocesiSelected) {
                 // segnalazione riguardo la diocesi
                 tipo_soggetto = 0;
-                Polo polo = DBMS.getPolo(MainUtils.responsabileLoggato.getIdLavoro());
+                Polo polo = DBMS.queryGetPolo(MainUtils.responsabileLoggato.getIdLavoro());
                 id_soggetto = polo.getId_diocesi();
                 DBMS.querySalvaSegnalazione(MainUtils.responsabileLoggato.getIdLavoro(), tipo_soggetto, id_soggetto, Integer.parseInt(codice_prodotto), Integer.parseInt(quantità));
             } else {
@@ -74,13 +74,13 @@ public class GestoreSegnalazione {
         }
     }
 
-    public void clickSegnalazioneErrori(ActionEvent actionEvent) throws Exception {
-        SchermataSegnalazioneErrore l = new SchermataSegnalazioneErrore();
-        Stage window = (Stage) buttonSegnalazioneErrori.getScene().getWindow();
-        l.start(window);
+    public void schermataSegnalazioneErrore(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata segnalazione errore", "/it/help/help/polo/SchermataSegnalazioneErrore.fxml", stage, c -> {
+            return new SchermataSegnalazioneErrore(this);
+        });
 
         Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
         TextField fieldMenuAlimentiSelected = (TextField) root.lookup("#fieldMenuAlimentiSelected");
         MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
 
@@ -103,17 +103,20 @@ public class GestoreSegnalazione {
         l.start(window);
     }
 
-    public void clickRadioDiocesi(ActionEvent actionEvent) {
+    public void clickRadioDiocesi(Stage stage) {
+        Parent root = stage.getScene().getRoot();
+        MenuButton selectNuclei = (MenuButton) root.lookup("#selectNuclei");
         selectNuclei.setVisible(false);
     }
 
-    public void clickRadioNucleo(ActionEvent actionEvent) throws Exception {
-        selectNuclei.setVisible(true);
-        Stage window = (Stage) radioDiocesi.getScene().getWindow();
+    public void clickRadioNucleo(Stage stage) throws Exception {
+        // selectNuclei.setVisible(true);
+        // Stage window = (Stage) radioDiocesi.getScene().getWindow();
         Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
         TextField fieldMenuNucleiSelected = (TextField) root.lookup("#fieldMenuNucleiSelected");
         MenuButton selectNuclei = (MenuButton) root.lookup("#selectNuclei");
+        selectNuclei.setVisible(true);
 
         for (Nucleo nucleo : listaNuclei) {
             MenuItem menuItem = new MenuItem(nucleo.getCognome());

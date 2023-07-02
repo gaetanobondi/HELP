@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SchermataVisualizzaSchemaDistribuzione extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SchermataVisualizzaSchemaDistribuzione.class.getResource("/it/help/help/SchermataVisualizzaSchemaDistribuzione.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SchermataVisualizzaSchemaDistribuzione.class.getResource("/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzioneDiocesi.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Schermata visualizza schema di distribuzione");
         stage.setScene(scene);

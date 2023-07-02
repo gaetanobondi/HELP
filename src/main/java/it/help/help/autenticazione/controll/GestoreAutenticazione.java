@@ -63,15 +63,7 @@ public class GestoreAutenticazione {
         currentWindow.setScene(previousWindow.getScene());
     }
 
-
-    //per la SCHERMATA INIZIALE
-    public void creaSchermataSignIn(Button button) throws Exception {
-        // SchermataSignin l = new SchermataSignin();
-        Stage window = (Stage) button.getScene().getWindow();
-        // l.start(window);
-    }
-
-    public void creaSchermataLogin(Stage stage, GestoreAutenticazione gestoreAutenticazione) throws Exception {
+    public void schermataLogin(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata login","/it/help/help/SchermataLogin.fxml", stage, c -> {
             return new SchermataLogin(this);
         });
@@ -200,92 +192,10 @@ public class GestoreAutenticazione {
 
     }
 
-
-    public void clickVisualizzaNucleoFamiliare(ActionEvent actionEvent) throws Exception {
-        // SchermataListaNuclei l = new SchermataListaNuclei();
-        Stage window = (Stage) buttonVisualizzaNucleoFamiliare.getScene().getWindow();
-        // l.start(window);
-
-        Parent root = window.getScene().getRoot();
-
-        Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
-
-        double layoutY = 100;
-        double spacing = 40.0; // Spazio verticale tra i componenti
-
-        ScrollPane scrollPane = new ScrollPane();
-        Pane paneRoot = (Pane) root;
-        // Imposta il margine per la ScrollPane
-        Insets margin = new Insets(20.0); // Imposta il margine a 20 pixel su tutti i lati
-        scrollPane.setPadding(margin);
-
-        scrollPane.setFitToWidth(true);
-        paneRoot.getChildren().add(scrollPane);
-
-        VBox container = new VBox();
-        container.setSpacing(spacing);
-        scrollPane.setContent(container);
-
-        for (Nucleo nucleo : listaNuclei) {
-            Button buttonCognome = new Button();
-            buttonCognome.setText(nucleo.getCognome());
-            buttonCognome.setPrefHeight(19.0);
-            buttonCognome.setPrefWidth(155.0);
-            buttonCognome.setOnAction(event -> {
-                try {
-                    GestoreNucleo gestoreNucleo = new GestoreNucleo();
-                    gestoreNucleo.schermataComponentiNucleo(buttonCognome, nucleo);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            Font font = new Font(15.0);
-            buttonCognome.setFont(font);
-
-            Button buttonModificaNucleo = new Button();
-            buttonModificaNucleo.setText("MODIFICA");
-            // buttonModificaNucleo.setMnemonicParsing(false);
-            // buttonModificaNucleo.setStyle("-fx-background-color: FFFFFF;");
-            buttonModificaNucleo.setOnAction(event -> {
-                try {
-                    // GestoreAccettazioneEsiti.clickAccettaDiocesi(diocesi);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            Button buttonEliminaNucleo = new Button();
-            buttonEliminaNucleo.setText("ELIMINA");
-            buttonEliminaNucleo.setOnAction(event -> {
-                try {
-                    GestoreNucleo.eliminaNucleo(nucleo.getId());
-                    // MainUtils.tornaAllaHome(buttonEliminaNucleo);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            HBox buttonContainer = new HBox();
-            buttonContainer.setAlignment(Pos.CENTER_LEFT);
-            buttonContainer.setSpacing(10.0);
-            buttonContainer.getChildren().addAll(buttonCognome, buttonModificaNucleo, buttonEliminaNucleo);
-
-            container.getChildren().add(buttonContainer);
-
-            layoutY += buttonCognome.getHeight() + spacing;
-        }
-    }
-
-
-
-
-
-
-    public void clickInserimentoNucleo(ActionEvent actionEvent) throws Exception {
-        // SchermataRegistraNucleo l = new SchermataRegistraNucleo();
-        Stage window = (Stage) buttonInserimentoNucleo.getScene().getWindow();
-        // l.start(window);
+    public void schermataIniziale(Stage stage) {
+        MainUtils.cambiaInterfaccia("Help", "/it/help/help/SchermataIniziale.fxml", stage, c -> {
+            return new SchermataIniziale(stage);
+        });
     }
 
 
@@ -321,12 +231,15 @@ public class GestoreAutenticazione {
     }
 
 
-    public void clickSospendiPolo(ActionEvent actionEvent) throws Exception {
-        // SchermataSospensionePolo l = new SchermataSospensionePolo();
-        Stage window = (Stage) buttonSospendiPolo.getScene().getWindow();
-        // l.start(window);
+    public void schermataSospendiPolo(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata sospendi polo", "/it/help/help/polo/SchermataSospensionePolo.fxml", stage, c -> {
+            return new SchermataSospensionePolo(this);
+        });
     }
-
+    public void confermaSospensionePolo(Stage stage) throws Exception {
+        DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
+        logout(stage);
+    }
 
 
 

@@ -22,8 +22,8 @@ public class GestoreMagazzino {
 
     public Button buttonAggiungiViveriMagazzino;
 
-    public void aggiungiViveriMagazzino(Stage stage) throws Exception {
-        SchermataCaricamentoViveri p = new SchermataCaricamentoViveri(this);
+    public void aggiungiViveriMagazzino(Stage stage, int type) throws Exception {
+        SchermataCaricamentoViveri p = new SchermataCaricamentoViveri(this, type);
         MainUtils.cambiaInterfaccia("Schermata aggiungi viveri magazzino","/it/help/help/help/SchermataCaricamentoViveri.fxml", stage, c -> {
             return p;
         });
@@ -67,7 +67,7 @@ public class GestoreMagazzino {
         }
     }
 
-    public void caricaViveri(Stage stage, String codice_prodotto, String quantità, LocalDate data_scadenza) throws Exception {
+    public void caricaViveri(Stage stage, int type, String codice_prodotto, String quantità, LocalDate data_scadenza) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
@@ -75,7 +75,7 @@ public class GestoreMagazzino {
             // Conversione da LocalDate a java.sql.Date
             java.sql.Date sqlDate = java.sql.Date.valueOf(data_scadenza);
             // ottengo tutti i magazzini disponibili
-            Magazzino[] listaMagazzini = DBMS.queryGetMagazzini(0, MainUtils.responsabileLoggato.getIdLavoro());
+            Magazzino[] listaMagazzini = DBMS.queryGetMagazzini(type, MainUtils.responsabileLoggato.getIdLavoro());
             boolean prodottoAggiunto = false;
             for(Magazzino magazzino : listaMagazzini) {
                 int nuova_capienza = magazzino.getCapienzaAttuale() + Integer.parseInt(quantità);

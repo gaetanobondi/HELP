@@ -2,13 +2,13 @@ package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.SchermataCambioPassword;
 import it.help.help.autenticazione.boundary.SchermataLogin;
+import it.help.help.autenticazione.boundary.SchermataRecuperoPassword;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.EmailSender;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
-import java.io.IOException;
 import java.util.Random;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
-public class GestoreRecupero {
+public class GestorePassword {
 
     public Button buttonIndietro;
     public TextField fieldEmail;
@@ -26,15 +26,13 @@ public class GestoreRecupero {
     public PasswordField fieldNuovaPassword;
     public PasswordField filedRipetiPassword;
     public Button buttonSalvaNuovaPassword;
-
-    public void clickIndietro(ActionEvent actionEvent) {
-        System.out.println("ciao Recupero Password");
+    public void schermataLogin(Stage stage) {
+        MainUtils.cambiaInterfaccia("Schermata login", "/it/help/help/SchermataLogin.fxml", stage, c -> {
+            return new SchermataLogin(new GestoreAutenticazione());
+        });
     }
 
-    public void clickSalvaPassword(ActionEvent actionEvent) throws Exception {
-        String email = fieldEmail.getText();
-        String password = fieldNuovaPassword.getText();
-        String repeat_password = filedRipetiPassword.getText();
+    public void salvaPassword(Stage stage, String email, String password, String repeat_password) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
 
@@ -42,9 +40,9 @@ public class GestoreRecupero {
             if(MainUtils.isValidPassword(password)) {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 DBMS.queryModificaPassword(email, encryptPassword);
-                // SchermataLogin l = new SchermataLogin();
-                Stage window = (Stage) buttonSalvaNuovaPassword.getScene().getWindow();
-                // l.start(window);
+                MainUtils.cambiaInterfaccia("Schermata login", "/it/help/help/SchermataLogin.fxml", stage, c -> {
+                    return new SchermataLogin(new GestoreAutenticazione());
+                });
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -68,8 +66,14 @@ public class GestoreRecupero {
         }
     }
 
-    public void clickRecupera(ActionEvent actionEvent) throws Exception {
-            String email = fieldEmail.getText();
+    public void schermataRecuperoPassword(Stage stage) {
+        MainUtils.cambiaInterfaccia("Schermata recupero password", "/it/help/help/SchermataRecuperoPassword.fxml", stage, c -> {
+            return new SchermataRecuperoPassword();
+        });
+    }
+
+
+    public void recuperaPassword(Stage stage, String email) throws Exception {
             Boolean showErrorAlert = false;
             String error = "";
             Random random = new Random();
@@ -109,13 +113,11 @@ public class GestoreRecupero {
                             // Esegui le operazioni necessarie con il codice inserito
 
                             if (!codeInserito.isEmpty() && code.equals(codeInserito)) {   //se il codice inserito coincide
-                                SchermataCambioPassword l = new SchermataCambioPassword();
-                                Stage window = (Stage) buttonRecupera.getScene().getWindow();
-                                TextField fieldEmail = (TextField) window.getScene().lookup("#fieldEmail");
-                                fieldEmail.setText(email);
-
                                 // Chiudi il popup
                                 popupStage.close();
+                                MainUtils.cambiaInterfaccia("Schermata cambio password", "/it/help/help/SchermataCambioPassword.fxml", stage, c -> {
+                                    return new SchermataCambioPassword(this, email);
+                                });
                             } else {  // Pop-Up errore codice
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Pop-Up Errore");

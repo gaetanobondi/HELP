@@ -1,7 +1,9 @@
 package it.help.help.diocesi.controll;
 
-import it.help.help.autenticazione.boundary.SchermataHomeResponsabileDiocesi;
 import it.help.help.common.SchermataVisualizzaSchemaDistribuzione;
+import it.help.help.diocesi.boundary.SchermataRegistrazionePoloTerritoriale;
+import it.help.help.diocesi.boundary.SchermataVisualizzaPoliIscritti;
+import it.help.help.entity.Polo;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.Responsabile;
 import it.help.help.entity.SchemaDistribuzione;
@@ -14,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 
@@ -34,13 +37,7 @@ public class GestoreDiocesi {
     public TextField fieldCellulare;
     public Button buttonVisualizzaSchemaDiDistribuzioneDiocesi;
 
-    public void clickRegistraPolo(ActionEvent actionEvent) throws Exception {
-        String nome = fieldNome.getText();
-        String cognome = fieldCognome.getText();
-        String indirizzo = fieldIndirizzo.getText();
-        String cellulare = fieldCellulare.getText();
-        String email = fieldEmail.getText();
-        String password = fieldPassword.getText();
+    public void registraPolo(Stage stage, String nome, String cognome, String indirizzo, String cellulare, String email, String password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
         int type = 0;
@@ -61,9 +58,7 @@ public class GestoreDiocesi {
                     DBMS.queryModificaDati(responsabile.getId(), "responsabile", datiAggiornati);
 
                     // rimando alla schermata precedente
-                    // SchermataHomeResponsabileDiocesi l = new SchermataHomeResponsabileDiocesi();
-                    Stage window = (Stage) buttonRegistraPolo.getScene().getWindow();
-                    // l.start(window);
+                    MainUtils.tornaAllaHome(stage);
                 } else {
                     showErrorAlert = true;
                     error = "Email già esistente";
@@ -85,14 +80,21 @@ public class GestoreDiocesi {
         }
     }
 
-    public void clickVisualizzaSchemaDiDistribuzioneDiocesi(ActionEvent actionEvent) throws Exception {
-        SchermataVisualizzaSchemaDistribuzione l = new SchermataVisualizzaSchemaDistribuzione();
-        Stage window = (Stage) buttonVisualizzaSchemaDiDistribuzioneDiocesi.getScene().getWindow();
-        l.start(window);
+    public void schermataRegistraPolo(Stage stage) {
+        MainUtils.cambiaInterfaccia("Schermata registra polo", "/it/help/help/diocesi/SchermataRegistrazionePoloTerritoriale.fxml", stage, c -> {
+            return new SchermataRegistrazionePoloTerritoriale(this);
+        });
+    }
+
+    public void schermataVisualizzaSchemaDiDistribuzioneDiocesi(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzioneDiocesi.fxml", stage, c -> {
+            return new SchermataVisualizzaSchemaDistribuzione();
+        });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(0, MainUtils.responsabileLoggato.getIdLavoro());
 
-        Parent root = window.getScene().getRoot();
+        Parent root = stage.getScene().getRoot();
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
 
         double layoutY = 140;
         double spacing = 40.0; // Spazio verticale tra i componenti
@@ -107,7 +109,7 @@ public class GestoreDiocesi {
         titoloLabel.setLayoutX(layoutX);
         titoloLabel.setLayoutY(80);
         titoloLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        ((Pane) root).getChildren().add(titoloLabel);
+        lista.getChildren().add(titoloLabel);
 
         for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
             Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
@@ -117,7 +119,48 @@ public class GestoreDiocesi {
             label.setLayoutY(layoutY);
             layoutY += spacing;
 
-            ((Pane) root).getChildren().add(label);
+            lista.getChildren().add(label);
+        }
+
+        if(schemiDistribuzione.length == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Non ci sono schemi per questo mese");
+            alert.showAndWait();
+            MainUtils.tornaAllaHome(stage);
+        }
+    }
+
+    public void schermataVisualizzaPoliIscritti(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata visualizza lista poli", "/it/help/help/diocesi/SchermataVisualizzaPoliIscritti.fxml", stage, c -> {
+            return new SchermataVisualizzaPoliIscritti();
+        });
+
+        Polo[] listaPoli = DBMS.queryGetAllPoli(MainUtils.responsabileLoggato.getIdLavoro());
+
+        Parent root = stage.getScene().getRoot();
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+
+        double layoutY = 140;
+        double spacing = 40.0; // Spazio verticale tra i componenti
+        double layoutX = 20.0; // Spazio laterale
+
+        for (Polo polo : listaPoli) {
+
+            Label label = new Label(polo.getNome());
+            label.setLayoutX(layoutX);
+            label.setLayoutY(layoutY);
+            layoutY += spacing;
+
+            lista.getChildren().add(label);
+        }
+
+        if(listaPoli.length == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Nessun polo iscritto");
+            alert.showAndWait();
+            MainUtils.tornaAllaHome(stage);
         }
     }
 
