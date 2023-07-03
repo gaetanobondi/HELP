@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -86,24 +85,29 @@ public class GestoreMembro {
         String error = "";
 
         if(!nome.isEmpty() && !cognome.isEmpty() && !codice_fiscale.isEmpty() && !indirizzo.isEmpty() && dataNascita != null) {
-            // controllo che il membro non sia già iscritto
-            if(codice_fiscale.equals(MainUtils.codice_fiscale) || !DBMS.queryControllaEsistenzaMembro(codice_fiscale)) {
-                // aggiorno la tabella azienda
-                HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("nome", nome);
-                datiAggiornati.put("cognome", cognome);
-                datiAggiornati.put("codice_fiscale", codice_fiscale);
-                datiAggiornati.put("indirizzo", indirizzo);
-                datiAggiornati.put("celiachia", checkCeliachia);
-                datiAggiornati.put("intolleranza_lattosio", checkLattosio);
-                datiAggiornati.put("diabete", checkDiabete);
-                // Conversione da LocalDate a java.sql.Date
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
-                datiAggiornati.put("data_nascita", sqlDate);
-                DBMS.queryModificaDati(codice_fiscale, datiAggiornati);
+            if(MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome)) {
+                // controllo che il membro non sia già iscritto
+                if(codice_fiscale.equals(MainUtils.codice_fiscale) || !DBMS.queryControllaEsistenzaMembro(codice_fiscale)) {
+                    // aggiorno la tabella azienda
+                    HashMap<String, Object> datiAggiornati = new HashMap<>();
+                    datiAggiornati.put("nome", nome);
+                    datiAggiornati.put("cognome", cognome);
+                    datiAggiornati.put("codice_fiscale", codice_fiscale);
+                    datiAggiornati.put("indirizzo", indirizzo);
+                    datiAggiornati.put("celiachia", checkCeliachia);
+                    datiAggiornati.put("intolleranza_lattosio", checkLattosio);
+                    datiAggiornati.put("diabete", checkDiabete);
+                    // Conversione da LocalDate a java.sql.Date
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
+                    datiAggiornati.put("data_nascita", sqlDate);
+                    DBMS.queryModificaDati(codice_fiscale, datiAggiornati);
+                } else {
+                    showErrorAlert = true;
+                    error = "Il membro risulta già iscritto al programma di aiuto.";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Il membro risulta già iscritto al programma di aiuto.";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;
@@ -124,15 +128,20 @@ public class GestoreMembro {
         String error = "";
 
         if(!nome.isEmpty() && !cognome.isEmpty() && !codice_fiscale.isEmpty() && !indirizzo.isEmpty() && dataNascita != null) {
-            // controllo che il membro non sia già iscritto
-            if(!DBMS.queryControllaEsistenzaMembro(codice_fiscale)) {
-                // Conversione da LocalDate a java.sql.Date
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
+            if(MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome)) {
+                // controllo che il membro non sia già iscritto
+                if(!DBMS.queryControllaEsistenzaMembro(codice_fiscale)) {
+                    // Conversione da LocalDate a java.sql.Date
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(dataNascita);
 
-                DBMS.queryRegistraMembro(codice_fiscale, MainUtils.nucleo.getId(), nome, cognome, sqlDate, indirizzo, checkCeliachia, checkLattosio, checkDiabete);
+                    DBMS.queryRegistraMembro(codice_fiscale, MainUtils.nucleo.getId(), nome, cognome, sqlDate, indirizzo, checkCeliachia, checkLattosio, checkDiabete);
+                } else {
+                    showErrorAlert = true;
+                    error = "Il membro risulta già iscritto al programma di aiuto.";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Il membro risulta già iscritto al programma di aiuto.";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;

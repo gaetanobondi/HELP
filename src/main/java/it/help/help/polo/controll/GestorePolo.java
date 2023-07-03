@@ -1,25 +1,19 @@
 package it.help.help.polo.controll;
 
-import it.help.help.common.SchermataVisualizzaSchemaDistribuzione;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.SchemaDistribuzione;
 import it.help.help.polo.boundary.SchermataVisualizzaSchemaDistribuzionePolo;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class GestorePolo {
-    public Button buttonVisualizzaSchemaDiDistribuzionePolo;
-
     public void schermataVisualizzaSchemaDiDistribuzionePolo(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataVisualizzaSchemaDistribuzionePolo.fxml", stage, c -> {
             return new SchermataVisualizzaSchemaDistribuzionePolo();

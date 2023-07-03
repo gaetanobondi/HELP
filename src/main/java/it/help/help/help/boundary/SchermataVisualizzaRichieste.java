@@ -5,7 +5,6 @@ import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class SchermataVisualizzaRichieste {

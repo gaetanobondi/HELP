@@ -1,30 +1,15 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.SchermataIniziale;
-import it.help.help.autenticazione.boundary.SchermataLogin;
 import it.help.help.autenticazione.boundary.SchermataSignin;
-import it.help.help.entity.*;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
-
-import java.util.Random;
 import it.help.help.utils.DBMS;
 
 import javafx.scene.control.Alert.AlertType;
 public class GestoreRegistrazione {
-
-    public RadioButton radioButtonDiocesi;
-    public RadioButton radioButtonAziendaPartner;
     public TextField fieldEmail;
-    public PasswordField fieldPassword;
-    public PasswordField fieldRipetiPassword;
     public Button buttonRegistrati;
 
     public void schermataIniziale(Stage stage) {

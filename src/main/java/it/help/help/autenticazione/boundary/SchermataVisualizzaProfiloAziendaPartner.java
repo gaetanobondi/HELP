@@ -2,15 +2,11 @@ package it.help.help.autenticazione.boundary;
 
 import it.help.help.autenticazione.controll.GestoreProfilo;
 import it.help.help.utils.MainUtils;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class SchermataVisualizzaProfiloAziendaPartner {

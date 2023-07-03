@@ -1,9 +1,7 @@
 package it.help.help.utils;
 
 import it.help.help.entity.*;
-
 import java.util.*;
-
 import java.sql.*;
 import it.help.help.entity.*;
 import java.time.LocalDate;
@@ -282,12 +280,17 @@ public class DBMS {
 
     public static void queryCaricaViveri(int codice_prodotto, int id_magazzino, int quantità, Date data_scadenza) throws Exception {
         connect();
-        String query = "INSERT INTO scorte (codice_prodotto, id_magazzino, quantità, scadenza_prodotto) VALUES (?,?,?,?)";
+        // Ottenere la data di oggi
+        LocalDate today = LocalDate.now();
+        // Convertire LocalDate in java.sql.Date
+        java.sql.Date date = java.sql.Date.valueOf(today);
+        String query = "INSERT INTO scorte (codice_prodotto, id_magazzino, quantità, scadenza_prodotto, data) VALUES (?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, codice_prodotto);
             stmt.setInt(2, id_magazzino);
             stmt.setInt(3, quantità);
             stmt.setDate(4, data_scadenza);
+            stmt.setDate(5, date);
             // return stmt.executeUpdate() > 0;
 
             int rowsAffected = stmt.executeUpdate();
@@ -411,25 +414,27 @@ public class DBMS {
                 query = "SELECT * FROM segnalazione WHERE MONTH(data) = " + interval;
                 break;
             case 1:
-                query = "SELECT * FROM segnalazione WHERE MONTH(data) = " + interval;
-                break;
-            case 2:
                 // Calcolo dei mesi corrispondenti al trimestre
-                int startMonth = (interval - 1) * 3 + 1;
-                int endMonth = interval * 3;
+                int startMonth = interval;
+                int endMonth = interval + 2;
 
                 // Creazione della parte della query per il trimestre
                 StringBuilder trimesterQuery = new StringBuilder();
                 trimesterQuery.append("MONTH(data) >= ").append(startMonth);
                 trimesterQuery.append(" AND MONTH(data) <= ").append(endMonth);
+                int currentYear = LocalDate.now().getYear();
 
                 // Composizione della query completa
-                query = "SELECT * FROM segnalazione WHERE YEAR(data) = ? AND (" + trimesterQuery.toString() + ")";
+                query = "SELECT * FROM segnalazione WHERE YEAR(data) = "+currentYear+" AND (" + trimesterQuery.toString() + ")";
+                break;
+            case 2:
+                query = "SELECT * FROM segnalazione WHERE YEAR(data) = " + interval;
                 break;
         }
         List<Segnalazione> listaSegnalazioni = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            System.out.println(stmt.toString());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Segnalazione segnalazione = Segnalazione.createFromDB(rs);
@@ -542,6 +547,23 @@ public class DBMS {
         return true;
     }
 
+    public static boolean queryScaricoSuperioreDueMesi(int id_polo) throws Exception {
+        connect();
+        var query = "SELECT magazzino.*, scorte.* FROM magazzino INNER JOIN scorte ON magazzino.id = scorte.id_magazzino WHERE magazzino.type = 2 AND magazzino.id_proprietario = ? AND scorte.data = (SELECT MAX(data) FROM scorte WHERE id_magazzino = magazzino.id) AND scorte.data < DATE_SUB(NOW(), INTERVAL 2 MONTH);";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id_polo);
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                connection.close();
+                return true;
+            }
+            connection.close();
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
     public static boolean queryControllaEsistenzaMembro(String codice_fiscale) throws Exception {
         connect();
         var query = "SELECT * FROM membro WHERE codice_fiscale = ?";
@@ -755,6 +777,18 @@ public class DBMS {
             e.printStackTrace();
         }
     }
+    public static void queryRitiraSchemaDistribuzione(int type, int id_type) throws Exception {
+        connect();
+        var query = "UPDATE schema_distribuzione SET stato_ritiro = true WHERE type = ? && id_type = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, type);
+            stmt.setInt(2, id_type);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void querySospendiPolo(int id) throws Exception {
         connect();
@@ -814,6 +848,21 @@ public class DBMS {
         return null;
     }
 
+    public static boolean queryCheckSchemiDistribuzione() throws Exception {
+        connect();
+        var query = "SELECT * FROM schemi_distribuzione";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            var r = stmt.executeQuery();
+            if (r.next()) {
+                return true;
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void queryEliminaNucleo(int id) throws Exception {
         connect();
         var query = "DELETE FROM nucleo WHERE id = ?";
@@ -839,6 +888,16 @@ public class DBMS {
         var query = "DELETE FROM membro WHERE codice_fiscale = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, codice_fiscale);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void queryEliminaSchemiDistribuzione() throws Exception {
+        connect();
+        var query = "DELETE * FROM schemi_distribuzione";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {

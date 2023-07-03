@@ -1,7 +1,6 @@
 package it.help.help.polo.boundary;
 
 import it.help.help.polo.controll.GestoreMembro;
-import it.help.help.polo.controll.GestoreNucleo;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -9,7 +8,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.time.LocalDate;
 

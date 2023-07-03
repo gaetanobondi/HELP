@@ -1,18 +1,13 @@
 package it.help.help.polo.boundary;
 
 import it.help.help.polo.controll.GestoreMembro;
-import it.help.help.polo.controll.GestoreNucleo;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import it.help.help.utils.MainUtils;
-
 import java.io.IOException;
 import java.time.LocalDate;
 

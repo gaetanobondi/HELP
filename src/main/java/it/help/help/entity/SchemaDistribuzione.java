@@ -11,13 +11,15 @@ public class SchemaDistribuzione {
     private int id_type;
     private int codice_prodotto;
     private int quantità;
+    private boolean stato_ritiro;
 
-    public SchemaDistribuzione(int id, int type, int id_type, int codice_prodotto, int quantità) {
+    public SchemaDistribuzione(int id, int type, int id_type, int codice_prodotto, int quantità, boolean stato_ritiro) {
         this.id = id;
         this.type = type;
         this.id_type = id_type;
         this.codice_prodotto = codice_prodotto;
         this.quantità = quantità;
+        this.stato_ritiro = stato_ritiro;
     }
 
     public SchemaDistribuzione() { }
@@ -35,6 +37,9 @@ public class SchemaDistribuzione {
         return id_type;
     }
     public int getQuantità() { return quantità; }
+    public boolean getStatoRitiro() {
+        return stato_ritiro;
+    }
 
 
     @Override
@@ -57,7 +62,8 @@ public class SchemaDistribuzione {
                 row.getInt(2),
                 row.getInt(3),
                 row.getInt(4),
-                row.getInt(5));
+                row.getInt(5),
+                row.getBoolean(6));
     }
 
 }

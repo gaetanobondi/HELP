@@ -6,13 +6,9 @@ import it.help.help.utils.MainUtils;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
-
 import it.help.help.utils.DBMS;
 
 public class GestoreAccettazioneAccount {
-
-    public Button buttonRichiesteDiocesi;
-    public Button buttonRichiesteAziendePartner;
 
     public void schermataRichiesteDiocesi(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata richieste diocesi","/it/help/help/help/SchermataVisualizzaRichieste.fxml", stage, c -> {

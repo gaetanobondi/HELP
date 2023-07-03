@@ -2,12 +2,28 @@ package it.help.help.tempo;
 
 import it.help.help.entity.*;
 import it.help.help.utils.DBMS;
-import it.help.help.utils.MainUtils;
 import java.util.Random;
-
 import java.util.*;
 
 public class GestoreSistema {
+    public void checkSospensionePoli() throws Exception {
+        Polo[] listaPoli = DBMS.queryGetAllPoli();
+        for (Polo polo : listaPoli) {
+            if(DBMS.queryScaricoSuperioreDueMesi(polo.getId())) {
+                // sospendo il polo
+                DBMS.querySospendiPolo(polo.getId());
+            }
+        }
+    }
+
+    public boolean checkSchemiDistribuzione() throws Exception {
+        return DBMS.queryCheckSchemiDistribuzione();
+    }
+
+    public void eliminaSchemiDistribuzione() throws Exception {
+        DBMS.queryEliminaSchemiDistribuzione();
+    }
+
     public void previsioneDistribuzione() throws Exception {
         // nella previsione ho già tutte le donazioni nel magazzino
         // per la previsione dovrei procedere al contrario: itero tutti i membri e vedo se per ogni categoria ci sono almeno due alimenti per membro

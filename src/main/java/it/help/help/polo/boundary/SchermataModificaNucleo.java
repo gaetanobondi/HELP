@@ -1,13 +1,11 @@
 package it.help.help.polo.boundary;
 
-import it.help.help.autenticazione.controll.GestoreProfilo;
 import it.help.help.polo.controll.GestoreNucleo;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class SchermataModificaNucleo {

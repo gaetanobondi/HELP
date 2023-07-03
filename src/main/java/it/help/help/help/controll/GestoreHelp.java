@@ -1,7 +1,6 @@
 package it.help.help.help.controll;
 
 import it.help.help.autenticazione.boundary.*;
-import it.help.help.diocesi.controll.GestoreDiocesi;
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataGestione;
 import it.help.help.help.boundary.SchermataLista;
@@ -9,30 +8,17 @@ import it.help.help.help.boundary.SchermataListaDonazioni;
 import it.help.help.help.boundary.SchermataVisualizzaPrevisioneDistribuzione;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-
 import java.io.IOException;
 
 public class GestoreHelp {
-    public Button buttonVisualizzaPrevisioneDistribuzione;
-    public Button buttonListaPoli;
-    public Button buttonListaDiocesi;
-    public Button buttonListaAziende;
-    public Button buttonGestione;
     public VBox lista;
-    public Button buttonListaDonazioniRicevute;
 
     public void visualizzaPrevisioneDiDistribuzione(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza previsione di distribuzione","/it/help/help/help/SchermataVisualizzaPrevisioneDistribuzione.fxml", stage, c -> {

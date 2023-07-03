@@ -3,20 +3,16 @@ package it.help.help.autenticazione.boundary;
 import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.autenticazione.controll.GestoreProfilo;
 import it.help.help.diocesi.controll.GestoreDiocesi;
+import it.help.help.magazzino.controll.GestoreMagazzino;
 import it.help.help.utils.MainUtils;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class SchermataHomeResponsabileDiocesi {
 
@@ -25,6 +21,7 @@ public class SchermataHomeResponsabileDiocesi {
     public Button buttonVisualizzaListaPoli;
     public Button buttonRegistrazionePolo;
     public Button buttonLogout;
+    public Button buttonAggiungiViveriMagazzino;
 
     public void clickVisualizzaProfiloDiocesi(ActionEvent actionEvent) throws Exception {
         GestoreProfilo gestoreProfilo = new GestoreProfilo();
@@ -73,5 +70,11 @@ public class SchermataHomeResponsabileDiocesi {
     public void clickLogout(ActionEvent actionEvent) throws Exception {
         GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
         gestoreAutenticazione.logout((Stage) buttonLogout.getScene().getWindow());
+    }
+
+    public void clickAggiungiViveriMagazzino(ActionEvent actionEvent) throws Exception {
+        GestoreMagazzino gestoreMagazzino = new GestoreMagazzino();
+        // type 1 diocesi
+        gestoreMagazzino.aggiungiViveriMagazzino((Stage) buttonAggiungiViveriMagazzino.getScene().getWindow(), 1);
     }
 }

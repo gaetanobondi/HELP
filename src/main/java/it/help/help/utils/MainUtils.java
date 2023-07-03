@@ -2,24 +2,17 @@ package it.help.help.utils;
 import it.help.help.Main;
 import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Month;
-import java.time.format.TextStyle;
 import java.util.*;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -39,7 +32,14 @@ public class MainUtils {
     public static Nucleo nucleo;
     public static String codice_fiscale;
     public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
-    public Button buttonIndietro;
+
+    public static boolean contieneSoloNumeri(String cellulare) {
+        return cellulare.matches("\\d+");
+    }
+    public static boolean contieneSoloLettere(String nome) {
+        return nome.matches("[a-zA-Z ]+");
+    }
+
 
     public static Object cambiaInterfaccia(String title, String interfaccia, Stage stage, Callback c) {
         stage.setTitle(title);
@@ -72,7 +72,7 @@ public class MainUtils {
         }
     }
 
-    public static void generatePDF(int type_interval, int interval) {
+    public static void generatePDF(Segnalazione[] listaSegnalazioni, String title) {
         try {
             // Creazione del documento PDF
             PDDocument document = new PDDocument();
@@ -80,7 +80,6 @@ public class MainUtils {
             document.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            Segnalazione[] listaSegnalazioni = DBMS.queryGetSegnalazioni(type_interval, interval);
             // Scrittura dei dati nel PDF
             int row = 0;
             int yOffset = 0;
@@ -92,12 +91,8 @@ public class MainUtils {
             contentStream.setFont(fontBold, 16);
             contentStream.beginText();
             contentStream.newLineAtOffset(50, 750);
-            String monthName = "";
-            if(type_interval == 1) {
-                Month month = Month.of(interval);
-                monthName = month.getDisplayName(TextStyle.FULL, Locale.ITALIAN);
-            }
-            contentStream.showText("Report di " + monthName);
+
+            contentStream.showText("Report di " + title);
             contentStream.endText();
 
             for (Segnalazione segnalazione : listaSegnalazioni) {
@@ -131,7 +126,7 @@ public class MainUtils {
 
             // Chiusura del documento PDF
             contentStream.close();
-            String fileName = "file.pdf";
+            String fileName = "report_" + title.replace("/", "") + ".pdf";
 
             // Ottieni il percorso della cartella di download predefinita in base al sistema operativo
             String home = System.getProperty("user.home");
@@ -252,6 +247,4 @@ public class MainUtils {
         return email.matches(emailRegex);
     }
 
-    public void clickIndietro(ActionEvent actionEvent) {
-    }
 }

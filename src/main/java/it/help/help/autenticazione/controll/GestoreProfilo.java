@@ -1,28 +1,15 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.*;
-import it.help.help.entity.AziendaPartner;
-import it.help.help.entity.Help;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import it.help.help.utils.DBMS;
-
-import java.io.IOException;
 import java.util.*;
 
-// import javax.swing.text.html.ImageView;
-
-//
 public class GestoreProfilo {
-    public Button buttonVisualizzaProfiloHelp;
-
     public Label labelNomeResponsabile;
     public Label labelCognomeResponsabile;
     public Label labelEmail;
@@ -30,9 +17,6 @@ public class GestoreProfilo {
     public Label labelNome;
     public Label labelCellulare;
     public Label labelIndirizzo;
-    public Label labelNomePrete;
-
-
     public TextField fieldEmail;
     public TextField fieldNome;
     public TextField fieldCellulare;
@@ -42,22 +26,9 @@ public class GestoreProfilo {
     public TextField fieldNomeResponsabile;
     public TextField fieldCognomeResponsabile;
     public TextField fieldNomePolo;
-    public TextField fieldViveriProdotto;
     public TextField fieldCognome;
-    public Button buttonVisualizzaProfiloAziendaPartner;
-    public TextField fieldNomeAziendaPartner;
-    public Label labelNomeDiocesi;
-    public Button buttonVisualizzaProfiloDiocesi;
-    public TextField fieldNomeDiocesi;
-
     @FXML
     private AnchorPane contentPane;
-
-
-
-
-    //per la schermata MODIFICA PROFILO HELP
-    public Button buttonModificaDatiHelp;
 
     @FXML
     public void visualizzaProfiloHelp(Stage stage) throws Exception {
@@ -89,34 +60,38 @@ public class GestoreProfilo {
         p.inizialize(nome, cognome, email, cellulare, indirizzo);
     }
 
-    public Button buttonSalvaModificheHelp;
     public void salvaModificheHelp(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String password, String new_password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
 
         // controllo riempimento campi
         if(!nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty() && !cellulare.isEmpty() && !email.isEmpty()) {
-            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // NEL SEQUENCE C'è SOLO UNA QUERY, QUI CE NE SONO 2
-                // aggiorno la tabella help
-                HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("indirizzo", indirizzo);
-                datiAggiornati.put("cellulare", cellulare);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "help", datiAggiornati);
-                // ricarico la entity help
-                MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
+            if(MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
+                if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                    // NEL SEQUENCE C'è SOLO UNA QUERY, QUI CE NE SONO 2
+                    // aggiorno la tabella help
+                    HashMap<String, Object> datiAggiornati = new HashMap<>();
+                    datiAggiornati.put("indirizzo", indirizzo);
+                    datiAggiornati.put("cellulare", cellulare);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "help", datiAggiornati);
+                    // ricarico la entity help
+                    MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());
 
-                // aggiorno la tabella responsabile
-                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                datiAggiornatiResponsabile.put("email", email);
-                datiAggiornatiResponsabile.put("nome", nome);
-                datiAggiornatiResponsabile.put("cognome", cognome);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
-                // ricarico la entity responsabile
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
+                    // aggiorno la tabella responsabile
+                    HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                    datiAggiornatiResponsabile.put("email", email);
+                    datiAggiornatiResponsabile.put("nome", nome);
+                    datiAggiornatiResponsabile.put("cognome", cognome);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                    // ricarico la entity responsabile
+                    MainUtils.responsabileLoggato = DBMS.getResponsabile(0, MainUtils.responsabileLoggato.getIdLavoro());
+                } else {
+                    showErrorAlert = true;
+                    error = "Non puoi usare questa email";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Non puoi usare questa email";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;
@@ -155,12 +130,6 @@ public class GestoreProfilo {
     }
 
 
-
-
-
-    //per la schermata MODIFICA PROFILO PERSONALE AZIENDA PARTNER
-    public Button buttonModificaDatiAzienda;
-
     public void schermataModificaDatiAzienda(Stage stage) throws Exception {
         String nome = MainUtils.responsabileLoggato.getNome();
         String cognome = MainUtils.responsabileLoggato.getCognome();
@@ -175,34 +144,39 @@ public class GestoreProfilo {
         });
         p.inizialize(nome, cognome, email, cellulare, indirizzo, nomeAzienda);
     }
-    public Button buttonSalvaModificheAzienda;
+
     public void salvaModificheAzienda(Stage stage, String nome, String cognome, String email, String indirizzo, String cellulare, String nome_azienda, String password, String new_password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
 
         // controllo riempimento campi
         if(!nome_azienda.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
-            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // aggiorno la tabella azienda
-                HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("indirizzo", indirizzo);
-                datiAggiornati.put("cellulare", cellulare);
-                datiAggiornati.put("nome", nome_azienda);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "azienda", datiAggiornati);
-                // ricarico la entity azienda
-                MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+            if(MainUtils.contieneSoloLettere(nome_azienda) && MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
+                if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                    // aggiorno la tabella azienda
+                    HashMap<String, Object> datiAggiornati = new HashMap<>();
+                    datiAggiornati.put("indirizzo", indirizzo);
+                    datiAggiornati.put("cellulare", cellulare);
+                    datiAggiornati.put("nome", nome_azienda);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "azienda", datiAggiornati);
+                    // ricarico la entity azienda
+                    MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
 
-                // aggiorno la tabella responsabile
-                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                datiAggiornatiResponsabile.put("nome", nome);
-                datiAggiornatiResponsabile.put("cognome", cognome);
-                datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
-                // ricarico la entity responsabile
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
+                    // aggiorno la tabella responsabile
+                    HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                    datiAggiornatiResponsabile.put("nome", nome);
+                    datiAggiornatiResponsabile.put("cognome", cognome);
+                    datiAggiornatiResponsabile.put("email", email);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                    // ricarico la entity responsabile
+                    MainUtils.responsabileLoggato = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
+                } else {
+                    showErrorAlert = true;
+                    error = "Non puoi usare questa email";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Non puoi usare questa email";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;
@@ -269,27 +243,32 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome_polo.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
-            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // aggiorno la tabella azienda
-                HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("indirizzo", indirizzo);
-                datiAggiornati.put("cellulare", cellulare);
-                datiAggiornati.put("nome", nome_polo);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "polo", datiAggiornati);
-                // ricarico la entity azienda
-                MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
+            if(MainUtils.contieneSoloLettere(nome_polo) && MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
+                if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                    // aggiorno la tabella azienda
+                    HashMap<String, Object> datiAggiornati = new HashMap<>();
+                    datiAggiornati.put("indirizzo", indirizzo);
+                    datiAggiornati.put("cellulare", cellulare);
+                    datiAggiornati.put("nome", nome_polo);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "polo", datiAggiornati);
+                    // ricarico la entity azienda
+                    MainUtils.aziendaPartnerLoggata = DBMS.queryGetAziendaPartner(MainUtils.responsabileLoggato.getIdLavoro());
 
-                // aggiorno la tabella responsabile
-                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                datiAggiornatiResponsabile.put("nome", nome);
-                datiAggiornatiResponsabile.put("cognome", cognome);
-                datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
-                // ricarico la entity responsabile
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(2, MainUtils.responsabileLoggato.getIdLavoro());
+                    // aggiorno la tabella responsabile
+                    HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                    datiAggiornatiResponsabile.put("nome", nome);
+                    datiAggiornatiResponsabile.put("cognome", cognome);
+                    datiAggiornatiResponsabile.put("email", email);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                    // ricarico la entity responsabile
+                    MainUtils.responsabileLoggato = DBMS.getResponsabile(2, MainUtils.responsabileLoggato.getIdLavoro());
+                } else {
+                    showErrorAlert = true;
+                    error = "Non puoi usare questa email";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Non puoi usare questa email";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;
@@ -332,10 +311,6 @@ public class GestoreProfilo {
 
 
     //per la schermata MODIFICA PROFILO PERSONALE DIOCESI
-    public TextField fieldNomePrete;
-    public Button buttonSalvaModificheDiocesi;
-
-    public Button buttonModificaDatiDiocesi;
     public void schermataModificaDatiDiocesi(Stage stage) throws Exception {
         String nome = MainUtils.responsabileLoggato.getNome();
         String cognome = MainUtils.responsabileLoggato.getCognome();
@@ -357,26 +332,31 @@ public class GestoreProfilo {
 
         // controllo riempimento campi
         if(!nome_diocesi.isEmpty() && !email.isEmpty() && !cellulare.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty()) {
-            if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
-                // aggiorno la tabella diocesi
-                HashMap<String, Object> datiAggiornati = new HashMap<>();
-                datiAggiornati.put("indirizzo", indirizzo);
-                datiAggiornati.put("cellulare", cellulare);
-                datiAggiornati.put("nome", nome_diocesi);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "diocesi", datiAggiornati);
-                // ricarico la entity azienda
-                MainUtils.diocesiLoggata = DBMS.queryGetDiocesi(MainUtils.responsabileLoggato.getIdLavoro());
+            if(MainUtils.contieneSoloLettere(nome_diocesi) && MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
+                if(email.equals(MainUtils.responsabileLoggato.getEmail()) || (MainUtils.isValidEmail(email) && !DBMS.queryControllaEsistenzaEmail(email))) {
+                    // aggiorno la tabella diocesi
+                    HashMap<String, Object> datiAggiornati = new HashMap<>();
+                    datiAggiornati.put("indirizzo", indirizzo);
+                    datiAggiornati.put("cellulare", cellulare);
+                    datiAggiornati.put("nome", nome_diocesi);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getIdLavoro(), "diocesi", datiAggiornati);
+                    // ricarico la entity azienda
+                    MainUtils.diocesiLoggata = DBMS.queryGetDiocesi(MainUtils.responsabileLoggato.getIdLavoro());
 
-                // aggiorno la tabella responsabile
-                HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                datiAggiornatiResponsabile.put("nome", nome_diocesi);
-                datiAggiornatiResponsabile.put("email", email);
-                DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
-                // ricarico la entity responsabile
-                MainUtils.responsabileLoggato = DBMS.getResponsabile(1, MainUtils.responsabileLoggato.getIdLavoro());
+                    // aggiorno la tabella responsabile
+                    HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
+                    datiAggiornatiResponsabile.put("nome", nome_diocesi);
+                    datiAggiornatiResponsabile.put("email", email);
+                    DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
+                    // ricarico la entity responsabile
+                    MainUtils.responsabileLoggato = DBMS.getResponsabile(1, MainUtils.responsabileLoggato.getIdLavoro());
+                } else {
+                    showErrorAlert = true;
+                    error = "Non puoi usare questa email";
+                }
             } else {
                 showErrorAlert = true;
-                error = "Non puoi usare questa email";
+                error = "Inserisci i dati nel giusto formato";
             }
         } else {
             showErrorAlert = true;

@@ -2,16 +2,12 @@ package it.help.help.polo.boundary;
 
 import it.help.help.polo.controll.GestoreSegnalazione;
 import it.help.help.utils.MainUtils;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class SchermataSegnalazioneErrore {
@@ -34,7 +30,13 @@ public class SchermataSegnalazioneErrore {
         MainUtils.tornaAllaHome((Stage) buttonHome.getScene().getWindow());
     }
 
-    public void clickConfermaSegnalazione(ActionEvent actionEvent) {
+    public void clickConfermaSegnalazione(ActionEvent actionEvent) throws Exception {
+        Boolean nucleoSelected = radioNucleo.isSelected();
+        Boolean diocesiSelected = radioDiocesi.isSelected();
+        String codice_prodotto = fieldMenuAlimentiSelected.getText() != null ? fieldMenuAlimentiSelected.getText() : "";
+        String id_nucleo = fieldMenuNucleiSelected.getText() != null ? fieldMenuNucleiSelected.getText() : "";
+        String quantità = fieldQuantità.getText() != null ? fieldQuantità.getText() : "";
+        gestoreSegnalazione.confermaSegnalazione((Stage) buttonSegnala.getScene().getWindow(), nucleoSelected, diocesiSelected, codice_prodotto, id_nucleo, quantità);
     }
 
     public void clickRadioDiocesi(ActionEvent actionEvent) {

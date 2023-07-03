@@ -7,12 +7,9 @@ import it.help.help.polo.controll.GestoreNucleo;
 import it.help.help.polo.controll.GestorePolo;
 import it.help.help.polo.controll.GestoreSegnalazione;
 import it.help.help.utils.MainUtils;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -87,7 +84,9 @@ public class SchermataHomeResponsabilePolo {
         gestoreSegnalazione.schermataSegnalazioneErrore((Stage) buttonSegnalazioneErrore.getScene().getWindow());
     }
 
-    public void clickReport(ActionEvent actionEvent) {
+    public void clickReport(ActionEvent actionEvent) throws IOException {
+        GestoreSegnalazione gestoreSegnalazione = new GestoreSegnalazione();
+        gestoreSegnalazione.schermataScaricamentoReport((Stage) buttonReport.getScene().getWindow());
     }
 
     public void clickLogout(ActionEvent actionEvent) throws Exception {

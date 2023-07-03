@@ -19,19 +19,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 public class GestorePassword {
-
-    public Button buttonIndietro;
     public TextField fieldEmail;
-    public Button buttonRecupera;
     public PasswordField fieldNuovaPassword;
-    public PasswordField filedRipetiPassword;
-    public Button buttonSalvaNuovaPassword;
     public void schermataLogin(Stage stage) {
         MainUtils.cambiaInterfaccia("Schermata login", "/it/help/help/SchermataLogin.fxml", stage, c -> {
             return new SchermataLogin(new GestoreAutenticazione());
         });
     }
-
     public void salvaPassword(Stage stage, String email, String password, String repeat_password) throws Exception {
         boolean showErrorAlert = false;
         String error = "";
@@ -65,14 +59,11 @@ public class GestorePassword {
             alert.showAndWait();
         }
     }
-
     public void schermataRecuperoPassword(Stage stage) {
         MainUtils.cambiaInterfaccia("Schermata recupero password", "/it/help/help/SchermataRecuperoPassword.fxml", stage, c -> {
             return new SchermataRecuperoPassword();
         });
     }
-
-
     public void recuperaPassword(Stage stage, String email) throws Exception {
             Boolean showErrorAlert = false;
             String error = "";

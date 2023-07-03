@@ -12,6 +12,8 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.Group?>
 <Pane fx:controller="it.help.help.azienda_partner.boundary.SchermataEffettuaDonazione" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: a5d9fd;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Button fx:id="buttonHome" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#clickHome" layoutX="27.0" layoutY="27.0" style="-fx-background-color: a5d9fd;">
@@ -23,17 +25,20 @@
                 </ImageView>
             </graphic>
         </Button>
-        <MenuButton fx:id="selectAlimenti" layoutX="262.0" layoutY="83.0" mnemonicParsing="false" style="-fx-background-color: FFFFFF;" text="SELEZIONA ALIMENTO">
-        </MenuButton>
-        <TextField fx:id="fieldMenuSelected" visible="false" />
-        <Label layoutX="156.0" layoutY="87.0" text="TIPO ALIMENTO" />
-        <Label layoutX="137.0" layoutY="175.0" text="QUANTITA'" />
-        <TextField fx:id="fieldQuantità" layoutX="246.0" layoutY="170.0" />
-        <Label layoutX="112.0" layoutY="214.0" text="DATA DI SCADENZA" />
-        <DatePicker fx:id="pickerDataScadenza" layoutX="246.0" layoutY="210.0" />
-        <CheckBox fx:id="checkBoxSenzaGlutine" layoutX="245.0" layoutY="260.0" mnemonicParsing="false" text="SENZA GLUTINE" disable="true" />
-        <CheckBox fx:id="checkBoxSenzaZuccheri" layoutX="245.0" layoutY="290.0" mnemonicParsing="false" text="SENZA ZUCCHERI" disable="true" />
-        <CheckBox fx:id="checkBoxSenzaLattosio" layoutX="244.0" layoutY="319.0" mnemonicParsing="false" text="SENZA LATTOSIO" disable="true" />
-        <Button fx:id="buttonEffettuaDonazione" layoutX="506.0" layoutY="346.0" mnemonicParsing="false" onAction="#clickEffettuaDonazione" style="-fx-background-color: FFFFFF;" text="INVIA" />
+        <Group fx:id="dona">
+            <MenuButton fx:id="selectAlimenti" layoutX="262.0" layoutY="83.0" mnemonicParsing="false" style="-fx-background-color: FFFFFF;" text="SELEZIONA ALIMENTO">
+            </MenuButton>
+            <TextField fx:id="fieldMenuSelected" visible="false" />
+            <Label layoutX="156.0" layoutY="87.0" text="TIPO ALIMENTO" />
+            <Label layoutX="137.0" layoutY="175.0" text="QUANTITA'" />
+            <TextField fx:id="fieldQuantità" layoutX="246.0" layoutY="170.0" />
+            <Label layoutX="112.0" layoutY="214.0" text="DATA DI SCADENZA" />
+            <DatePicker fx:id="pickerDataScadenza" layoutX="246.0" layoutY="210.0" />
+            <CheckBox fx:id="checkBoxSenzaGlutine" layoutX="245.0" layoutY="260.0" mnemonicParsing="false" text="SENZA GLUTINE" disable="true" />
+            <CheckBox fx:id="checkBoxSenzaZuccheri" layoutX="245.0" layoutY="290.0" mnemonicParsing="false" text="SENZA ZUCCHERI" disable="true" />
+            <CheckBox fx:id="checkBoxSenzaLattosio" layoutX="244.0" layoutY="319.0" mnemonicParsing="false" text="SENZA LATTOSIO" disable="true" />
+            <Button fx:id="buttonEffettuaDonazione" layoutX="506.0" layoutY="346.0" mnemonicParsing="false" onAction="#clickEffettuaDonazione" style="-fx-background-color: FFFFFF;" text="INVIA" />
+        </Group>
+        <Label fx:id="message" layoutX="156.0" layoutY="87.0" text="Puoi donare solo il primo del mese, controlla le donazioni ad-hoc." visible="false" />
     </children>
 </Pane>

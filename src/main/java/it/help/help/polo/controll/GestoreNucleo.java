@@ -14,10 +14,7 @@ import it.help.help.entity.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -25,22 +22,9 @@ import java.util.Locale;
 
 public class GestoreNucleo {
     public TextField fieldCognome;
-    public Button buttonRegistraNucleo;
-    public TextField fieldReddito;
-    @FXML
-    public VBox listaComponenti;
     public TextField fieldNome;
-    public TextField fieldCodFiscale;
     public TextField fieldCellulare;
     public TextField fieldIndirizzo;
-    public CheckBox checkBoxCeliachia;
-    public CheckBox checkBoxDiabete;
-    public CheckBox checkBoxLattosio;
-    public Button buttonAggiungiNuovoMembro;
-    public Button buttonSalvaRegistraMembro;
-    public DatePicker pickerDataNascita;
-    public Label hiddenLabelIdNucleo;
-    public Button buttonVisualizzaSchemaDiDistribuzioneNucleo;
 
     public void schermataSchemaDistribuzioneNucleo(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataSchemaDistribuzioneNucleo.fxml", stage, c -> {
@@ -50,6 +34,7 @@ public class GestoreNucleo {
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(2, MainUtils.nucleo.getId());
 
         Parent root = stage.getScene().getRoot();
+        int id_nucleo = 0;
 
         double layoutY = 140;
         double spacing = 40.0; // Spazio verticale tra i componenti
@@ -65,8 +50,11 @@ public class GestoreNucleo {
         titoloLabel.setLayoutY(80);
         titoloLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         ((Pane) root).getChildren().add(titoloLabel);
+        boolean schemaRitirato = false;
 
         for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
+            id_nucleo = schemaDistribuzione.getIdType();
+            schemaRitirato = schemaDistribuzione.getStatoRitiro();
             Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
 
             Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
@@ -76,6 +64,31 @@ public class GestoreNucleo {
 
             ((Pane) root).getChildren().add(label);
         }
+
+        if(schemaRitirato) {
+            Label label = new Label("Carico correttamente ritirato");
+            label.setLayoutX(layoutX);
+            label.setLayoutY(layoutY);
+            ((Pane) root).getChildren().add(label);
+        } else {
+            // Aggiungi il bottone "Ritirato"
+            Button ritiratoButton = new Button("Ritirato");
+            ritiratoButton.setLayoutX(layoutX);
+            ritiratoButton.setLayoutY(layoutY);
+            int finalId_nucleo = id_nucleo;
+            ritiratoButton.setOnAction(event -> {
+                try {
+                    ritiraSchemaNucleo(stage, finalId_nucleo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ((Pane) root).getChildren().add(ritiratoButton);
+        }
+    }
+    public void ritiraSchemaNucleo(Stage stage, int id_nucleo) throws Exception {
+        DBMS.queryRitiraSchemaDistribuzione(2, id_nucleo);
+        schermataSchemaDistribuzioneNucleo(stage);
     }
 
     public void registraNucleo(Stage stage, String cognome, String reddito) throws Exception {
@@ -83,8 +96,13 @@ public class GestoreNucleo {
         String error = "";
 
         if(!cognome.isEmpty() && !reddito.isEmpty()) {
-            DBMS.queryRegistraNucleo(MainUtils.responsabileLoggato.getIdLavoro(), cognome, Integer.parseInt(reddito));
-            MainUtils.tornaAllaHome(stage);
+            if(MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(reddito)) {
+                DBMS.queryRegistraNucleo(MainUtils.responsabileLoggato.getIdLavoro(), cognome, Integer.parseInt(reddito));
+                MainUtils.tornaAllaHome(stage);
+            } else {
+                showErrorAlert = true;
+                error = "Inserisci i dati nel giusto formato";
+            }
         } else {
             showErrorAlert = true;
             error = "Compila tutti i campi.";
