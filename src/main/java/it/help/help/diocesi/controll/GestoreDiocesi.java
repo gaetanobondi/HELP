@@ -89,7 +89,7 @@ public class GestoreDiocesi {
     }
 
     public void schermataVisualizzaSchemaDiDistribuzioneDiocesi(Stage stage) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzioneDiocesi.fxml", stage, c -> {
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/diocesi/SchermataSchemaDistribuzioneDiocesi.fxml", stage, c -> {
             return new SchermataSchemaDistribuzioneDiocesi();
         });
 
@@ -133,7 +133,7 @@ public class GestoreDiocesi {
         }
     }
     public void schermataSchemaDistribuzionePolo(Stage stage, int id_polo) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione polo", "/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzionePolo.fxml", stage, c -> {
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione polo", "/it/help/help/diocesi/SchermataSchemaDistribuzionePolo.fxml", stage, c -> {
             return new SchermataSchemaDistribuzionePolo();
         });
 

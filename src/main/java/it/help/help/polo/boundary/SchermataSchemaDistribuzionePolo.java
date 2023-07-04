@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SchermataVisualizzaSchemaDistribuzionePolo {
+public class SchermataSchemaDistribuzionePolo {
     public Button buttonHome;
 
     public void clickHome(ActionEvent actionEvent) throws IOException {

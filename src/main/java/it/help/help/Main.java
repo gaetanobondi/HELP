@@ -35,6 +35,8 @@ public class Main extends Application {
             GestoreSistema gestoreSistema = new GestoreSistema();
             // elimino gli schemi di distribuzione del mese precedente
             gestoreSistema.eliminaSchemiDistribuzione();
+            gestoreSistema.azzeraMagazzini();
+            gestoreSistema.azzeraScorte();
             if(!gestoreSistema.checkSchemiDistribuzione()) {
                 gestoreSistema.generazioneSchemiDistribuzione();
             }

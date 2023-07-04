@@ -680,12 +680,23 @@ public class DBMS {
         return null;
     }
 
-    public static void accettaRichiesta(int id, String tabella) throws Exception {
+    public static void queryAccettaRichiesta(int id, String tabella) throws Exception {
         connect();
         var query = "UPDATE "+tabella+" SET stato_account = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, 1);
             stmt.setInt(2, id);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void queryAzzeraMagazzini() throws Exception {
+        connect();
+        var query = "UPDATE magazzino SET capienza_attuale = 0";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
@@ -824,6 +835,16 @@ public class DBMS {
     public static void queryEliminaSchemiDistribuzione() throws Exception {
         connect();
         var query = "DELETE FROM schema_distribuzione";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void queryAzzeraScorte() throws Exception {
+        connect();
+        var query = "DELETE FROM scorte";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeUpdate();
             connection.close();

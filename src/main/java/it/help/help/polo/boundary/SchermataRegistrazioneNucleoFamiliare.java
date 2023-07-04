@@ -8,13 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SchermataInserimentoNucleo {
+public class SchermataRegistrazioneNucleoFamiliare {
     public Button buttonHome;
     public Button buttonRegistraNucleo;
     public TextField fieldCognome;
     public TextField fieldReddito;
     public GestoreNucleo gestoreNucleo;
-    public SchermataInserimentoNucleo(GestoreNucleo gestoreNucleo) {
+    public SchermataRegistrazioneNucleoFamiliare(GestoreNucleo gestoreNucleo) {
         this.gestoreNucleo = gestoreNucleo;
     }
 
