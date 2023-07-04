@@ -2,8 +2,8 @@ package it.help.help.diocesi.controll;
 
 import it.help.help.diocesi.boundary.SchermataRegistrazionePoloTerritoriale;
 import it.help.help.diocesi.boundary.SchermataVisualizzaPoliIscritti;
-import it.help.help.diocesi.boundary.SchermataVisualizzaSchemaDistribuzioneDiocesi;
-import it.help.help.diocesi.boundary.SchermataVisualizzaSchemaDistribuzionePolo;
+import it.help.help.diocesi.boundary.SchermataSchemaDistribuzioneDiocesi;
+import it.help.help.diocesi.boundary.SchermataSchemaDistribuzionePolo;
 import it.help.help.entity.Polo;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.Responsabile;
@@ -90,7 +90,7 @@ public class GestoreDiocesi {
 
     public void schermataVisualizzaSchemaDiDistribuzioneDiocesi(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzioneDiocesi.fxml", stage, c -> {
-            return new SchermataVisualizzaSchemaDistribuzioneDiocesi();
+            return new SchermataSchemaDistribuzioneDiocesi();
         });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(0, MainUtils.responsabileLoggato.getIdLavoro());
@@ -134,7 +134,7 @@ public class GestoreDiocesi {
     }
     public void schermataSchemaDistribuzionePolo(Stage stage, int id_polo) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione polo", "/it/help/help/diocesi/SchermataVisualizzaSchemaDistribuzionePolo.fxml", stage, c -> {
-            return new SchermataVisualizzaSchemaDistribuzionePolo();
+            return new SchermataSchemaDistribuzionePolo();
         });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(1, id_polo);

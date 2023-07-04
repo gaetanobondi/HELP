@@ -157,7 +157,7 @@ public class GestoreNucleo {
         Parent root = stage.getScene().getRoot();
         VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
 
-        Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
+        Nucleo[] listaNuclei = DBMS.queryGetNuclei(MainUtils.responsabileLoggato.getIdLavoro());
 
         double layoutY = 100;
         double spacing = 40.0; // Spazio verticale tra i componenti

@@ -41,32 +41,23 @@ public class GestoreSistema {
         Set<Membro> membriTutti = new HashSet<>();
         Set<Membro> membriSenzaBisogni = new HashSet<>();
 
-        Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
-        for (Diocesi diocesi : listaDiocesi) {
-            Polo[] listaPoli = DBMS.queryGetAllPoli(diocesi.getId());
-            for (Polo polo : listaPoli) {
-                Nucleo[] listaNuclei = DBMS.getNuclei(polo.getId());
-                for (Nucleo nucleo : listaNuclei) {
-                    Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
-                    for (Membro membro : listaMembri) {
-                        // aggiungo ogni membro alla propria categoria
-                        if(membro.getCeliachia()) {
-                            membriCeliaci.add(membro);
-                        }
-                        if(membro.getDiabete()) {
-                            membriDiabetici.add(membro);
-                        }
-                        if(membro.getIntolleranzaLattosio()) {
-                            membriIntollerantiLattosio.add(membro);
-                        }
-                        if(!membro.getDiabete() && !membro.getCeliachia() && !membro.getIntolleranzaLattosio()) {
-                            membriSenzaBisogni.add(membro);
-                        }
-
-                        membriTutti.add(membro);
-                    }
-                }
+        Membro[] listaMembri = DBMS.queryGetMembri();
+        for (Membro membro : listaMembri) {
+            // aggiungo ogni membro alla propria categoria
+            if(membro.getCeliachia()) {
+                membriCeliaci.add(membro);
             }
+            if(membro.getDiabete()) {
+                membriDiabetici.add(membro);
+            }
+            if(membro.getIntolleranzaLattosio()) {
+                membriIntollerantiLattosio.add(membro);
+            }
+            if(!membro.getDiabete() && !membro.getCeliachia() && !membro.getIntolleranzaLattosio()) {
+                membriSenzaBisogni.add(membro);
+            }
+
+            membriTutti.add(membro);
         }
 
         // adesso per ogni categoria controllo che ci siano almeno due alimenti
@@ -262,16 +253,13 @@ public class GestoreSistema {
         int totMembri = 0;
 
         Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
-        int countDiocesi = listaDiocesi.length;
         for (Diocesi diocesi : listaDiocesi) {
             Polo[] listaPoli = DBMS.queryGetAllPoli(diocesi.getId());
-            int countPoli = listaPoli.length;
             for (Polo polo : listaPoli) {
                 distribuzioneMagazzinoPolo(polo.getId());
-                Nucleo[] listaNuclei = DBMS.getNuclei(polo.getId());
-                int countNuclei = listaNuclei.length;
+                Nucleo[] listaNuclei = DBMS.queryGetNuclei(polo.getId());
                 for (Nucleo nucleo : listaNuclei) {
-                    Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
+                    Membro[] listaMembri = DBMS.queryGetMembri(nucleo.getId());
                     totMembri += listaMembri.length;
                     for (Membro membro : listaMembri) {
                         // aggiungo ogni membro alla propria categoria
@@ -325,9 +313,9 @@ public class GestoreSistema {
                             if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
                                 if(scorte.getQuantità() >= giustaQuantità) {
                                     scorte.setQuantità(scorte.getQuantità() - giustaQuantità);
-                                    Nucleo nucleo = DBMS.getNucleo(membro.getIdNucleo());
-                                    Polo polo = DBMS.queryGetPoloById(nucleo.getIdPolo());
-                                    Diocesi diocesi = DBMS.getDiocesiById(polo.getId_diocesi());
+                                    Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
+                                    Polo polo = DBMS.queryGetPolo(nucleo.getIdPolo());
+                                    Diocesi diocesi = DBMS.queryGetDiocesi(polo.getId_diocesi());
                                     ScorteMembro key = new ScorteMembro(scortaMembro, membro, membro.getIdNucleo(), polo.getId(), diocesi.getId());
                                     membriCheHannoRitirato.put(key, scortaMembro);
                                     System.out.println(membro.getNome() + " ha ritirato " + scortaMembro.getQuantità() + " di " + scortaMembro.getCodiceProdotto());
@@ -368,7 +356,7 @@ public class GestoreSistema {
             // Esegui le operazioni desiderate con le variabili ottenute sopra
 
             // ottengo il nucleo
-            Nucleo nucleo = DBMS.getNucleo(membro.getIdNucleo());
+            Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
             // Aggiunta degli IDNucleo e delle scorte alla mappa
             aggiungiScorte(scortePerIdNucleo, id_nucleo, scorte);
             aggiungiScorte(scortePerIdPolo, id_polo, scorte);
@@ -514,10 +502,10 @@ public class GestoreSistema {
 
             int totMembri = 0;
 
-            Nucleo[] listaNuclei = DBMS.getNuclei(id_polo);
+            Nucleo[] listaNuclei = DBMS.queryGetNuclei(id_polo);
             int countNuclei = listaNuclei.length;
             for (Nucleo nucleo : listaNuclei) {
-                Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
+                Membro[] listaMembri = DBMS.queryGetMembri(nucleo.getId());
                 totMembri += listaMembri.length;
                 for (Membro membro : listaMembri) {
                     // aggiungo ogni membro alla propria categoria
@@ -568,9 +556,9 @@ public class GestoreSistema {
                                 if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
                                     if(scorte.getQuantità() >= giustaQuantità) {
                                         scorte.setQuantità(scorte.getQuantità() - giustaQuantità);
-                                        Nucleo nucleo = DBMS.getNucleo(membro.getIdNucleo());
-                                        Polo polo = DBMS.queryGetPoloById(nucleo.getIdPolo());
-                                        Diocesi diocesi = DBMS.getDiocesiById(polo.getId_diocesi());
+                                        Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
+                                        Polo polo = DBMS.queryGetPolo(nucleo.getIdPolo());
+                                        Diocesi diocesi = DBMS.queryGetDiocesi(polo.getId_diocesi());
                                         ScorteMembro key = new ScorteMembro(scortaMembro, membro, membro.getIdNucleo(), polo.getId(), diocesi.getId());
                                         membriCheHannoRitirato.put(key, scortaMembro);
                                         System.out.println(membro.getNome() + " ha ritirato " + scortaMembro.getQuantità() + " di " + scortaMembro.getCodiceProdotto());
@@ -607,7 +595,7 @@ public class GestoreSistema {
                         // Esegui le operazioni desiderate con le variabili ottenute sopra
 
                         // ottengo il nucleo
-                        Nucleo nucleo = DBMS.getNucleo(membro.getIdNucleo());
+                        Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
                         // Aggiunta degli IDNucleo e delle scorte alla mappa
                         aggiungiScorte(scortePerIdNucleo, id_nucleo, scorte2);
                     }

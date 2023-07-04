@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SchermataVisualizzaSchemaDistribuzioneDiocesi {
+public class SchermataSchemaDistribuzioneDiocesi {
 
     public Button buttonHome;
     public VBox lista;

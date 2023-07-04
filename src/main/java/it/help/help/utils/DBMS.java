@@ -3,7 +3,6 @@ package it.help.help.utils;
 import it.help.help.entity.*;
 import java.util.*;
 import java.sql.*;
-import it.help.help.entity.*;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.util.HashMap;
@@ -404,25 +403,6 @@ public class DBMS {
         return 0;
     }
 
-    public static Scorte[] queryGetScortePer(String type) throws Exception {
-        connect();
-        var query = "SELECT * FROM scorte INNER JOIN prodotto ON scorte.codice_prodotto = prodotto.codice INNER JOIN magazzino ON scorte.id_magazzino = magazzino.id WHERE prodotto."+type+" = 1 AND magazzino.type = 0";
-        List<Scorte> listaScorte = new ArrayList<>();
-
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Scorte scorte = new Scorte(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));
-                listaScorte.add(scorte);
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return listaScorte.toArray(new Scorte[0]);
-    }
-
     // type 0 => mensile
     // 1 => trimestrale
     // 2 => annuale
@@ -468,24 +448,6 @@ public class DBMS {
         return listaSegnalazioni.toArray(new Segnalazione[0]);
     }
 
-    public static Scorte[] queryGetScortePerTutti() throws Exception {
-        connect();
-        var query = "SELECT * FROM scorte INNER JOIN prodotto ON scorte.codice_prodotto = prodotto.codice INNER JOIN magazzino ON scorte.id_magazzino = magazzino.id WHERE prodotto.senzaZucchero = 0 AND prodotto.senzaGlutine = 0 AND prodotto.senzaLattosio = 0 AND magazzino.type = 0";
-        List<Scorte> listaScorte = new ArrayList<>();
-
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Scorte scorte = new Scorte(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5));
-                listaScorte.add(scorte);
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return listaScorte.toArray(new Scorte[0]);
-    }
     public static Prodotto[] queryGetProdottiPer(String type) throws Exception {
         connect();
         var query = "SELECT * FROM prodotto WHERE "+type+" = 1";
@@ -526,26 +488,6 @@ public class DBMS {
         return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
     }
 
-
-    public static SchemaDistribuzione[] queryGetSchemiDistribuzioneNonRitirati(int type) throws Exception {
-        connect();
-        var query = "SELECT * FROM schema_distribuzione WHERE type = ? && stato_ritiro = false";
-        List<SchemaDistribuzione> schemiDistribuzione = new ArrayList<>();
-
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, type);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                SchemaDistribuzione schemaDistribuzione = SchemaDistribuzione.createFromDB(rs);
-                schemiDistribuzione.add(schemaDistribuzione);
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
-    }
 
     public static Donazione[] queryGetDonazioniMeseCorrente(int mese) throws Exception {
         connect();
@@ -638,42 +580,7 @@ public class DBMS {
         return null;
     }
 
-    public static boolean queryDonazioniEffettuate(int id_responsabile) throws Exception {
-        connect();
-        var query = "SELECT * FROM donazione WHERE id_azienda = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id_responsabile);
-            var r = stmt.executeQuery();
-            if (r.next()) {
-                Responsabile responsabile = new Responsabile();
-                responsabile = responsabile.createFromDB(r);
-                return true;
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public static Diocesi queryGetDiocesi(int id) throws Exception {
-        connect();
-        var query = "SELECT * FROM diocesi WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id);
-            var r = stmt.executeQuery();
-            if (r.next()) {
-                Diocesi diocesi = new Diocesi();
-                return diocesi.createFromDB(r);
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Diocesi getDiocesiById(int id) throws Exception {
         connect();
         var query = "SELECT * FROM diocesi WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -757,23 +664,6 @@ public class DBMS {
     }
 
     public static Polo queryGetPolo(int id) throws Exception {
-        connect();
-        var query = "SELECT * FROM polo WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, id);
-            var r = stmt.executeQuery();
-            if (r.next()) {
-                Polo polo = new Polo();
-                return MainUtils.poloLoggato = polo.createFromDB(r);
-            }
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Polo queryGetPoloById(int id) throws Exception {
         connect();
         var query = "SELECT * FROM polo WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -1175,7 +1065,7 @@ public class DBMS {
         return listaRichieste.toArray(new RichiestaAdHoc[0]);
     }
 
-    public static Membro[] getMembri(int id_nucleo) throws Exception {
+    public static Membro[] queryGetMembri(int id_nucleo) throws Exception {
         connect();
         String query = "SELECT * FROM membro WHERE id_nucleo = ?";
         List<Membro> listaMembri = new ArrayList<>();
@@ -1194,8 +1084,26 @@ public class DBMS {
 
         return listaMembri.toArray(new Membro[0]);
     }
+    public static Membro[] queryGetMembri() throws Exception {
+        connect();
+        String query = "SELECT * FROM membro";
+        List<Membro> listaMembri = new ArrayList<>();
 
-    public static Nucleo[] getNuclei(int id_polo) throws Exception {
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Membro membro = Membro.createFromDB(rs);
+                listaMembri.add(membro);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaMembri.toArray(new Membro[0]);
+    }
+
+    public static Nucleo[] queryGetNuclei(int id_polo) throws Exception {
         connect();
         String query = "SELECT * FROM nucleo WHERE id_polo = ? ORDER BY reddito ASC";
         List<Nucleo> listaNuclei = new ArrayList<>();
@@ -1215,7 +1123,7 @@ public class DBMS {
         return listaNuclei.toArray(new Nucleo[0]);
     }
 
-    public static Nucleo getNucleo(int id) throws Exception {
+    public static Nucleo queryGetNucleo(int id) throws Exception {
         connect();
         String query = "SELECT * FROM nucleo WHERE id = ?";
 
@@ -1233,7 +1141,7 @@ public class DBMS {
         return null;
     }
 
-    public static AziendaPartner[] getRichiesteAziendePartner() throws Exception {
+    public static AziendaPartner[] queryGetRichiesteAziendePartner() throws Exception {
         connect();
         String query = "SELECT * FROM azienda WHERE stato_account = ? ORDER BY date ASC";
         List<AziendaPartner> richiesteAziende = new ArrayList<>();

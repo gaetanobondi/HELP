@@ -3,7 +3,7 @@ package it.help.help.help.controll;
 import it.help.help.autenticazione.boundary.*;
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataGestione;
-import it.help.help.help.boundary.SchermataLista;
+import it.help.help.help.boundary.SchermataListaIscritti;
 import it.help.help.help.boundary.SchermataListaDonazioni;
 import it.help.help.help.boundary.SchermataVisualizzaPrevisioneDistribuzione;
 import it.help.help.utils.DBMS;
@@ -145,8 +145,8 @@ public class GestoreHelp {
 
 
     public void schermataListaPoli(Stage stage) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata lista poli","/it/help/help/help/SchermataLista.fxml", stage, c -> {
-            return new SchermataLista(this);
+        MainUtils.cambiaInterfaccia("Schermata iscritti","/it/help/help/help/SchermataLista.fxml", stage, c -> {
+            return new SchermataListaIscritti(this);
         });
 
         Polo[] listaPoli = DBMS.queryGetAllPoli();
@@ -177,7 +177,7 @@ public class GestoreHelp {
 
     public void schermataListaDiocesi(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata lista diocesi","/it/help/help/help/SchermataLista.fxml", stage, c -> {
-            return new SchermataLista(this);
+            return new SchermataListaIscritti(this);
         });
 
         Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
@@ -207,7 +207,7 @@ public class GestoreHelp {
 
     public void schermataListaAziende(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata lista aziende","/it/help/help/help/SchermataLista.fxml", stage, c -> {
-            return new SchermataLista(this);
+            return new SchermataListaIscritti(this);
         });
 
         AziendaPartner[] listaAziende = DBMS.queryGetAllAziende();

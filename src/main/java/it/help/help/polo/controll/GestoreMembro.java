@@ -45,7 +45,7 @@ public class GestoreMembro {
         // Imposta il testo delle label utilizzando i valori delle variabili
         labelCognome.setText("Famiglia " + nucleo.getCognome());
 
-        Membro[] listaMembri = DBMS.getMembri(nucleo.getId());
+        Membro[] listaMembri = DBMS.queryGetMembri(nucleo.getId());
 
         Parent root = stage.getScene().getRoot();
 

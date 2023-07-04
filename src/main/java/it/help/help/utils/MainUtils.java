@@ -100,10 +100,10 @@ public class MainUtils {
                 contentStream.beginText();
                 contentStream.newLineAtOffset(50, 700 - (row * 20) - yOffset);
                 if(segnalazione.getTipoSoggetto() == 0) {
-                    Diocesi diocesi = DBMS.getDiocesiById(segnalazione.getIdSoggetto());
+                    Diocesi diocesi = DBMS.queryGetDiocesi(segnalazione.getIdSoggetto());
                     contentStream.showText("Segnalazione riguardante la diocesi " + diocesi.getNome());
                 } else {
-                    Nucleo nucleo = DBMS.getNucleo(segnalazione.getIdSoggetto());
+                    Nucleo nucleo = DBMS.queryGetNucleo(segnalazione.getIdSoggetto());
                     contentStream.showText("Segnalazione riguardante il nucleo " + nucleo.getCognome());
                 }
                 contentStream.endText();

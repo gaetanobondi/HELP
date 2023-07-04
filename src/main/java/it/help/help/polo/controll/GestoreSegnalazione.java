@@ -100,7 +100,7 @@ public class GestoreSegnalazione {
     }
 
     public void clickRadioNucleo(Stage stage) throws Exception {
-        Nucleo[] listaNuclei = DBMS.getNuclei(MainUtils.responsabileLoggato.getIdLavoro());
+        Nucleo[] listaNuclei = DBMS.queryGetNuclei(MainUtils.responsabileLoggato.getIdLavoro());
         Parent root = stage.getScene().getRoot();
         TextField fieldMenuNucleiSelected = (TextField) root.lookup("#fieldMenuNucleiSelected");
         MenuButton selectNuclei = (MenuButton) root.lookup("#selectNuclei");

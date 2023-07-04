@@ -1,6 +1,6 @@
 package it.help.help.autenticazione.boundary;
 
-import it.help.help.autenticazione.controll.GestoreAccettazioneAccount;
+import it.help.help.help.controll.GestoreAccettazioneAccount;
 import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.autenticazione.controll.GestoreProfilo;
 import it.help.help.help.controll.GestoreHelp;

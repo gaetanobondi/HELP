@@ -1,4 +1,4 @@
-package it.help.help.autenticazione.controll;
+package it.help.help.help.controll;
 
 import it.help.help.entity.*;
 import it.help.help.help.boundary.SchermataVisualizzaRichieste;
@@ -61,7 +61,7 @@ public class GestoreAccettazioneAccount {
         MainUtils.cambiaInterfaccia("Schermata richieste aziende partner","/it/help/help/help/SchermataVisualizzaRichieste.fxml", stage, c -> {
             return new SchermataVisualizzaRichieste(this);
         });
-        AziendaPartner[] listaRichieste = DBMS.getRichiesteAziendePartner();
+        AziendaPartner[] listaRichieste = DBMS.queryGetRichiesteAziendePartner();
 
         if(listaRichieste.length == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

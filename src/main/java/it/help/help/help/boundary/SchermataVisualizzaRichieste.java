@@ -1,6 +1,6 @@
 package it.help.help.help.boundary;
 
-import it.help.help.autenticazione.controll.GestoreAccettazioneAccount;
+import it.help.help.help.controll.GestoreAccettazioneAccount;
 import it.help.help.utils.MainUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
