@@ -2,6 +2,9 @@ package it.help.help.tempo;
 
 import it.help.help.entity.*;
 import it.help.help.utils.DBMS;
+
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Random;
 import java.util.*;
 
@@ -22,6 +25,9 @@ public class GestoreSistema {
 
     public void eliminaSchemiDistribuzione() throws Exception {
         DBMS.queryEliminaSchemiDistribuzione();
+    }
+    public void eliminaRichiesteAdHoc() throws Exception {
+        DBMS.queryEliminaRichiesteAdHoc();
     }
 
     public void previsioneDistribuzione() throws Exception {
@@ -65,31 +71,27 @@ public class GestoreSistema {
 
         // adesso per ogni categoria controllo che ci siano almeno due alimenti
         int alimentiPerMembro = 10;
-        Magazzino[] listaMagazziniHelp = DBMS.queryGetMagazzini(0, 1);
-        Set<Scorte> listaScorteHelp = new HashSet<>();
-        for (Magazzino magazzino : listaMagazziniHelp) {
-            if(magazzino.getCapienzaAttuale() > 0) {
-                // se c'è qualcosa in magazzino controllo cosa è
-                Scorte[] listaScorteMagazzino = DBMS.queryGetScorte(magazzino.getId());
-                for (Scorte scorte : listaScorteMagazzino) {
-                    listaScorteHelp.add(scorte);
-                }
-            }
+        // Magazzino[] listaMagazziniHelp = DBMS.queryGetMagazzini(0, 1);
+        Month currentMonth = LocalDate.now().getMonth();
+        Donazione[] listaDonazioni = DBMS.queryGetDonazioniMeseCorrente(currentMonth.getValue());
+        Set<Donazione> listaScorte = new HashSet<>();
+        for (Donazione donazione : listaDonazioni) {
+            listaScorte.add(donazione);
         }
 
         // CONTEGGIARE I DATI DELLE DONAZIONI DELLE AZIENDE PARTNER
         // posso iterare tutte le donazioni, creare un oggetto comune di donazioni e scorte con i dati in comune
         // e poi il codice continua normalmente
 
-        Iterator<Scorte> iterator = listaScorteHelp.iterator();
-        if(listaScorteHelp != null) {
+        Iterator<Donazione> iterator = listaScorte.iterator();
+        if(listaScorte != null) {
             while (iterator.hasNext()) {
                 int totMembriVivere = 0;
-                Scorte scorte = iterator.next();
+                Donazione donazione = iterator.next();
                 // ciclo per contare i membri che hanno diritto a ciascun vivere
                 for (Membro membro : membriTutti) {
                     // per ogni membro devo verificare se può ritirare il vivere in base ai bisogni
-                    Prodotto prodotto = DBMS.queryGetProdotto(scorte.getCodiceProdotto());
+                    Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
                     if((membro.getDiabete() && prodotto.getSenzaZucchero()) || !membro.getDiabete()) {
                         if((membro.getIntolleranzaLattosio() && prodotto.getSenzaLattosio()) || !membro.getIntolleranzaLattosio()) {
                             if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
@@ -102,8 +104,8 @@ public class GestoreSistema {
                 // ciclo per distribuire i viveri
                 if(totMembriVivere != 0) {
                     int quantitàMinima = alimentiPerMembro * totMembriVivere;
-                    if(scorte.getQuantità() < quantitàMinima) {
-                        Prodotto prodotto = DBMS.queryGetProdotto(scorte.getCodiceProdotto());
+                    if(donazione.getQuantità() < quantitàMinima) {
+                        Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
                         int dividedBy = 1;
                         if(prodotto.getSenzaZucchero()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");

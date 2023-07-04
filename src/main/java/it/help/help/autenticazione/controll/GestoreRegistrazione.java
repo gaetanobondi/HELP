@@ -1,6 +1,7 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.SchermataIniziale;
+import it.help.help.autenticazione.boundary.SchermataLogin;
 import it.help.help.autenticazione.boundary.SchermataSignin;
 import it.help.help.utils.MainUtils;
 import javafx.scene.control.*;
@@ -43,14 +44,13 @@ public class GestoreRegistrazione {
                         } else if(radioDiocesi) {
                             type = 1;
                             id_lavoro = DBMS.queryRegistraDiocesi();
+                            DBMS.queryCreaMagazzino(1, id_lavoro);
                         }
 
                         DBMS.queryRegistraResponsabile(email, encryptPassword, type, id_lavoro);
 
-                        // rimando alla schermata di login
-                        // SchermataLogin l = new SchermataLogin();
-                        Stage window = (Stage) buttonRegistrati.getScene().getWindow();
-                        // l.start(window);
+                        GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
+                        gestoreAutenticazione.schermataLogin(stage);
                     } else {
                         showErrorAlert = true;
                         error = "Email già esistente";

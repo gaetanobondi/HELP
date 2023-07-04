@@ -11,11 +11,15 @@ import it.help.help.utils.MainUtils;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 
 public class GestoreHelp {
     public VBox lista;
@@ -24,7 +28,45 @@ public class GestoreHelp {
         MainUtils.cambiaInterfaccia("Schermata visualizza previsione di distribuzione","/it/help/help/help/SchermataVisualizzaPrevisioneDistribuzione.fxml", stage, c -> {
             return new SchermataVisualizzaPrevisioneDistribuzione();
         });
+
+        Month currentMonth = LocalDate.now().getMonth();
+        Donazione[] listaDonazioni = DBMS.queryGetDonazioniMeseCorrente(currentMonth.getValue());
+        int tot = 0;
+        for (Donazione donazione : listaDonazioni) {
+            tot += donazione.getQuantità();
+        }
+
+        RichiestaAdHoc[] listaRichieste = DBMS.queryGetRichiesteAdHoc();
+        int totViveriRichesti = 0;
+        String message = "";
+        if(listaRichieste != null) {
+            for (RichiestaAdHoc richiestaAdHoc : listaRichieste) {
+                totViveriRichesti += richiestaAdHoc.getQuantità();
+            }
+            message = "I viveri non bastano a soddisfare tutte le diocesi. " + System.lineSeparator() + " Mancano " + totViveriRichesti + " viveri e sono state generate delle richieste ad-hoc.";
+        } else {
+            // le donazioni sono bastate
+            message = "I viveri bastano a soddisfare tutte le diocesi";
+        }
+
+        Parent root = stage.getScene().getRoot();
+
+        // Crea una nuova Label con la quantità totale delle donazioni
+        Label totaleLabel = new Label("Quantità totale di viveri donati in questo mese: " + tot);
+        totaleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        totaleLabel.setLayoutX(10);
+        totaleLabel.setLayoutY(100);
+
+        Label messageLabel = new Label(message);
+        messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        messageLabel.setLayoutX(10);
+        messageLabel.setLayoutY(150);
+
+        // Aggiungi la label alla radice della scena
+        ((Pane) root).getChildren().add(totaleLabel);
+        ((Pane) root).getChildren().add(messageLabel);
     }
+
 
     public void tornaAHelp(Stage stage) throws IOException {
         MainUtils.responsabileLoggato = MainUtils.responsabileHelpLoggato;

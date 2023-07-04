@@ -52,6 +52,7 @@ public class GestoreDiocesi {
                         datiAggiornati.put("nome", nome);
                         datiAggiornati.put("cognome", cognome);
                         Responsabile responsabile = DBMS.getResponsabile(2, id_polo);
+                        DBMS.queryCreaMagazzino(3, responsabile.getIdLavoro());
                         DBMS.queryModificaDati(responsabile.getId(), "responsabile", datiAggiornati);
 
                         // rimando alla schermata precedente

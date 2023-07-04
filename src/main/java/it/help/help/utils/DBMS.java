@@ -89,6 +89,26 @@ public class DBMS {
         }
     }
 
+    public static void queryCreaMagazzino(int type, int id_proprietario) throws Exception {
+        connect();
+        String query = "INSERT INTO magazzino (type, id_proprietario) VALUES (?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, type);
+            stmt.setInt(2, id_proprietario);
+            // return stmt.executeUpdate() > 0;
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Registrato correttamente");
+            } else {
+                System.out.println("Errore");
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void queryRegistraNucleo(int id_polo, String cognome, int reddito) throws Exception {
         connect();
         String query = "INSERT INTO nucleo (id_polo, cognome, reddito) VALUES (?,?,?)";
@@ -527,7 +547,24 @@ public class DBMS {
         return schemiDistribuzione.toArray(new SchemaDistribuzione[0]);
     }
 
+    public static Donazione[] queryGetDonazioniMeseCorrente(int mese) throws Exception {
+        connect();
+        String query = "SELECT * FROM donazione MONTH(data) = ? ORDER BY date DESC";
+        List<Donazione> listaDonazioni = new ArrayList<>();
 
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Donazione donazione = Donazione.createFromDB(rs);
+                listaDonazioni.add(donazione);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaDonazioni.toArray(new Donazione[0]);
+    }
 
     public static boolean queryControllaEsistenzaEmail(String email) throws Exception {
         connect();
@@ -850,7 +887,7 @@ public class DBMS {
 
     public static boolean queryCheckSchemiDistribuzione() throws Exception {
         connect();
-        var query = "SELECT * FROM schemi_distribuzione";
+        var query = "SELECT * FROM schema_distribuzione";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeQuery();
             if (r.next()) {
@@ -896,7 +933,7 @@ public class DBMS {
     }
     public static void queryEliminaSchemiDistribuzione() throws Exception {
         connect();
-        var query = "DELETE * FROM schemi_distribuzione";
+        var query = "DELETE FROM schema_distribuzione";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeUpdate();
             connection.close();
@@ -909,6 +946,16 @@ public class DBMS {
         var query = "DELETE FROM richiesta_ad_hoc WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, id);
+            var r = stmt.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void queryEliminaRichiesteAdHoc() throws Exception {
+        connect();
+        var query = "DELETE FROM richiesta_ad_hoc";
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
@@ -1277,33 +1324,3 @@ public class DBMS {
     }
 
 }
-
-
-/*
-
-welcomeText.setText("Welcome to JavaFX Application!");
-        String url = "jdbc:mysql://localhost:3306/help";
-        String username = "root";
-        String password = "";
-        try {
-            System.out.println("Provo a connettermi al db");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from responsabile where id=2");
-            System.out.println(resultSet);
-            if(resultSet.next()) {
-                System.out.println("Ottengo i dati dal db:");
-                while(resultSet.next()) {
-                    System.out.println(resultSet.getInt(1)+ " " + resultSet.getString(2) + " " + resultSet.getString(3));
-                }
-            } else {
-                System.out.println("Nessun dato presente.");
-            }
-
-            connection.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
- */
