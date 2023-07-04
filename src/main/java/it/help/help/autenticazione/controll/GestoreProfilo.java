@@ -345,7 +345,8 @@ public class GestoreProfilo {
 
                     // aggiorno la tabella responsabile
                     HashMap<String, Object> datiAggiornatiResponsabile = new HashMap<>();
-                    datiAggiornatiResponsabile.put("nome", nome_diocesi);
+                    datiAggiornatiResponsabile.put("nome", nome);
+                    datiAggiornatiResponsabile.put("cognome", cognome);
                     datiAggiornatiResponsabile.put("email", email);
                     DBMS.queryModificaDati(MainUtils.responsabileLoggato.getId(), "responsabile", datiAggiornatiResponsabile);
                     // ricarico la entity responsabile
