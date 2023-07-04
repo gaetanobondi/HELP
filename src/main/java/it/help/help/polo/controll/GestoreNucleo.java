@@ -197,7 +197,7 @@ public class GestoreNucleo {
                 try {
                     GestoreNucleo.eliminaNucleo(nucleo.getId());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
+                    alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Nucleo " + nucleo.getCognome() + " eliminato");
                     alert.showAndWait();
                     schermataVisualizzaListaNucleiFamiliari(stage);

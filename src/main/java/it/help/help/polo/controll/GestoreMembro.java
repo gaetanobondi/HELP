@@ -66,7 +66,7 @@ public class GestoreMembro {
                 try {
                     DBMS.queryEliminaMembro(membro.getCodiceFiscale());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
+                    alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Membro eliminato correttamente");
                     alert.showAndWait();
                     schermataComponentiNucleo(stage, nucleo);

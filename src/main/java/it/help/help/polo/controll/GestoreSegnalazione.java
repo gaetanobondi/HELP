@@ -146,7 +146,7 @@ public class GestoreSegnalazione {
                     System.out.println("Download del mese: " + selectedMonth + " " + month.getValue());
                     MainUtils.generatePDF(listaSegnalazioni, monthName);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
+                    alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Report scaricato nella cartella download del tuo pc");
                     alert.showAndWait();
                 });
@@ -230,7 +230,7 @@ public class GestoreSegnalazione {
                     System.out.println("Download del trimestre: " + selectedTrimester);
                     MainUtils.generatePDF(listaSegnalazioni, trimesterName);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
+                    alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Report scaricato nella cartella download del tuo pc");
                     alert.showAndWait();
                 });
@@ -279,7 +279,7 @@ public class GestoreSegnalazione {
                     // System.out.println("Download del mese: " + selectedMonth + " " + month.getValue());
                     MainUtils.generatePDF(listaSegnalazioni, "" + year.getValue());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Pop-Up Errore");
+                    alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Report scaricato nella cartella download del tuo pc");
                     alert.showAndWait();
                 });
