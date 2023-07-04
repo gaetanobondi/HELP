@@ -115,6 +115,10 @@ public class GestoreAutenticazione {
     //per la schermata HOME RESPONSABILE AZIENDA PARTNER
 
     public void logout(Stage stage) throws Exception {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Pop-Up Conferma");
+        alert.setHeaderText("Hai effettuato correttamente il logout");
+        alert.showAndWait();
         MainUtils.cambiaInterfaccia("Schermata login","/it/help/help/SchermataLogin.fxml", stage, c -> {
             return new SchermataLogin(this);
         });

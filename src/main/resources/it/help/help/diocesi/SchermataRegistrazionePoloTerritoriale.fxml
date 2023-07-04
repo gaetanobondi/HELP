@@ -25,8 +25,8 @@
         <TextField fx:id="fieldIndirizzo" layoutX="226.0" layoutY="147.0" />
         <TextField fx:id="fieldCellulare" layoutX="226.0" layoutY="200.0" />
         <TextField fx:id="fieldEmail" layoutX="226.0" layoutY="249.0" />
-        <Label layoutX="119.0" layoutY="53.0" text="Nome" />
-        <Label layoutX="112.0" layoutY="103.0" text="Cognome" />
+        <Label layoutX="100.0" layoutY="53.0" text="Nome Responsabile" />
+        <Label layoutX="100.0" layoutY="103.0" text="Cognome Responsabile" />
         <Label layoutX="117.0" layoutY="151.0" text="Indirizzo" />
         <Label layoutX="115.0" layoutY="204.0" text="Cellulare" />
         <Label layoutX="115.0" layoutY="253.0" text="Email" />

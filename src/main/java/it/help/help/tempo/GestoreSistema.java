@@ -29,6 +29,12 @@ public class GestoreSistema {
     public void eliminaRichiesteAdHoc() throws Exception {
         DBMS.queryEliminaRichiesteAdHoc();
     }
+    public void azzeraMagazzini() throws Exception {
+        DBMS.queryAzzeraMagazzini();
+    }
+    public void azzeraScorte() throws Exception {
+        DBMS.queryAzzeraScorte();
+    }
 
     public void previsioneDistribuzione() throws Exception {
         // nella previsione ho già tutte le donazioni nel magazzino

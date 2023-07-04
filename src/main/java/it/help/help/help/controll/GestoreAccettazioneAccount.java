@@ -36,7 +36,7 @@ public class GestoreAccettazioneAccount {
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
                 try {
-                    DBMS.accettaRichiesta(diocesi.getId(), "diocesi");
+                    DBMS.queryAccettaRichiesta(diocesi.getId(), "diocesi");
                     System.out.println("Diocesi " + diocesi.getId() + " accettata.");
                     schermataRichiesteDiocesi(stage);
                 } catch (Exception e) {
@@ -86,7 +86,7 @@ public class GestoreAccettazioneAccount {
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
                 try {
-                    DBMS.accettaRichiesta(azienda.getId(), "azienda");
+                    DBMS.queryAccettaRichiesta(azienda.getId(), "azienda");
                     System.out.println("Azienda " + azienda.getId() + " accettata.");
                     schermataRichiesteAziende(stage);
                 } catch (Exception e) {

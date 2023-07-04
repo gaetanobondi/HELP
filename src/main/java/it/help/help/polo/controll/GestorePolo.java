@@ -2,7 +2,7 @@ package it.help.help.polo.controll;
 
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.SchemaDistribuzione;
-import it.help.help.polo.boundary.SchermataVisualizzaSchemaDistribuzionePolo;
+import it.help.help.polo.boundary.SchermataSchemaDistribuzionePolo;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.scene.Parent;
@@ -15,8 +15,8 @@ import java.util.Locale;
 
 public class GestorePolo {
     public void schermataVisualizzaSchemaDiDistribuzionePolo(Stage stage) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataVisualizzaSchemaDistribuzionePolo.fxml", stage, c -> {
-            return new SchermataVisualizzaSchemaDistribuzionePolo();
+        MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataSchemaDistribuzionePolo.fxml", stage, c -> {
+            return new SchermataSchemaDistribuzionePolo();
         });
 
         SchemaDistribuzione[] schemiDistribuzione = DBMS.queryGetSchemiDistribuzione(1, MainUtils.responsabileLoggato.getIdLavoro());

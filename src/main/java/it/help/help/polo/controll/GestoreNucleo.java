@@ -226,8 +226,8 @@ public class GestoreNucleo {
     }
 
     public void schermataInserimentoNucleo(Stage stage) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata inserimento nucleo", "/it/help/help/polo/SchermataInserimentoNucleo.fxml", stage, c -> {
-            return new SchermataInserimentoNucleo(this);
+        MainUtils.cambiaInterfaccia("Schermata inserimento nucleo", "/it/help/help/polo/SchermataRegistrazioneNucleoFamiliare.fxml", stage, c -> {
+            return new SchermataRegistrazioneNucleoFamiliare(this);
         });
     }
 }
