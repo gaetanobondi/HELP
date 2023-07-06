@@ -15,51 +15,6 @@ import javafx.stage.Stage;
 public class GestoreMagazzino {
     public TextField fieldQuantità;
 
-    public void schermataRipristinoPolo(Stage stage) throws Exception {
-        SchermataRipristinoPolo p = new SchermataRipristinoPolo();
-        MainUtils.cambiaInterfaccia("Schermata ripristino polo","/it/help/help/SchermataRipristinoPolo.fxml", stage, c -> {
-            return new SchermataRipristinoPolo();
-        });
-
-        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-        Parent root = stage.getScene().getRoot();
-        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
-        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
-        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
-        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
-        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
-
-        for (Prodotto prodotto : listaProdotti) {
-            MenuItem menuItem = new MenuItem(prodotto.getTipo());
-            menuItem.setUserData(prodotto.getCodice());
-            menuItem.setOnAction(event -> {
-                String selectedProductName = ((MenuItem) event.getSource()).getText();
-                selectAlimenti.setText(selectedProductName);
-                fieldMenuSelected.setText("" + prodotto.getCodice());
-
-                if(prodotto.getSenzaGlutine()) {
-                    checkBoxSenzaGlutine.setSelected(true);
-                } else {
-                    checkBoxSenzaGlutine.setSelected(false);
-                }
-
-                if(prodotto.getSenzaLattosio()) {
-                    checkBoxSenzaLattosio.setSelected(true);
-                } else {
-                    checkBoxSenzaLattosio.setSelected(false);
-                }
-
-                if(prodotto.getSenzaZucchero()) {
-                    checkBoxSenzaZuccheri.setSelected(true);
-                } else {
-                    checkBoxSenzaZuccheri.setSelected(false);
-                }
-            });
-
-            selectAlimenti.getItems().add(menuItem);
-        }
-    }
-
     public void aggiungiViveriMagazzino(Stage stage, int type) throws Exception {
         SchermataCaricamentoViveri p = new SchermataCaricamentoViveri(this, type);
         MainUtils.cambiaInterfaccia("Schermata aggiungi viveri magazzino","/it/help/help/help/SchermataCaricamentoViveri.fxml", stage, c -> {

@@ -50,40 +50,48 @@ public class GestoreNucleo {
         titoloLabel.setLayoutY(80);
         titoloLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         ((Pane) root).getChildren().add(titoloLabel);
-        boolean schemaRitirato = false;
 
-        for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
-            id_nucleo = schemaDistribuzione.getIdType();
-            schemaRitirato = schemaDistribuzione.getStatoRitiro();
-            Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
+        if(schemiDistribuzione.length != 0) {
+            boolean schemaRitirato = false;
+            for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
+                id_nucleo = schemaDistribuzione.getIdType();
+                schemaRitirato = schemaDistribuzione.getStatoRitiro();
+                Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
 
-            Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
-            label.setLayoutX(layoutX);
-            label.setLayoutY(layoutY);
-            layoutY += spacing;
+                Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
+                label.setLayoutX(layoutX);
+                label.setLayoutY(layoutY);
+                layoutY += spacing;
 
-            ((Pane) root).getChildren().add(label);
-        }
+                ((Pane) root).getChildren().add(label);
+            }
 
-        if(schemaRitirato) {
-            Label label = new Label("Carico correttamente ritirato");
-            label.setLayoutX(layoutX);
-            label.setLayoutY(layoutY);
-            ((Pane) root).getChildren().add(label);
+            if(schemaRitirato) {
+                Label label = new Label("Carico correttamente ritirato");
+                label.setLayoutX(layoutX);
+                label.setLayoutY(layoutY);
+                ((Pane) root).getChildren().add(label);
+            } else {
+                // Aggiungi il bottone "Ritirato"
+                Button ritiratoButton = new Button("Ritirato");
+                ritiratoButton.setLayoutX(layoutX);
+                ritiratoButton.setLayoutY(layoutY);
+                int finalId_nucleo = id_nucleo;
+                ritiratoButton.setOnAction(event -> {
+                    try {
+                        ritiraSchemaNucleo(stage, finalId_nucleo);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                ((Pane) root).getChildren().add(ritiratoButton);
+            }
         } else {
-            // Aggiungi il bottone "Ritirato"
-            Button ritiratoButton = new Button("Ritirato");
-            ritiratoButton.setLayoutX(layoutX);
-            ritiratoButton.setLayoutY(layoutY);
-            int finalId_nucleo = id_nucleo;
-            ritiratoButton.setOnAction(event -> {
-                try {
-                    ritiraSchemaNucleo(stage, finalId_nucleo);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            ((Pane) root).getChildren().add(ritiratoButton);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Nessuno schema di distribuzione per il mese in corso");
+            alert.showAndWait();
+            schermataVisualizzaListaNucleiFamiliari(stage);
         }
     }
     public void ritiraSchemaNucleo(Stage stage, int id_nucleo) throws Exception {

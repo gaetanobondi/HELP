@@ -1,12 +1,14 @@
 package it.help.help.polo.controll;
 
+import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.entity.Prodotto;
 import it.help.help.entity.SchemaDistribuzione;
 import it.help.help.polo.boundary.SchermataSchemaDistribuzionePolo;
+import it.help.help.autenticazione.boundary.SchermataSospensionePolo;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.time.LocalDate;
@@ -38,15 +40,23 @@ public class GestorePolo {
         titoloLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         ((Pane) root).getChildren().add(titoloLabel);
 
-        for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
-            Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
+        if(schemiDistribuzione.length != 0) {
+            for (SchemaDistribuzione schemaDistribuzione : schemiDistribuzione) {
+                Prodotto prodotto = DBMS.queryGetProdotto(schemaDistribuzione.getCodiceProdotto());
 
-            Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
-            label.setLayoutX(layoutX);
-            label.setLayoutY(layoutY);
-            layoutY += spacing;
+                Label label = new Label(schemaDistribuzione.getQuantità() + " di " + prodotto.getTipo());
+                label.setLayoutX(layoutX);
+                label.setLayoutY(layoutY);
+                layoutY += spacing;
 
-            ((Pane) root).getChildren().add(label);
+                ((Pane) root).getChildren().add(label);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Nessuno schema di distribuzione per il mese in corso");
+            alert.showAndWait();
+            MainUtils.tornaAllaHome(stage);
         }
     }
 

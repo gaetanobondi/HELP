@@ -263,7 +263,13 @@ public class GestoreSistema {
                         if((membro.getDiabete() && prodotto.getSenzaZucchero()) || !membro.getDiabete()) {
                             if((membro.getIntolleranzaLattosio() && prodotto.getSenzaLattosio()) || !membro.getIntolleranzaLattosio()) {
                                 if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
-                                    totMembriVivere += 1;
+                                    Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
+                                    Polo polo = DBMS.queryGetPolo(nucleo.getIdPolo());
+                                    Diocesi diocesi = DBMS.queryGetDiocesi(polo.getId_diocesi());
+                                    // controllo se posso distribuire
+                                    if(!polo.getStato_sospensione() && diocesi.getStato_account()) {
+                                        totMembriVivere += 1;
+                                    }
                                 }
                             }
                         }
@@ -285,10 +291,13 @@ public class GestoreSistema {
                                             Nucleo nucleo = DBMS.queryGetNucleo(membro.getIdNucleo());
                                             Polo polo = DBMS.queryGetPolo(nucleo.getIdPolo());
                                             Diocesi diocesi = DBMS.queryGetDiocesi(polo.getId_diocesi());
-                                            ScorteMembro key = new ScorteMembro(scortaMembro, membro, membro.getIdNucleo(), polo.getId(), diocesi.getId());
-                                            membriCheHannoRitirato.put(key, scortaMembro);
-                                            System.out.println(membro.getNome() + " ha ritirato " + scortaMembro.getQuantità() + " di " + scortaMembro.getCodiceProdotto());
-                                            System.out.println("Totale scorte di Help: " + scorteTotali(listaMagazziniHelp, listaScorte));
+                                            // controllo se posso distribuire
+                                            if(!polo.getStato_sospensione() && diocesi.getStato_account()) {
+                                                ScorteMembro key = new ScorteMembro(scortaMembro, membro, membro.getIdNucleo(), polo.getId(), diocesi.getId());
+                                                membriCheHannoRitirato.put(key, scortaMembro);
+                                                System.out.println(membro.getNome() + " ha ritirato " + scortaMembro.getQuantità() + " di " + scortaMembro.getCodiceProdotto());
+                                                System.out.println("Totale scorte di Help: " + scorteTotali(listaMagazziniHelp, listaScorte));
+                                            }
                                         }
                                     }
                                 }

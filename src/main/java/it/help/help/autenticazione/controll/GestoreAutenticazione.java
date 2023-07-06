@@ -1,12 +1,11 @@
 package it.help.help.autenticazione.controll;
 
 import it.help.help.autenticazione.boundary.*;
-import it.help.help.magazzino.controll.GestoreMagazzino;
+import it.help.help.entity.Prodotto;
 import it.help.help.utils.MainUtils;
-import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.scene.layout.AnchorPane;
 import it.help.help.utils.DBMS;
 import javafx.scene.control.Alert.AlertType;
 
@@ -18,6 +17,62 @@ public class GestoreAutenticazione {
     public Label labelCognome;
     public Button buttonHome;
     public Button buttonLogout;
+
+    public void schermataSospendiPolo(Stage stage) throws Exception {
+        MainUtils.cambiaInterfaccia("Schermata sospendi polo", "/it/help/help/polo/SchermataSospensionePolo.fxml", stage, c -> {
+            return new SchermataSospensionePolo(this);
+        });
+    }
+    public void confermaSospensionePolo(Stage stage) throws Exception {
+        DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
+        GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
+        gestoreAutenticazione.logout(stage);
+    }
+
+    public void schermataRipristinoPolo(Stage stage) throws Exception {
+        SchermataRipristinoPolo p = new SchermataRipristinoPolo();
+        MainUtils.cambiaInterfaccia("Schermata ripristino polo","/it/help/help/SchermataRipristinoPolo.fxml", stage, c -> {
+            return new SchermataRipristinoPolo();
+        });
+
+        Prodotto[] listaProdotti = DBMS.queryGetProdotti();
+        Parent root = stage.getScene().getRoot();
+        TextField fieldMenuSelected = (TextField) root.lookup("#fieldMenuSelected");
+        MenuButton selectAlimenti = (MenuButton) root.lookup("#selectAlimenti");
+        CheckBox checkBoxSenzaGlutine = (CheckBox) root.lookup("#checkBoxSenzaGlutine");
+        CheckBox checkBoxSenzaLattosio = (CheckBox) root.lookup("#checkBoxSenzaLattosio");
+        CheckBox checkBoxSenzaZuccheri = (CheckBox) root.lookup("#checkBoxSenzaZuccheri");
+
+        for (Prodotto prodotto : listaProdotti) {
+            MenuItem menuItem = new MenuItem(prodotto.getTipo());
+            menuItem.setUserData(prodotto.getCodice());
+            menuItem.setOnAction(event -> {
+                String selectedProductName = ((MenuItem) event.getSource()).getText();
+                selectAlimenti.setText(selectedProductName);
+                fieldMenuSelected.setText("" + prodotto.getCodice());
+
+                if(prodotto.getSenzaGlutine()) {
+                    checkBoxSenzaGlutine.setSelected(true);
+                } else {
+                    checkBoxSenzaGlutine.setSelected(false);
+                }
+
+                if(prodotto.getSenzaLattosio()) {
+                    checkBoxSenzaLattosio.setSelected(true);
+                } else {
+                    checkBoxSenzaLattosio.setSelected(false);
+                }
+
+                if(prodotto.getSenzaZucchero()) {
+                    checkBoxSenzaZuccheri.setSelected(true);
+                } else {
+                    checkBoxSenzaZuccheri.setSelected(false);
+                }
+            });
+
+            selectAlimenti.getItems().add(menuItem);
+        }
+    }
 
     public void schermataLogin(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata login","/it/help/help/SchermataLogin.fxml", stage, c -> {
@@ -59,8 +114,7 @@ public class GestoreAutenticazione {
                         // POLO
                         if(DBMS.queryGetStatoSospensione(MainUtils.responsabileLoggato.getIdLavoro())) {
                             // POLO SOSPESO
-                            GestoreMagazzino gestoreMagazzino = new GestoreMagazzino();
-                            gestoreMagazzino.schermataRipristinoPolo(stage);
+                            schermataRipristinoPolo(stage);
                         } else {
                             nomeSchermata = "/it/help/help/polo/SchermataHomeResponsabilePolo.fxml";
                             MainUtils.cambiaInterfaccia("Schermata responsabile polo", nomeSchermata, stage, c -> {
@@ -103,15 +157,7 @@ public class GestoreAutenticazione {
             return new SchermataIniziale(stage);
         });
     }
-    public void schermataSospendiPolo(Stage stage) throws Exception {
-        MainUtils.cambiaInterfaccia("Schermata sospendi polo", "/it/help/help/polo/SchermataSospensionePolo.fxml", stage, c -> {
-            return new SchermataSospensionePolo(this);
-        });
-    }
-    public void confermaSospensionePolo(Stage stage) throws Exception {
-        DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
-        logout(stage);
-    }
+
     //per la schermata HOME RESPONSABILE AZIENDA PARTNER
 
     public void logout(Stage stage) throws Exception {

@@ -103,7 +103,11 @@ public class MainUtils {
                     contentStream.showText("Segnalazione riguardante la diocesi " + diocesi.getNome());
                 } else {
                     Nucleo nucleo = DBMS.queryGetNucleo(segnalazione.getIdSoggetto());
-                    contentStream.showText("Segnalazione riguardante il nucleo " + nucleo.getCognome());
+                    if(nucleo == null) {
+                        contentStream.showText("Segnalazione riguardante un nucleo eliminato");
+                    } else {
+                        contentStream.showText("Segnalazione riguardante il nucleo " + nucleo.getCognome());
+                    }
                 }
                 contentStream.endText();
 

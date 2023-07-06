@@ -127,7 +127,7 @@ public class GestoreDiocesi {
         if(schemiDistribuzione.length == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Pop-Up Errore");
-            alert.setHeaderText("Non ci sono schemi per questo mese");
+            alert.setHeaderText("Nessuno schema di distribuzione per il mese in corso");
             alert.showAndWait();
             MainUtils.tornaAllaHome(stage);
         }
