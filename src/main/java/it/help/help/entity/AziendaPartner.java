@@ -8,7 +8,6 @@ public class AziendaPartner {
     private String indirizzo;
     private int cellulare;
     private boolean stato_account;
-    private Date date;
 
     public AziendaPartner(int id, String nome, boolean stato_account, String indirizzo, int cellulare) {
         this.id = id;

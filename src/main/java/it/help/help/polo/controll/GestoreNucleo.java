@@ -151,7 +151,7 @@ public class GestoreNucleo {
     }
     public void schermataVisualizzaListaNucleiFamiliari(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza lista nuclei familiari", "/it/help/help/polo/SchermataVisualizzaListaNucleiFamiliari.fxml", stage, c -> {
-            return new SchermataVisualizzaListaNucleiFamiliari();
+            return new SchermataVisualizzaListaNuclei();
         });
 
         Parent root = stage.getScene().getRoot();

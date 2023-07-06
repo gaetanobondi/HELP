@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SchermataListaDonazioniAdHoc {
+public class SchermataEffettuaDonazioneAdHoc {
 
     public Button buttonHome;
     public VBox listaDonazioniAdHoc;

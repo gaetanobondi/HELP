@@ -378,6 +378,11 @@ public class GestoreSistema {
                 DBMS.querySalvaSchemaDistribuzione(1, idPolo, codiceProdotto, sommaQuantita);
             }
             System.out.println();
+
+            Polo[] listaPoli = DBMS.queryGetAllPoli();
+            for (Polo polo : listaPoli) {
+                distribuzioneMagazzinoPolo(polo.getId());
+            }
         }
 
         // Iterazione sulle scorte di ciascun nucleo

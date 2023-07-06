@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 public class GestoreAziendaPartner {
@@ -132,7 +131,7 @@ public class GestoreAziendaPartner {
 
     public void schermataListaDonazioniAdHoc(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata lista donazioni ad hoc","/it/help/help/azienda_partner/SchermataListaDonazioniAdHoc.fxml", stage, c -> {
-            return new SchermataListaDonazioniAdHoc();
+            return new SchermataEffettuaDonazioneAdHoc();
         });
 
         RichiestaAdHoc[] listaRichieste = DBMS.queryGetRichiesteAdHoc();

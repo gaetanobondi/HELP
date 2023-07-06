@@ -33,13 +33,13 @@ public class Main extends Application {
         // se è il 25 del mese genero lo schema di distribuzione
         if (currentDate.getDayOfMonth() == 25) {
             GestoreSistema gestoreSistema = new GestoreSistema();
-            // elimino gli schemi di distribuzione del mese precedente
-            gestoreSistema.eliminaSchemiDistribuzione();
             if(!gestoreSistema.checkSchemiDistribuzione()) {
+                // elimino gli schemi di distribuzione del mese precedente
+                gestoreSistema.eliminaSchemiDistribuzione();
                 gestoreSistema.generazioneSchemiDistribuzione();
+                gestoreSistema.azzeraMagazzini();
+                gestoreSistema.azzeraScorte();
             }
-            gestoreSistema.azzeraMagazzini();
-            gestoreSistema.azzeraScorte();
         }
 
         // se è il 2 del mese genero la previsione

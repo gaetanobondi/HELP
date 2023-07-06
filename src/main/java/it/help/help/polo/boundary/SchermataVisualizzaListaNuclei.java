@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SchermataVisualizzaListaNucleiFamiliari {
+public class SchermataVisualizzaListaNuclei {
     public Button buttonHome;
     public VBox lista;
 
