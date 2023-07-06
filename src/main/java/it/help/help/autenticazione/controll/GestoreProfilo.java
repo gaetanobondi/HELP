@@ -27,8 +27,6 @@ public class GestoreProfilo {
     public TextField fieldCognomeResponsabile;
     public TextField fieldNomePolo;
     public TextField fieldCognome;
-    @FXML
-    private AnchorPane contentPane;
 
     @FXML
     public void visualizzaProfiloHelp(Stage stage) throws Exception {

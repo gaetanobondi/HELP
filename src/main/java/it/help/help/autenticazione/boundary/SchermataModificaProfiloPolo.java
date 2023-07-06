@@ -19,7 +19,7 @@ public class SchermataModificaProfiloPolo {
     public TextField fieldIndirizzo;
     public PasswordField fieldVecchiaPassword;
     public PasswordField fieldNuovaPassword;
-    public TextField filedNomePolo;
+    public TextField fieldNomePolo;
     public TextField fieldNome;
     public TextField fieldCognome;
     public GestoreProfilo gestoreProfilo;
@@ -35,7 +35,7 @@ public class SchermataModificaProfiloPolo {
             fieldCellulare.setText("" + cellulare);
         }
         fieldIndirizzo.setText(indirizzo);
-        filedNomePolo.setText(nomePolo);
+        fieldNomePolo.setText(nomePolo);
     }
 
     public void clickHome(ActionEvent actionEvent) throws IOException {
@@ -43,7 +43,7 @@ public class SchermataModificaProfiloPolo {
     }
 
     public void clickSalvaModifiche(ActionEvent actionEvent) throws Exception {
-        String nome_polo = filedNomePolo.getText() != null ? filedNomePolo.getText() : "";
+        String nome_polo = fieldNomePolo.getText() != null ? fieldNomePolo.getText() : "";
         String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
         String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
         String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";

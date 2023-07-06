@@ -23,7 +23,6 @@ public class GestoreAziendaPartner {
     public DatePicker pickerDataScadenza;
     public MenuButton selectAlimenti;
     public TextField fieldMenuSelected;
-    public Button buttonEffettuaDonazioneAdHoc;
     public TextField fieldIdRichiesta;
     public VBox lista;
 
@@ -173,37 +172,6 @@ public class GestoreAziendaPartner {
             // Nessuna richiesta presente, aggiungi la label al contenitore
             Label nessunaRichiestaLabel = new Label("Nessuna richiesta ad-hoc");
             listaDonazioniAdHoc.getChildren().add(nessunaRichiestaLabel);
-        }
-    }
-
-
-
-    public void clickEffettuaDonazioneAdHoc(ActionEvent actionEvent) throws Exception {
-        String id_richiesta = fieldIdRichiesta.getText();
-        String codice_prodotto = fieldMenuSelected.getText();
-        String quantità = fieldQuantità.getText();
-        LocalDate data_scadenza = pickerDataScadenza.getValue();
-        boolean showErrorAlert = false;
-        String error = "";
-
-        if(!codice_prodotto.isEmpty() && !quantità.isEmpty() && data_scadenza != null) {
-            // Conversione da LocalDate a java.sql.Date
-            java.sql.Date sqlDate = java.sql.Date.valueOf(data_scadenza);
-            DBMS.querySalvaDonazione(MainUtils.responsabileLoggato.getIdLavoro(), Integer.parseInt(codice_prodotto), Integer.parseInt(quantità), sqlDate);
-            // elimino la richiesta ad-hoc perché l'ho soddisfatta
-            DBMS.queryEliminaRichiestaAdHoc(Integer.parseInt(id_richiesta));
-        } else {
-            showErrorAlert = true;
-            error = "Compila tutti i campi.";
-        }
-
-        if(showErrorAlert) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Pop-Up Errore");
-            alert.setHeaderText(error);
-            alert.showAndWait();
-        } else {
-            // MainUtils.tornaAllaHome(buttonEffettuaDonazioneAdHoc);
         }
     }
 }

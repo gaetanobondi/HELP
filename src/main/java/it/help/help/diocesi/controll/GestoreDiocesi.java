@@ -24,11 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class GestoreDiocesi {
-    public Button buttonRegistraPolo;
     public TextField fieldEmail;
     public TextField fieldNome;
-    public PasswordField fieldPassword;
-    public PasswordField fieldRipetiPassword;
     public TextField fieldCognome;
     public TextField fieldIndirizzo;
     public TextField fieldCellulare;

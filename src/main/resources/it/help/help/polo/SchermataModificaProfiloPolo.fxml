@@ -56,7 +56,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <TextField fx:id="filedNomePolo" layoutX="278.0" layoutY="155.0" />
+        <TextField fx:id="fieldNomePolo" layoutX="278.0" layoutY="155.0" />
         <Label layoutX="146.0" layoutY="195.0" text="NOME">
             <font>
                 <Font size="16.0" />

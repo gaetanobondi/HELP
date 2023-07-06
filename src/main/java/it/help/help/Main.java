@@ -1,7 +1,7 @@
 package it.help.help;
 
 import it.help.help.autenticazione.boundary.SchermataIniziale;
-import it.help.help.tempo.GestoreSistema;
+import it.help.help.GestoreAutomatismi.GestoreSistema;
 import it.help.help.utils.MainUtils;
 import javafx.application.Application;
 import javafx.stage.Stage;

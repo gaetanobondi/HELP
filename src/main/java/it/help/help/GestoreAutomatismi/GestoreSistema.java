@@ -1,4 +1,4 @@
-package it.help.help.tempo;
+package it.help.help.GestoreAutomatismi;
 
 import it.help.help.entity.*;
 import it.help.help.utils.DBMS;

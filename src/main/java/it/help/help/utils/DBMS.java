@@ -499,6 +499,7 @@ public class DBMS {
         List<Donazione> listaDonazioni = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, mese);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Donazione donazione = Donazione.createFromDB(rs);
