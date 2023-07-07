@@ -30,6 +30,14 @@ public class Main extends Application {
             gestoreSistema.checkSospensionePoli();
         }
 
+        // se è il 2 del mese genero la previsione
+        if (currentDate.getDayOfMonth() == 2) {
+            GestoreSistema gestoreSistema = new GestoreSistema();
+            // elimino le richieste ad-hoc del mese precedente
+            gestoreSistema.eliminaRichiesteAdHoc();
+            gestoreSistema.createPrevisioneDistribuzione();
+        }
+
         // se è il 25 del mese genero lo schema di distribuzione
         if (currentDate.getDayOfMonth() == 25) {
             GestoreSistema gestoreSistema = new GestoreSistema();
@@ -40,14 +48,6 @@ public class Main extends Application {
                 gestoreSistema.azzeraMagazzini();
                 gestoreSistema.azzeraScorte();
             }
-        }
-
-        // se è il 2 del mese genero la previsione
-        if (currentDate.getDayOfMonth() == 2) {
-            GestoreSistema gestoreSistema = new GestoreSistema();
-            // elimino le richieste ad-hoc del mese precedente
-            gestoreSistema.eliminaRichiesteAdHoc();
-            gestoreSistema.createPrevisioneDistribuzione();
         }
         launch();
     }

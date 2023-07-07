@@ -19,11 +19,14 @@ public class GestoreSistema {
     }
 
     public boolean checkSchemiDistribuzione() throws Exception {
-        return DBMS.queryCheckSchemiDistribuzione();
+        LocalDate currentDate = LocalDate.now();
+        return DBMS.queryCheckSchemiDistribuzione(currentDate.getMonth().getValue());
     }
 
     public void eliminaSchemiDistribuzione() throws Exception {
-        DBMS.queryEliminaSchemiDistribuzione();
+        LocalDate currentDate = LocalDate.now();
+        // elimino gli schemi del mese precedente
+        DBMS.queryEliminaSchemiDistribuzione(currentDate.getMonth().getValue() - 1);
     }
     public void eliminaRichiesteAdHoc() throws Exception {
         DBMS.queryEliminaRichiesteAdHoc();

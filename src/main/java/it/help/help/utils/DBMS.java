@@ -791,10 +791,11 @@ public class DBMS {
         return null;
     }
 
-    public static boolean queryCheckSchemiDistribuzione() throws Exception {
+    public static boolean queryCheckSchemiDistribuzione(int mese) throws Exception {
         connect();
-        var query = "SELECT * FROM schema_distribuzione";
+        var query = "SELECT * FROM schema_distribuzione WHERE MONTH(data) = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, mese);
             var r = stmt.executeQuery();
             if (r.next()) {
                 return true;
@@ -837,10 +838,11 @@ public class DBMS {
             e.printStackTrace();
         }
     }
-    public static void queryEliminaSchemiDistribuzione() throws Exception {
+    public static void queryEliminaSchemiDistribuzione(int mese) throws Exception {
         connect();
-        var query = "DELETE FROM schema_distribuzione";
+        var query = "DELETE FROM schema_distribuzione WHERE MONTH(data) = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, mese);
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {
