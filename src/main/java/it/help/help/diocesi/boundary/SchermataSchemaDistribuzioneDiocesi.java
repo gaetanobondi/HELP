@@ -10,7 +10,6 @@ import java.io.IOException;
 public class SchermataSchemaDistribuzioneDiocesi {
 
     public Button buttonHome;
-    public VBox lista;
 
     public void clickHome(ActionEvent actionEvent) throws IOException {
         MainUtils.tornaAllaHome((Stage) buttonHome.getScene().getWindow());

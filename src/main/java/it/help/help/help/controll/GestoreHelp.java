@@ -52,7 +52,7 @@ public class GestoreHelp {
         Parent root = stage.getScene().getRoot();
 
         // Crea una nuova Label con la quantità totale delle donazioni
-        Label totaleLabel = new Label("Quantità totale di viveri donati in questo mese: " + tot);
+        Label totaleLabel = new Label("Quantità totale di viveri in questo mese: " + tot);
         totaleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         totaleLabel.setLayoutX(10);
         totaleLabel.setLayoutY(100);
