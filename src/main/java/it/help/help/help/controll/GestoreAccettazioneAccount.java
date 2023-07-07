@@ -31,7 +31,7 @@ public class GestoreAccettazioneAccount {
             Responsabile responsabile = DBMS.getResponsabile(1, diocesi.getId());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
-            buttonAccettaRichiesta.setLayoutX(300.0);
+            buttonAccettaRichiesta.setLayoutX(350.0);
             buttonAccettaRichiesta.setLayoutY(layoutY);
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
@@ -81,7 +81,7 @@ public class GestoreAccettazioneAccount {
             Responsabile responsabile = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
-            buttonAccettaRichiesta.setLayoutX(300.0);
+            buttonAccettaRichiesta.setLayoutX(350.0);
             buttonAccettaRichiesta.setLayoutY(layoutY);
             buttonAccettaRichiesta.setMnemonicParsing(false);
             buttonAccettaRichiesta.setOnAction(event -> {
@@ -98,7 +98,7 @@ public class GestoreAccettazioneAccount {
 
             Label labelDiocesiRichiesta = new Label();
             labelDiocesiRichiesta.setId("labelDiocesiRichiesta");
-            labelDiocesiRichiesta.setLayoutX(180.0);
+            labelDiocesiRichiesta.setLayoutX(200.0);
             labelDiocesiRichiesta.setLayoutY(layoutY + 5.0); // Sposta l'etichetta leggermente più in basso rispetto al pulsante
             labelDiocesiRichiesta.setText(responsabile.getEmail()); // Imposta il testo dell'etichetta con il nome della diocesi
 
