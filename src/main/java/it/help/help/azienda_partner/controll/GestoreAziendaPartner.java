@@ -7,7 +7,6 @@ import it.help.help.entity.Prodotto;
 import it.help.help.entity.RichiestaAdHoc;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -20,10 +19,7 @@ import java.time.LocalDate;
 public class GestoreAziendaPartner {
 
     public TextField fieldQuantità;
-    public DatePicker pickerDataScadenza;
     public MenuButton selectAlimenti;
-    public TextField fieldMenuSelected;
-    public TextField fieldIdRichiesta;
     public VBox lista;
 
     public void schermataEffettuaDonazioneSpontanea(Stage stage) throws Exception {
