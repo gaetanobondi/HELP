@@ -126,6 +126,10 @@ public class GestoreNucleo {
 
     public static void eliminaNucleo(int id_nucleo) throws Exception {
         DBMS.queryEliminaNucleo(id_nucleo);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Pop-Up Conferma");
+        alert.setHeaderText("Nucleo eliminato correttamente");
+        alert.showAndWait();
     }
     public void schermataModificaNucleo(Stage stage, Nucleo nucleo) {
         SchermataModificaNucleo p = new SchermataModificaNucleo(this);
