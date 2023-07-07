@@ -33,7 +33,7 @@ public class SchermataLogin {
     }
 
     public void clickRecuperaPassword(ActionEvent actionEvent) {
-        GestorePassword gestorePassword = new GestorePassword();
+        GestorePassword gestorePassword = new GestorePassword(gestoreAutenticazione);
         gestorePassword.schermataRecuperoPassword((Stage) buttonRecuperaPassword.getScene().getWindow());
     }
 }

@@ -10,8 +10,11 @@ import it.help.help.utils.DBMS;
 
 import javafx.scene.control.Alert.AlertType;
 public class GestoreRegistrazione {
-    public TextField fieldEmail;
-    public Button buttonRegistrati;
+    public GestoreAutenticazione gestoreAutenticazione;
+
+    public GestoreRegistrazione(GestoreAutenticazione gestoreAutenticazione) {
+        this.gestoreAutenticazione = gestoreAutenticazione;
+    }
 
     public void schermataIniziale(Stage stage) {
         MainUtils.cambiaInterfaccia("Help", "/it/help/help/SchermataIniziale.fxml", stage, c -> {
@@ -48,8 +51,7 @@ public class GestoreRegistrazione {
                         }
 
                         DBMS.queryRegistraResponsabile(email, encryptPassword, type, id_lavoro);
-
-                        GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
+                        
                         gestoreAutenticazione.schermataLogin(stage);
                     } else {
                         showErrorAlert = true;

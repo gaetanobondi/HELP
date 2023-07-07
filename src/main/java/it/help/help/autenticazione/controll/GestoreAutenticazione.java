@@ -10,13 +10,6 @@ import it.help.help.utils.DBMS;
 import javafx.scene.control.Alert.AlertType;
 
 public class GestoreAutenticazione {
-    public TextField fieldEmail;
-    public PasswordField fieldNuovaPassword;
-    public Label labelEmail;
-    public Label labelNome;
-    public Label labelCognome;
-    public Button buttonHome;
-    public Button buttonLogout;
 
     public void schermataSospendiPolo(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata sospendi polo", "/it/help/help/polo/SchermataSospensionePolo.fxml", stage, c -> {

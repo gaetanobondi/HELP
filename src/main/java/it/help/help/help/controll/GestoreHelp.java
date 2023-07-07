@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.time.Month;
 
 public class GestoreHelp {
-    public VBox lista;
 
     public void visualizzaPrevisioneDiDistribuzione(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza previsione di distribuzione","/it/help/help/help/SchermataVisualizzaPrevisioneDistribuzione.fxml", stage, c -> {
@@ -152,7 +151,7 @@ public class GestoreHelp {
         Polo[] listaPoli = DBMS.queryGetAllPoli();
         Parent root = stage.getScene().getRoot();
 
-        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
@@ -183,7 +182,7 @@ public class GestoreHelp {
         Diocesi[] listaDiocesi = DBMS.queryGetAllDiocesi();
         Parent root = stage.getScene().getRoot();
 
-        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
@@ -213,7 +212,7 @@ public class GestoreHelp {
         AziendaPartner[] listaAziende = DBMS.queryGetAllAziende();
         Parent root = stage.getScene().getRoot();
 
-        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         VBox buttonContainer = new VBox(); // Contenitore per i bottoni verticali
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
@@ -249,7 +248,7 @@ public class GestoreHelp {
         Parent root = stage.getScene().getRoot();
 
         Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni();
-        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         for (Donazione donazione : listaDonazioni) {
             Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
             AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());

@@ -20,7 +20,6 @@ import java.util.Locale;
 
 
 public class GestoreSegnalazione {
-    public TextField fieldQuantità;
 
     public void confermaSegnalazione(Stage stage, Boolean nucleoSelected, Boolean diocesiSelected, String codice_prodotto, String id_nucleo, String quantità) throws Exception {
         boolean showErrorAlert = false;

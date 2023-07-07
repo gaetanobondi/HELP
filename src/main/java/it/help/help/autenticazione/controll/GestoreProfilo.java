@@ -10,24 +10,6 @@ import it.help.help.utils.DBMS;
 import java.util.*;
 
 public class GestoreProfilo {
-    public Label labelNomeResponsabile;
-    public Label labelCognomeResponsabile;
-    public Label labelEmail;
-    public Label labelPassword;
-    public Label labelNome;
-    public Label labelCellulare;
-    public Label labelIndirizzo;
-    public TextField fieldEmail;
-    public TextField fieldNome;
-    public TextField fieldCellulare;
-    public TextField fieldIndirizzo;
-    public PasswordField fieldVecchiaPassword;
-    public PasswordField fieldNuovaPassword;
-    public TextField fieldNomeResponsabile;
-    public TextField fieldCognomeResponsabile;
-    public TextField fieldNomePolo;
-    public TextField fieldCognome;
-
     @FXML
     public void visualizzaProfiloHelp(Stage stage) throws Exception {
         MainUtils.helpLoggato = DBMS.queryGetHelp(MainUtils.responsabileLoggato.getIdLavoro());

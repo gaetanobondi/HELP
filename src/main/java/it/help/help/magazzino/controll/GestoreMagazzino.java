@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 public class GestoreMagazzino {
-    public TextField fieldQuantità;
 
     public void aggiungiViveriMagazzino(Stage stage, int type) throws Exception {
         SchermataCaricamentoViveri p = new SchermataCaricamentoViveri(this, type);

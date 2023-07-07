@@ -19,8 +19,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 public class GestorePassword {
-    public TextField fieldEmail;
-    public PasswordField fieldNuovaPassword;
+    public GestoreAutenticazione gestoreAutenticazione;
+
+    public GestorePassword(GestoreAutenticazione gestoreAutenticazione) {
+        this.gestoreAutenticazione = gestoreAutenticazione;
+    }
     public void schermataLogin(Stage stage) {
         MainUtils.cambiaInterfaccia("Schermata login", "/it/help/help/SchermataLogin.fxml", stage, c -> {
             return new SchermataLogin(new GestoreAutenticazione());
@@ -34,9 +37,7 @@ public class GestorePassword {
             if(MainUtils.isValidPassword(password)) {
                 String encryptPassword = MainUtils.encryptPassword(password);
                 DBMS.queryModificaPassword(email, encryptPassword);
-                MainUtils.cambiaInterfaccia("Schermata login", "/it/help/help/SchermataLogin.fxml", stage, c -> {
-                    return new SchermataLogin(new GestoreAutenticazione());
-                });
+                gestoreAutenticazione.schermataLogin(stage);
             } else {
                 showErrorAlert = true;
                 error = "La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola e un carattere speciale";
@@ -61,7 +62,7 @@ public class GestorePassword {
     }
     public void schermataRecuperoPassword(Stage stage) {
         MainUtils.cambiaInterfaccia("Schermata recupero password", "/it/help/help/SchermataRecuperoPassword.fxml", stage, c -> {
-            return new SchermataRecuperoPassword();
+            return new SchermataRecuperoPassword(gestoreAutenticazione);
         });
     }
     public void recuperaPassword(Stage stage, String email) throws Exception {

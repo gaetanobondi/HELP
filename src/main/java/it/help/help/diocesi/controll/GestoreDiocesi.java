@@ -13,7 +13,6 @@ import it.help.help.utils.MainUtils;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -24,11 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class GestoreDiocesi {
-    public TextField fieldEmail;
-    public TextField fieldNome;
-    public TextField fieldCognome;
-    public TextField fieldIndirizzo;
-    public TextField fieldCellulare;
 
     public void registraPolo(Stage stage, String nomePolo, String nome, String cognome, String indirizzo, String cellulare, String email, String password) throws Exception {
         Boolean showErrorAlert = false;

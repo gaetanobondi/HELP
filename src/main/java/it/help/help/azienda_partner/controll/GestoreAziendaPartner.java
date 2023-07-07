@@ -18,10 +18,6 @@ import java.time.LocalDate;
 
 public class GestoreAziendaPartner {
 
-    public TextField fieldQuantità;
-    public MenuButton selectAlimenti;
-    public VBox lista;
-
     public void schermataEffettuaDonazioneSpontanea(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata effettua donazione spontanea", "/it/help/help/azienda_partner/SchermataEffettuaDonazione.fxml", stage, c -> {
             return new SchermataEffettuaDonazione(this);
@@ -112,7 +108,7 @@ public class GestoreAziendaPartner {
         Parent root = stage.getScene().getRoot();
 
         Donazione[] listaDonazioni = DBMS.queryGetAllDonazioni(MainUtils.responsabileLoggato.getIdLavoro());
-        lista = (VBox) stage.getScene().getRoot().lookup("#lista");
+        VBox lista = (VBox) stage.getScene().getRoot().lookup("#lista");
         for (Donazione donazione : listaDonazioni) {
             Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
             AziendaPartner aziendaPartner = DBMS.queryGetAziendaPartner(donazione.getIdAzienda());

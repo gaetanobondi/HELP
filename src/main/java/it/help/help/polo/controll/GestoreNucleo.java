@@ -21,10 +21,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class GestoreNucleo {
-    public TextField fieldCognome;
-    public TextField fieldNome;
-    public TextField fieldCellulare;
-    public TextField fieldIndirizzo;
 
     public void schermataSchemaDistribuzioneNucleo(Stage stage) throws Exception {
         MainUtils.cambiaInterfaccia("Schermata visualizza schema di distribuzione", "/it/help/help/polo/SchermataSchemaDistribuzioneNucleo.fxml", stage, c -> {

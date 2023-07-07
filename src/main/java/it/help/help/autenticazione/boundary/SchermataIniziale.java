@@ -16,7 +16,8 @@ public class SchermataIniziale {
     }
 
     public void clickSignIn(ActionEvent actionEvent) throws Exception {
-        GestoreRegistrazione gestoreRegistrazione = new GestoreRegistrazione();
+        GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
+        GestoreRegistrazione gestoreRegistrazione = new GestoreRegistrazione(gestoreAutenticazione);
         gestoreRegistrazione.schermataSignin((Stage) buttonSignIn.getScene().getWindow());
     }
 
