@@ -27,12 +27,12 @@
         <Label layoutX="159.0" layoutY="81.0" text="COGNOME" />
         <Label layoutX="146.0" layoutY="111.0" text="CODICE FISCALE " />
         <Label layoutX="146.0" layoutY="141.0" text="DATA DI NASCITA " />
-        <Label layoutX="129.0" layoutY="202.0" text="INDIRIZZO " />
+        <Label layoutX="146.0" layoutY="171.0" text="INDIRIZZO " />
         <TextField fx:id="fieldNome" layoutX="264.0" layoutY="47.0" minWidth="-Infinity" />
         <TextField fx:id="fieldCognome" layoutX="264.0" layoutY="77.0" />
         <TextField fx:id="fieldCodFiscale" layoutX="264.0" layoutY="107.0" />
         <DatePicker fx:id="pickerDataNascita" layoutX="264.0" layoutY="137.0" />
-        <TextField fx:id="fieldIndirizzo" layoutX="264.0" layoutY="197.0" />
+        <TextField fx:id="fieldIndirizzo" layoutX="264.0" layoutY="167.0" />
         <Label layoutX="122.0" layoutY="287.0" text="BISOGNO SPECIALE: ">
             <font>
                 <Font name="System Bold" size="13.0" />
