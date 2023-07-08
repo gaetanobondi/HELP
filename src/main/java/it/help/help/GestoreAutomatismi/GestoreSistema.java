@@ -20,13 +20,12 @@ public class GestoreSistema {
 
     public boolean checkSchemiDistribuzione() throws Exception {
         LocalDate currentDate = LocalDate.now();
-        return DBMS.queryCheckSchemiDistribuzione(currentDate.getMonth().getValue());
+        return DBMS.queryCheckSchemiDistribuzione();
     }
 
     public void eliminaSchemiDistribuzione() throws Exception {
-        LocalDate currentDate = LocalDate.now();
         // elimino gli schemi del mese precedente
-        DBMS.queryEliminaSchemiDistribuzione(currentDate.getMonth().getValue() - 1);
+        DBMS.queryEliminaSchemiDistribuzione();
     }
     public void eliminaRichiesteAdHoc() throws Exception {
         DBMS.queryEliminaRichiesteAdHoc();
@@ -64,9 +63,14 @@ public class GestoreSistema {
 
             membriTutti.add(membro);
         }
+        System.out.println("Ci sono " + membriTutti.size() + " membri di cui:");
+        System.out.println("Membri celiaci: " + membriCeliaci.size());
+        System.out.println("Membri diabetici: " + membriDiabetici.size());
+        System.out.println("Membri intolleranti al lattosio: " + membriIntollerantiLattosio.size());
+        System.out.println("Membri senza bisogni speciali: " + membriSenzaBisogni.size());
 
         // adesso per ogni categoria controllo che ci siano almeno due alimenti
-        int alimentiPerMembro = 10;
+        int alimentiPerMembro = 2;
         Month currentMonth = LocalDate.now().getMonth();
         Donazione[] listaDonazioni = DBMS.queryGetDonazioniMeseCorrente(currentMonth.getValue());
         Set<Donazione> listaScorte = new HashSet<>();
@@ -80,9 +84,9 @@ public class GestoreSistema {
                 int totMembriVivere = 0;
                 Donazione donazione = iterator.next();
                 // ciclo per contare i membri che hanno diritto a ciascun vivere
+                Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
                 for (Membro membro : membriTutti) {
                     // per ogni membro devo verificare se può ritirare il vivere in base ai bisogni
-                    Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
                     if((membro.getDiabete() && prodotto.getSenzaZucchero()) || !membro.getDiabete()) {
                         if((membro.getIntolleranzaLattosio() && prodotto.getSenzaLattosio()) || !membro.getIntolleranzaLattosio()) {
                             if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
@@ -92,11 +96,13 @@ public class GestoreSistema {
                     }
                 }
 
+                System.out.println(totMembriVivere + " devono ricevere " + prodotto.getTipo());
+
                 // ciclo per distribuire i viveri
                 if(totMembriVivere != 0) {
                     int quantitàMinima = alimentiPerMembro * totMembriVivere;
+                    System.out.println("Devo avere questa quantità: " + quantitàMinima + " di " + prodotto.getTipo());
                     if(donazione.getQuantità() < quantitàMinima) {
-                        Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
                         int dividedBy = 1;
                         if(prodotto.getSenzaZucchero()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
@@ -115,15 +121,15 @@ public class GestoreSistema {
                         int giustaQuantità = quantitàMinima / dividedBy;
                         if(prodotto.getSenzaZucchero()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
-                            creaRichestaAdHoc(quantitàMinima, listaProdotti);
+                            creaRichestaAdHoc(giustaQuantità, listaProdotti);
                         }
                         if(prodotto.getSenzaGlutine()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaGlutine");
-                            creaRichestaAdHoc(quantitàMinima, listaProdotti);
+                            creaRichestaAdHoc(giustaQuantità, listaProdotti);
                         }
                         if(prodotto.getSenzaLattosio()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaLattosio");
-                            creaRichestaAdHoc(quantitàMinima, listaProdotti);
+                            creaRichestaAdHoc(giustaQuantità, listaProdotti);
                         }
                     }
                 }

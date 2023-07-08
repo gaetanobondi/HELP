@@ -18,7 +18,6 @@ import java.time.Year;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-
 public class GestoreSegnalazione {
 
     public void confermaSegnalazione(Stage stage, Boolean nucleoSelected, Boolean diocesiSelected, String codice_prodotto, String id_nucleo, String quantità) throws Exception {
@@ -148,6 +147,11 @@ public class GestoreSegnalazione {
                     alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Report scaricato nella cartella download del tuo pc");
                     alert.showAndWait();
+                    try {
+                        schermataScaricamentoReport(stage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
 
                 HBox hbox = new HBox(new Label(monthName), downloadButton);

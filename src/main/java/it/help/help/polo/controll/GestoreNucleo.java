@@ -38,7 +38,8 @@ public class GestoreNucleo {
 
         // Ottieni il nome del mese corrente in italiano
         LocalDate currentDate = LocalDate.now();
-        String nomeMeseCorrente = currentDate.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
+        LocalDate nextMonth = currentDate.plusMonths(1);
+        String nomeMeseCorrente = nextMonth.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
 
         // Aggiungi il titolo
         Label titoloLabel = new Label("Schema di distribuzione di " + nomeMeseCorrente);

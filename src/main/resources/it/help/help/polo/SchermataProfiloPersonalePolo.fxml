@@ -42,7 +42,7 @@
         <Label fx:id="labelNome" layoutX="349.0" layoutY="46.0" />
         <Label fx:id="labelCognome" layoutX="349.0" layoutY="82.0" />
         <Label fx:id="labelEmail" layoutX="349.0" layoutY="118.0" />
-        <Label fx:id="labelPassword" layoutX="349.0" layoutY="154.0" prefWidth="60.0" text="*******" />
+        <Label fx:id="labelPassword" layoutX="349.0" layoutY="154.0" text="*******" />
         <Label layoutX="176.0" layoutY="262.0" lineSpacing="2.0" text="NOME POLO">
             <font>
                 <Font size="17.0" />

@@ -67,7 +67,7 @@ public class GestoreRegistrazione {
             }
         } else {
             showErrorAlert = true;
-            error = "Messaggio di Errore";
+            error = "Compila tutti i campi";
         }
 
         if(showErrorAlert) {

@@ -340,18 +340,13 @@ public class DBMS {
 
     public static int queryRegistraPolo(int id_diocesi, String nome, String indirizzo, int cellulare) throws Exception {
         connect();
-        // Ottenere la data di oggi
-        LocalDate today = LocalDate.now();
-        // Convertire LocalDate in java.sql.Date
-        java.sql.Date date = java.sql.Date.valueOf(today);
 
-        String query = "INSERT INTO polo (id_diocesi, nome, indirizzo, cellulare, date) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO polo (id_diocesi, nome, indirizzo, cellulare) VALUES (?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, id_diocesi);
             stmt.setString(2, nome);
             stmt.setString(3, indirizzo);
             stmt.setInt(4, cellulare);
-            stmt.setDate(5, date);
             // return stmt.executeUpdate() > 0;
 
             int rowsAffected = stmt.executeUpdate();
@@ -495,7 +490,7 @@ public class DBMS {
 
     public static Donazione[] queryGetDonazioniMeseCorrente(int mese) throws Exception {
         connect();
-        String query = "SELECT * FROM donazione MONTH(data) = ? ORDER BY date DESC";
+        String query = "SELECT * FROM donazione WHERE MONTH(date) = ? ORDER BY date DESC";
         List<Donazione> listaDonazioni = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -791,11 +786,10 @@ public class DBMS {
         return null;
     }
 
-    public static boolean queryCheckSchemiDistribuzione(int mese) throws Exception {
+    public static boolean queryCheckSchemiDistribuzione() throws Exception {
         connect();
-        var query = "SELECT * FROM schema_distribuzione WHERE MONTH(data) = ?";
+        var query = "SELECT * FROM schema_distribuzione";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, mese);
             var r = stmt.executeQuery();
             if (r.next()) {
                 return true;
@@ -838,11 +832,10 @@ public class DBMS {
             e.printStackTrace();
         }
     }
-    public static void queryEliminaSchemiDistribuzione(int mese) throws Exception {
+    public static void queryEliminaSchemiDistribuzione() throws Exception {
         connect();
-        var query = "DELETE FROM schema_distribuzione WHERE MONTH(data) = ?";
+        var query = "DELETE FROM schema_distribuzione";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, mese);
             var r = stmt.executeUpdate();
             connection.close();
         } catch (SQLException e) {

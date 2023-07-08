@@ -78,7 +78,7 @@ public class GestoreAccettazioneAccount {
 
         for (AziendaPartner azienda : listaRichieste) {
             System.out.println(azienda.getId());
-            Responsabile responsabile = DBMS.getResponsabile(3, MainUtils.responsabileLoggato.getIdLavoro());
+            Responsabile responsabile = DBMS.getResponsabile(3, azienda.getId());
             Button buttonAccettaRichiesta = new Button();
             buttonAccettaRichiesta.setId("buttonAccettaRichiesta");
             buttonAccettaRichiesta.setLayoutX(350.0);

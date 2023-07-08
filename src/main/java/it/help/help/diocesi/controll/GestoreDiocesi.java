@@ -13,7 +13,6 @@ import it.help.help.utils.MainUtils;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
@@ -95,7 +94,8 @@ public class GestoreDiocesi {
 
         // Ottieni il nome del mese corrente in italiano
         LocalDate currentDate = LocalDate.now();
-        String nomeMeseCorrente = currentDate.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
+        LocalDate nextMonth = currentDate.plusMonths(1);
+        String nomeMeseCorrente = nextMonth.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
 
         // Aggiungi il titolo
         Label titoloLabel = new Label("Schema di distribuzione di " + nomeMeseCorrente);
@@ -139,7 +139,8 @@ public class GestoreDiocesi {
 
         // Ottieni il nome del mese corrente in italiano
         LocalDate currentDate = LocalDate.now();
-        String nomeMeseCorrente = currentDate.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
+        LocalDate nextMonth = currentDate.plusMonths(1);
+        String nomeMeseCorrente = nextMonth.format(DateTimeFormatter.ofPattern("MMMM", new Locale("it")));
 
         // Aggiungi il titolo
         Label titoloLabel = new Label("Schema di distribuzione di " + nomeMeseCorrente);

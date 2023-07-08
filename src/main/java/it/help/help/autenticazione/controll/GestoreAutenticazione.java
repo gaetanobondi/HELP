@@ -20,6 +20,7 @@ public class GestoreAutenticazione {
         DBMS.querySospendiPolo(MainUtils.responsabileLoggato.getIdLavoro());
         GestoreAutenticazione gestoreAutenticazione = new GestoreAutenticazione();
         gestoreAutenticazione.logout(stage);
+        schermataIniziale(stage);
     }
 
     public void schermataRipristinoPolo(Stage stage) throws Exception {
