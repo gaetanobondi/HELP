@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -61,7 +60,7 @@ public class MainUtils {
             } catch (Exception e) {
             }
         }
-        stage.setResizable(false);
+        // stage.setResizable(false);
         try {
             Scene s = new Scene(loader.load(), w, h);
             stage.setScene(s);
