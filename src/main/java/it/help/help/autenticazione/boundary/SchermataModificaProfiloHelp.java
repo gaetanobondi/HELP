@@ -36,6 +36,7 @@ public class SchermataModificaProfiloHelp {
     }
 
     public void clickSalvaModifiche(ActionEvent actionEvent) throws Exception {
+        //recupero di tutti i dati -> send()
         String cellulare = fieldCellulare.getText() != null ? fieldCellulare.getText() : "";
         String nome = fieldNome.getText() != null ? fieldNome.getText() : "";
         String cognome = fieldCognome.getText() != null ? fieldCognome.getText() : "";
