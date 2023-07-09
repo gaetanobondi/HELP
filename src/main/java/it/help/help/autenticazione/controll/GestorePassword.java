@@ -6,10 +6,11 @@ import it.help.help.autenticazione.boundary.SchermataRecuperoPassword;
 import it.help.help.utils.DBMS;
 import it.help.help.utils.EmailSender;
 import it.help.help.utils.MainUtils;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -82,7 +83,7 @@ public class GestorePassword {
                         System.out.println(code);
 
                         // invio l'email
-                        EmailSender.sendEmail(email, Integer.parseInt(code));
+                        EmailSender.sendEmail(email, code);
 
                         // Creazione del popup
                         Stage popupStage = new Stage();
@@ -100,23 +101,15 @@ public class GestorePassword {
                         vbox.getChildren().addAll(label, textField, submitButton);
 
                         // Configurazione dell'azione del pulsante di invio
+                        AtomicBoolean result = new AtomicBoolean(false);
                         submitButton.setOnAction(e -> {
                             String codeInserito = textField.getText();
-                            // Esegui le operazioni necessarie con il codice inserito
 
-                            if (!codeInserito.isEmpty() && code.equals(codeInserito)) {   //se il codice inserito coincide
-                                // Chiudi il popup
-                                popupStage.close();
-                                MainUtils.cambiaInterfaccia("Schermata cambio password", "/it/help/help/SchermataCambioPassword.fxml", stage, c -> {
-                                    return new SchermataCambioPassword(this, email);
-                                });
-                            } else {  // Pop-Up errore codice
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Pop-Up Errore");
-                                alert.setHeaderText("Codice errato");
-                                alert.showAndWait();
-                            }
+                            // per rispettare il sequence, all'interno del metodo inserisci è presente il while
+                            // per mostrare nuovamente il popup finché il codice inserito non è corretto
+                            result.set(inserisci(code, codeInserito, popupStage, email, stage));
                         });
+
 
                         // Creazione della scena e impostazione della scena nel popup Stage
                         Scene scene = new Scene(vbox);
@@ -146,5 +139,29 @@ public class GestorePassword {
                 alert.setHeaderText(error);
                 alert.showAndWait();
             }
+    }
+
+    public boolean inserisci(String code, String codeInserito, Stage popupStage, String email, Stage stage) {
+        // con la variabile mostrato, mostro il pop-up di errore una sola volta, altrimenti
+        // senza la variabile si continuava a mostrare il pop-up svariate volte
+        boolean mostrato = false;
+        // finché queste condizioni non si verificano continuo a mostrare il pop-up
+        while (mostrato == false && (codeInserito.isEmpty() || !code.equals(codeInserito))) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pop-Up Errore");
+            alert.setHeaderText("Codice errato");
+            alert.showAndWait();
+            mostrato = true;
+        }
+        if(codeInserito.isEmpty() || Integer.parseInt(code) != Integer.parseInt(codeInserito)) {
+            return false;
+        } else {
+            // se invece il codice è corretto mostro la schermata cambio password
+            popupStage.close();
+            MainUtils.cambiaInterfaccia("Schermata cambio password", "/it/help/help/SchermataCambioPassword.fxml", stage, c -> {
+                return new SchermataCambioPassword(this, email);
+            });
+            return true;
+        }
     }
 }

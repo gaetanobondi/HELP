@@ -1,5 +1,6 @@
 package it.help.help.polo.boundary;
 
+import it.help.help.autenticazione.controll.GestoreAutenticazione;
 import it.help.help.polo.controll.GestoreMembro;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;

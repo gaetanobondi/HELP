@@ -11,7 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
 
-    public static void sendEmail(String email_address, int code) {
+    public static void sendEmail(String email_address, String code) {
 
         // Recipient's email ID needs to be mentioned.
         String to = email_address;
