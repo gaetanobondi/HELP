@@ -144,6 +144,7 @@ public class GestoreHelp {
 
 
     public void schermataListaPoli(Stage stage) throws Exception {
+        //metodo per cambiare l'interfaccia
         MainUtils.cambiaInterfaccia("Schermata iscritti","/it/help/help/help/SchermataLista.fxml", stage, c -> {
             return new SchermataListaIscritti(this);
         });
