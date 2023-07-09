@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import it.help.help.entity.*;
@@ -204,7 +203,7 @@ public class GestoreNucleo {
             buttonEliminaNucleo.setText("ELIMINA");
             buttonEliminaNucleo.setOnAction(event -> {
                 try {
-                    GestoreNucleo.eliminaNucleo(nucleo.getId());
+                    eliminaNucleo(nucleo.getId());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Pop-Up Conferma");
                     alert.setHeaderText("Nucleo " + nucleo.getCognome() + " eliminato");
