@@ -71,6 +71,7 @@ public class GestoreSistema {
 
         // adesso per ogni categoria controllo che ci siano almeno due alimenti
         int alimentiPerMembro = 2;
+        //ogni membro dovrebbe ricevere 2 alimenti per ogni tipologia di alimento
         Month currentMonth = LocalDate.now().getMonth();
         Donazione[] listaDonazioni = DBMS.queryGetDonazioniMeseCorrente(currentMonth.getValue());
         Set<Donazione> listaScorte = new HashSet<>();
@@ -80,17 +81,18 @@ public class GestoreSistema {
 
         Iterator<Donazione> iterator = listaScorte.iterator();
         if(listaScorte != null) {
-            while (iterator.hasNext()) {
-                int totMembriVivere = 0;
+            while (iterator.hasNext()) { //finchè è presente un elemento nella lista scorte
+                int totMembriVivere = 0; //quanti membri hanno diritto a quella determinata scorta
                 Donazione donazione = iterator.next();
                 // ciclo per contare i membri che hanno diritto a ciascun vivere
                 Prodotto prodotto = DBMS.queryGetProdotto(donazione.getCodiceProdotto());
+                //per ottenere le caratteristiche del prodotto passando il codice del prodotto
                 for (Membro membro : membriTutti) {
                     // per ogni membro devo verificare se può ritirare il vivere in base ai bisogni
                     if((membro.getDiabete() && prodotto.getSenzaZucchero()) || !membro.getDiabete()) {
                         if((membro.getIntolleranzaLattosio() && prodotto.getSenzaLattosio()) || !membro.getIntolleranzaLattosio()) {
                             if((membro.getCeliachia() && prodotto.getSenzaGlutine() || !membro.getCeliachia())) {
-                                totMembriVivere += 1;
+                                totMembriVivere += 1; //il membro ha diritto a questa tipologia di prodotto
                             }
                         }
                     }
@@ -103,17 +105,16 @@ public class GestoreSistema {
                     int quantitàMinima = alimentiPerMembro * totMembriVivere;
                     System.out.println("Devo avere questa quantità: " + quantitàMinima + " di " + prodotto.getTipo());
                     if(donazione.getQuantità() < quantitàMinima) {
+
+                        //controlli per evitare che un prodotto appartenete a più categorie sia chiesto più volte
                         int dividedBy = 1;
                         if(prodotto.getSenzaZucchero()) {
-                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
                             dividedBy += 1;
                         }
                         if(prodotto.getSenzaGlutine()) {
-                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaGlutine");
                             dividedBy += 1;
                         }
                         if(prodotto.getSenzaLattosio()) {
-                            Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaLattosio");
                             dividedBy += 1;
                         }
 
@@ -121,6 +122,7 @@ public class GestoreSistema {
                         int giustaQuantità = quantitàMinima / dividedBy;
                         if(prodotto.getSenzaZucchero()) {
                             Prodotto[] listaProdotti = DBMS.queryGetProdottiPer("senzaZucchero");
+                            //creazione della richiesta per i prodotti senza zucchero
                             creaRichestaAdHoc(giustaQuantità, listaProdotti);
                         }
                         if(prodotto.getSenzaGlutine()) {
@@ -136,6 +138,7 @@ public class GestoreSistema {
             }
         } else {
             if(membriDiabetici.size() > 0) {
+                //calcolo per la creazione della richiesta per i prodotti senza zucchero
                 int quantitàMinima = membriDiabetici.size() * alimentiPerMembro;
                 System.out.println("Richieste perché non ci sono scorte:");
                 // nessuna scorta presente
@@ -164,8 +167,6 @@ public class GestoreSistema {
                 System.out.println("Richieste perché non ci sono scorte:");
                 // nessuna scorta presente
                 Prodotto[] listaProdotti = DBMS.queryGetProdotti();
-                // Converti l'array in una lista
-                List<Prodotto> listaProdottiList = new ArrayList<>(Arrays.asList(listaProdotti));
                 creaRichestaAdHoc(quantitàMinima, listaProdotti);
             }
         }

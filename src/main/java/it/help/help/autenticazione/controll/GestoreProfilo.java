@@ -37,6 +37,7 @@ public class GestoreProfilo {
         MainUtils.cambiaInterfaccia("Schermata modifica profilo help", "/it/help/help/help/SchermataModificaProfiloHelp.fxml", stage, c -> {
             return p;
         });
+        //per precompilare i campi si utilizza il metodo inizialize
         p.inizialize(nome, cognome, email, cellulare, indirizzo);
     }
 
@@ -78,6 +79,7 @@ public class GestoreProfilo {
             error = "Compila tutti i campi obbligatori";
         }
 
+        //stessi controlli per modificare la password visto che il responsabile potrebbe decidere di non modificarla
         if(!password.isEmpty() && !new_password.isEmpty()) {
             if(MainUtils.isValidPassword(new_password)) {
                 HashMap<String, Object> datiAggiornati = new HashMap<>();

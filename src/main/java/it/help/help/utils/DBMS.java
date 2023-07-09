@@ -490,6 +490,8 @@ public class DBMS {
 
     public static Donazione[] queryGetDonazioniMeseCorrente(int mese) throws Exception {
         connect();
+
+        //seleziona tutti gli attributi dalla tabella donazione dove il mese della data di donazione corrisponde al mese passato come parametro
         String query = "SELECT * FROM donazione WHERE MONTH(date) = ? ORDER BY date DESC";
         List<Donazione> listaDonazioni = new ArrayList<>();
 
@@ -498,7 +500,7 @@ public class DBMS {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Donazione donazione = Donazione.createFromDB(rs);
-                listaDonazioni.add(donazione);
+                listaDonazioni.add(donazione); //aggiunta dalla donazione alla lista
             }
             connection.close();
         } catch (SQLException e) {
