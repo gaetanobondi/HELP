@@ -12,7 +12,7 @@ public class SchermataCambioPassword {
     public TextField fieldEmail;
     public Button buttonSalvaNuovaPassword;
     public PasswordField fieldNuovaPassword;
-    public PasswordField filedRipetiPassword;
+    public PasswordField fieldRipetiPassword;
     public GestorePassword gestorePassword;
     public String email;
     public SchermataCambioPassword(GestorePassword gestorePassword, String email) {
@@ -22,7 +22,7 @@ public class SchermataCambioPassword {
 
     public void clickSalvaPassword(ActionEvent actionEvent) throws Exception {
         String password = fieldNuovaPassword.getText();
-        String repeat_password = filedRipetiPassword.getText();
+        String repeat_password = fieldRipetiPassword.getText();
         gestorePassword.salvaPassword((Stage) buttonSalvaNuovaPassword.getScene().getWindow(), email, password, repeat_password);
     }
 }

@@ -10,16 +10,14 @@ public class Polo {
     private String indirizzo;
     private int cellulare;
     private int id_diocesi;
-    private Date date;
 
-    public Polo(int id, String nome, boolean stato_sospensione, String indirizzo, int cellulare, int id_diocesi, Date date) {
+    public Polo(int id, String nome, boolean stato_sospensione, String indirizzo, int cellulare, int id_diocesi) {
         this.id = id;
         this.nome = nome;
         this.stato_sospensione = stato_sospensione;
         this.indirizzo = indirizzo;
         this.cellulare = cellulare;
         this.id_diocesi = id_diocesi;
-        this.date = date;
     }
 
     public Polo() { }
@@ -41,9 +39,6 @@ public class Polo {
     }
     public boolean getStato_sospensione() {
         return stato_sospensione;
-    }
-    public Date getDate() {
-        return date;
     }
 
     @Override
@@ -67,8 +62,7 @@ public class Polo {
                 row.getBoolean(3),
                 row.getString(4),
                 row.getInt(5),
-                row.getInt(6),
-                row.getDate(7));
+                row.getInt(6));
     }
 
 }

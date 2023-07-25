@@ -1,6 +1,10 @@
 package it.help.help.utils;
 
 import it.help.help.entity.*;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.util.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -14,13 +18,23 @@ public class DBMS {
 
     private static Connection connection = null;
 
-    public static void connect() throws Exception {
+    public static void connect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
+            showConnectionErrorPopup();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+    }
+
+    private static void showConnectionErrorPopup() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Errore di connessione al database", ButtonType.OK);
+            alert.showAndWait();
+        });
     }
 
     /*
@@ -359,13 +373,8 @@ public class DBMS {
 
     public static int queryRegistraDiocesi() throws Exception {
         connect();
-        // Ottenere la data di oggi
-        LocalDate today = LocalDate.now();
-        // Convertire LocalDate in java.sql.Date
-        java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO diocesi (date) VALUES (?)";
+        String query = "INSERT INTO diocesi (stato_account) VALUES (0)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setDate(1, date);
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -382,13 +391,8 @@ public class DBMS {
 
     public static int queryRegistraAziendaPartner() throws Exception {
         connect();
-        // Ottenere la data di oggi
-        LocalDate today = LocalDate.now();
-        // Convertire LocalDate in java.sql.Date
-        java.sql.Date date = java.sql.Date.valueOf(today);
-        String query = "INSERT INTO azienda (date) VALUES (?)";
+        String query = "INSERT INTO azienda (stato_account) VALUES (0)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setDate(1, date);
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -876,7 +880,7 @@ public class DBMS {
 
     public static Diocesi[] getRichiesteDiocesi() throws Exception {
         connect();
-        String query = "SELECT * FROM diocesi WHERE stato_account = ? ORDER BY date ASC";
+        String query = "SELECT * FROM diocesi WHERE stato_account = ?";
         List<Diocesi> richiesteDiocesi = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -913,7 +917,7 @@ public class DBMS {
     }
     public static Donazione[] queryGetAllDonazioni(int id_azienda) throws Exception {
         connect();
-        String query = "SELECT * FROM donazione WHERE id_azienda = ? ORDER BY date DESC";
+        String query = "SELECT * FROM donazione WHERE id_azienda = ?";
         List<Donazione> listaDonazioni = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -1164,7 +1168,7 @@ public class DBMS {
 
     public static AziendaPartner[] queryGetRichiesteAziendePartner() throws Exception {
         connect();
-        String query = "SELECT * FROM azienda WHERE stato_account = ? ORDER BY date ASC";
+        String query = "SELECT * FROM azienda WHERE stato_account = ?";
         List<AziendaPartner> richiesteAziende = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {

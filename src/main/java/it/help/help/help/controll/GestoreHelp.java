@@ -188,7 +188,7 @@ public class GestoreHelp {
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
         for (Diocesi diocesi : listaDiocesi) {
-            Button diocesiButton = new Button(diocesi.getNome()); // Creazione del pulsante con il nome del polo
+            Button diocesiButton = new Button(diocesi.getNome() == null ? "Nome non impostato" : diocesi.getNome()); // Creazione del pulsante con il nome del polo
             diocesiButton.setOnAction(e -> {
                 // Azione da eseguire quando viene premuto il pulsante del polo
                 try {
@@ -218,7 +218,7 @@ public class GestoreHelp {
         buttonContainer.setSpacing(10); // Spaziatura tra i bottoni
 
         for (AziendaPartner aziendaPartner : listaAziende) {
-            Button aziendaButton = new Button(aziendaPartner.getNome()); // Creazione del pulsante con il nome del polo
+            Button aziendaButton = new Button(aziendaPartner.getNome() == null ? "Nome non impostato" : aziendaPartner.getNome()); // Creazione del pulsante con il nome del polo
             aziendaButton.setOnAction(e -> {
                 // Azione da eseguire quando viene premuto il pulsante del polo
                 try {

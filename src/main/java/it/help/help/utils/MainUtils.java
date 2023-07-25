@@ -22,7 +22,7 @@ import javafx.util.Callback;
 
 
 public class MainUtils {
-    public static Scene previousScene;
+
     public static Responsabile responsabileLoggato;
     public static Responsabile responsabileHelpLoggato;
     public static Polo poloLoggato;
@@ -31,13 +31,12 @@ public class MainUtils {
     public static Help helpLoggato;
     public static Nucleo nucleo;
     public static String codice_fiscale;
-    public static List<Stage> boundaryStack = new ArrayList<>(); // Inizializza la lista delle boundary precedenti
 
-    public static boolean contieneSoloNumeri(String cellulare) {
-        return cellulare.matches("\\d+");
+    public static boolean contieneSoloNumeri(String campo) {
+        return campo.matches("\\d+");
     }
-    public static boolean contieneSoloLettere(String nome) {
-        return nome.matches("[a-zA-Z ]+");
+    public static boolean contieneSoloLettere(String campo) {
+        return campo.matches("[a-zA-Z ]+");
     }
 
 

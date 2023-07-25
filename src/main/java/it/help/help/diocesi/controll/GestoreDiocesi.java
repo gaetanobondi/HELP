@@ -33,19 +33,19 @@ public class GestoreDiocesi {
     public TextField fieldIndirizzo;
     public TextField fieldCellulare;
 
-    public void registraPolo(Stage stage, String nome, String cognome, String indirizzo, String cellulare, String email, String password) throws Exception {
+    public void registraPolo(Stage stage, String nomePolo, String nome, String cognome, String indirizzo, String cellulare, String email, String password) throws Exception {
         Boolean showErrorAlert = false;
         String error = "";
         int type = 0;
 
-        if(!nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty() && !cellulare.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            if(MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
+        if(!nomePolo.isEmpty() && !nome.isEmpty() && !cognome.isEmpty() && !indirizzo.isEmpty() && !cellulare.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+            if(MainUtils.contieneSoloLettere(nomePolo) && MainUtils.contieneSoloLettere(nome) && MainUtils.contieneSoloLettere(cognome) && MainUtils.contieneSoloNumeri(cellulare)) {
                 if(MainUtils.isValidEmail(email) && MainUtils.isValidPassword(password)) {
                     // verifico che l'email non sia già presente nel DBMS
                     if(!DBMS.queryControllaEsistenzaEmail(email)) {
                         // registro l'utente nel DBMS
                         String encryptPassword = MainUtils.encryptPassword(password);
-                        int id_polo = DBMS.queryRegistraPolo(MainUtils.responsabileLoggato.getIdLavoro(), nome, indirizzo, Integer.parseInt(cellulare));
+                        int id_polo = DBMS.queryRegistraPolo(MainUtils.responsabileLoggato.getIdLavoro(), nomePolo, indirizzo, Integer.parseInt(cellulare));
                         DBMS.queryRegistraResponsabile(email, encryptPassword, 2, id_polo);
                         // aggiorno la tabella responsabile
                         HashMap<String, Object> datiAggiornati = new HashMap<>();

@@ -20,6 +20,7 @@ public class SchermataRegistrazionePoloTerritoriale {
     public TextField fieldEmail;
     public PasswordField fieldPassword;
     public GestoreDiocesi gestoreDiocesi;
+    public TextField fieldNomePolo;
 
     public SchermataRegistrazionePoloTerritoriale(GestoreDiocesi gestoreDiocesi) {
         this.gestoreDiocesi = gestoreDiocesi;
@@ -30,12 +31,13 @@ public class SchermataRegistrazionePoloTerritoriale {
     }
 
     public void clickRegistraPolo(ActionEvent actionEvent) throws Exception {
+        String nomePolo = fieldNomePolo.getText();
         String nome = fieldNome.getText();
         String cognome = fieldCognome.getText();
         String indirizzo = fieldIndirizzo.getText();
         String cellulare = fieldCellulare.getText();
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
-        gestoreDiocesi.registraPolo((Stage) buttonRegistraPolo.getScene().getWindow(), nome, cognome, indirizzo, cellulare, email, password);
+        gestoreDiocesi.registraPolo((Stage) buttonRegistraPolo.getScene().getWindow(), nomePolo, nome, cognome, indirizzo, cellulare, email, password);
     }
 }

@@ -31,6 +31,8 @@
         <Label layoutX="115.0" layoutY="204.0" text="Cellulare" />
         <Label layoutX="115.0" layoutY="253.0" text="Email" />
         <Label layoutX="113.0" layoutY="301.0" text="Password" />
+        <Label layoutX="113.0" layoutY="345.0" text="Nome polo" />
+        <TextField fx:id="fieldNomePolo" layoutX="226.0" layoutY="341.0" />
         <PasswordField fx:id="fieldPassword" layoutX="226.0" layoutY="297.0" />
     </children>
 </Pane>

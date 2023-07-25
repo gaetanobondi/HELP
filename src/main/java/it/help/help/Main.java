@@ -35,11 +35,11 @@ public class Main extends Application {
             GestoreSistema gestoreSistema = new GestoreSistema();
             // elimino gli schemi di distribuzione del mese precedente
             gestoreSistema.eliminaSchemiDistribuzione();
-            gestoreSistema.azzeraMagazzini();
-            gestoreSistema.azzeraScorte();
             if(!gestoreSistema.checkSchemiDistribuzione()) {
                 gestoreSistema.generazioneSchemiDistribuzione();
             }
+            gestoreSistema.azzeraMagazzini();
+            gestoreSistema.azzeraScorte();
         }
 
         // se è il 2 del mese genero la previsione
@@ -47,7 +47,7 @@ public class Main extends Application {
             GestoreSistema gestoreSistema = new GestoreSistema();
             // elimino le richieste ad-hoc del mese precedente
             gestoreSistema.eliminaRichiesteAdHoc();
-            gestoreSistema.previsioneDistribuzione();
+            gestoreSistema.createPrevisioneDistribuzione();
         }
         launch();
     }
